@@ -15,11 +15,12 @@ import javax.swing.UIManager;
  */
 public class Estilo {
     
-    private static Color colorBaseFondo = new Color(0x10, 0x10, 0x10);
-    private static Color colorPrimario = new Color(0x94, 0x00, 0xFF);
+    public static final Color colorBaseFondo = new Color(0x10, 0x10, 0x10);
+    public static final Color colorPrimario = new Color(0x94, 0x00, 0xFF);
     
     public static void prepararEstilo() {
         UIManager.put("Panel.background", colorBaseFondo);
+        UIManager.put("ScrollPane.background", colorBaseFondo);
         
         UIManager.put("Button.background",  colorPrimario);
         UIManager.put("Button.arc", 999);
@@ -34,8 +35,8 @@ public class Estilo {
         
         UIManager.put("TextComponent.arc", 10);
         
-        UIManager.put("TextField.focusBackground", colorPrimario);
-        UIManager.put("PasswordField.focusBackground", colorPrimario);
+        UIManager.put("TextField.focus", colorPrimario);
+        UIManager.put("PasswordField.focus", colorPrimario);
         
         UIManager.put("TextField.background",  colorBaseFondo);
         UIManager.put("PasswordField.background",  colorBaseFondo);

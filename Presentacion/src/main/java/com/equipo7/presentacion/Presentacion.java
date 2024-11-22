@@ -4,6 +4,7 @@
 
 package com.equipo7.presentacion;
 
+import com.equipo7.presentacion.gui.FrmPantallaPrincipal;
 import com.equipo7.presentacion.gui.IniciarSesionDlg;
 import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.fuentes.FuentesLetra;
@@ -38,6 +39,9 @@ public class Presentacion {
         IniciarSesionDlg form = new IniciarSesionDlg(null, true);
         form.setVisible(true);
         
-        System.exit(0);
+        FrmPantallaPrincipal mainFrame = new FrmPantallaPrincipal();
+        mainFrame.setVisible(true);
+        
+        //System.exit(0);
     }
 }
