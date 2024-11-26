@@ -193,8 +193,20 @@ public class Usuario implements IDocumentable {
             doc.append("_id", this._id);
         }
 
+        // NOTE: DATOS OBLIGATORIOS, SIN ESTOS NO SE PUEDE DEVOLVER UN DOCUMENTO BSON EQUIVALENTE
+        // PARA EVITAR PROBLEMAS DE INSERCION
+        if (this.correoElectronico == null)     return null;
+        else if (this.contrasena == null)       return null;
+        else if (this.nombreUsuario == null)    return  null;
 
-        return null;
+        doc.append("nombre", this.nombreUsuario);
+        doc.append("contrasena", this.contrasena);
+        doc.append("email", this.correoElectronico);
+        doc.append("fechaRegistro", this.fechaRegistro);
+        doc.append("generosRestringidos", this.generosRestringidos);
+        doc.append("imagenURL", this.imagenPerfil);
+
+        return doc;
     }
 
     @Override

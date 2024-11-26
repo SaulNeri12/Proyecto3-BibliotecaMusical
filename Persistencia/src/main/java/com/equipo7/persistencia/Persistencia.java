@@ -27,19 +27,59 @@ public class Persistencia {
                 .build();
 
          */
-
+        // NOTE: iniciarSesion [funcionando]
+        UsuariosDAO usuarios = null;
         try {
-            UsuariosDAO usuarios = UsuariosDAO.getInstance();
-
-            try {
-                Usuario usuario = usuarios.iniciarSesion("correo@gmail.com", "123456789");
-                System.out.println(usuario);
-
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
+            usuarios = UsuariosDAO.getInstance();
         } catch (ConexionException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            Usuario usuario = usuarios.iniciarSesion("correo@gmail.com", "123456789");
+            System.out.println(usuario);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // NOTE: registrar usuario [funcionando]
+        Usuario usr = new Usuario();
+        usr.setNombreUsuario("locobson13");
+        usr.setCorreoElectronico("locobsob13@gmail.com");
+        usr.setContrasena("shesh12345");
+        usr.setGenerosRestringidos(Arrays.asList("reggeaton", "regional mexicano"));
+
+        System.out.println(usr);
+
+        /*
+        try {
+            usuarios.registrarUsuario(usr);
+            System.out.println("Se agrego al usuario!");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }*/
+
+
+        // NOTE: actualizar informacion []
+
+        /*
+        usr.setNombreUsuario("shesh13");
+        //usr.setCorreoElectronico("correo@gmail.com");
+        try {
+            usuarios.actualizarContrasenhaUsuario(usr.getCorreoElectronico(), "perro12345");
+            System.out.println("Se actualizo la contrasena del usuario");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }*/
+
+        usr.setNombreUsuario("shesh13");
+        //usr.setCorreoElectronico("correo@gmail.com");
+        try {
+            usuarios.actualizarNombreUsuario(usr.getCorreoElectronico(), usr.getNombreUsuario());
+            System.out.println("Se actualizo el nombre del usuario");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
