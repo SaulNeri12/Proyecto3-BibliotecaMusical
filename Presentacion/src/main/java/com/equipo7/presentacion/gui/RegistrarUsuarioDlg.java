@@ -4,11 +4,16 @@
  */
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.bo.UsuariosBO;
+import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
+
 /**
  *
  * @author gaspa
  */
 public class RegistrarUsuarioDlg extends javax.swing.JDialog {
+
+    private IUsuariosBO usuariosBO = UsuariosBO.getInstance();
 
     /**
      * Creates new form RegistrarUsuarioDlg
@@ -55,10 +60,10 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         tituloIniciarSesion.setText("Nombre de Usuario");
         jPanel2.add(tituloIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 420, -1, -1));
 
+        tituloIniciarSesion1.setText("Registrar Cuenta");
         tituloIniciarSesion1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 28)); // NOI18N
         tituloIniciarSesion1.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion1.setText("Registrar Cuenta");
-        jPanel2.add(tituloIniciarSesion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 320, -1, -1));
+        jPanel2.add(tituloIniciarSesion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, -1, -1));
 
         nombreUsuarioTextField.setBackground(new java.awt.Color(51, 51, 51));
         nombreUsuarioTextField.setColumns(50);

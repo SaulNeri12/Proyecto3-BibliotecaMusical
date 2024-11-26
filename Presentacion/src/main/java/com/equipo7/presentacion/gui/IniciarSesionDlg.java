@@ -4,6 +4,9 @@
  */
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.bo.UsuariosBO;
+import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Font;
@@ -15,6 +18,9 @@ import javax.swing.UIManager;
  * @author neri
  */
 public class IniciarSesionDlg extends javax.swing.JDialog {
+
+    private IUsuariosBO usuariosBO = UsuariosBO.getInstance();
+    private UsuarioDTO usuarioLogeado;
 
     /**
      * indica si despues de cerrar el dialogo el usuario puede acceder a la aplicacion
@@ -206,8 +212,22 @@ public class IniciarSesionDlg extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void iniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBtnActionPerformed
-        // TODO add your handling code here:
+        // TODO: EVALUAR ENTRADAS
+
+        // encriptar contrasena (despues)
+        //this.usuariosBO.iniciarSesion(correo, contrasena);
+
+        // cierra el frame
+        //dispose();
     }//GEN-LAST:event_iniciarSesionBtnActionPerformed
+
+    /**
+     * Obtiene el usuario logeado al cerrar el form
+     * @return
+     */
+    public UsuarioDTO getUsuarioLogeado() {
+        return this.usuarioLogeado;
+    }
 
     private void crearCuentaBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearCuentaBtnMouseClicked
         System.out.println("SHESH");
