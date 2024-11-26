@@ -1,8 +1,0 @@
-com\equipo7\persistencia\dao\interfaces\IAlbumesDAO.class
-com\equipo7\persistencia\dao\interfaces\IArtistasDAO.class
-com\equipo7\persistencia\entidades\Cancion.class
-com\equipo7\persistencia\entidades\Artista.class
-com\equipo7\persistencia\dao\interfaces\IUsuariosDAO.class
-com\equipo7\persistencia\entidades\Usuario.class
-com\equipo7\persistencia\Persistencia.class
-com\equipo7\persistencia\entidades\Album.class
