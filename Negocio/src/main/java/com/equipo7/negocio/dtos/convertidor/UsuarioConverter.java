@@ -15,7 +15,7 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
                 usuario.getCorreoElectronico(),
                 usuario.getContrasena(),
                 usuario.getImagenPerfil(),
-                usuario.getFechaRegistro(),
+                
                 usuario.getGenerosRestringidos()
         );
     }
@@ -25,7 +25,7 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
         u.setNombreUsuario(dto.getNombreUsuario());
         u.setCorreoElectronico(dto.getCorreoElectronico());
         u.setContrasena(dto.getContrasena());
-        u.setFechaRegistro(dto.getFechaRegistro());
+        
         u.setGenerosRestringidos(dto.getGenerosRestringidos());
         u.setImagenPerfil(dto.getImagenPerfil());
         return u;

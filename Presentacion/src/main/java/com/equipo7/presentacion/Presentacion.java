@@ -39,8 +39,6 @@ public class Presentacion {
         IniciarSesionDlg form = new IniciarSesionDlg(null, true);
         form.setVisible(true);
         
-        FrmPantallaPrincipal mainFrame = new FrmPantallaPrincipal();
-        mainFrame.setVisible(true);
         
         //System.exit(0);
     }

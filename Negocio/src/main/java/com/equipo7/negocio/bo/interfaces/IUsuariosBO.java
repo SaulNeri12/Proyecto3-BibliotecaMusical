@@ -44,4 +44,5 @@ public interface IUsuariosBO {
      * o si no se encuentra la cuenta asociada al correo electrónico.
      */
     public void actualizarContrasenhaUsuario(String correoElectronico, String nuevaContrasena) throws BOException;
+    
 }

@@ -4,8 +4,15 @@
  */
 package com.equipo7.presentacion.gui;
 
+import static Recursos.imageUploader.loadImageWithFileChooser;
 import com.equipo7.negocio.bo.UsuariosBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
+import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.negocio.excepciones.BOException;
+import java.awt.Image;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -14,13 +21,14 @@ import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 public class RegistrarUsuarioDlg extends javax.swing.JDialog {
 
     private IUsuariosBO usuariosBO = UsuariosBO.getInstance();
+    private byte[] imageBytes = null;
 
     /**
      * Creates new form RegistrarUsuarioDlg
      */
-    public RegistrarUsuarioDlg(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public RegistrarUsuarioDlg() {
         initComponents();
+        
     }
 
     /**
@@ -39,14 +47,15 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         correoTextField = new javax.swing.JTextField();
         tituloIniciarSesion2 = new javax.swing.JLabel();
         tituloIniciarSesion3 = new javax.swing.JLabel();
-        contraseñaTextField = new javax.swing.JTextField();
         tituloIniciarSesion4 = new javax.swing.JLabel();
-        confirmarContraseñaTextField = new javax.swing.JTextField();
         tituloIniciarSesion5 = new javax.swing.JLabel();
         terminosCheckBox = new javax.swing.JCheckBox();
         crearCuentaBtn = new javax.swing.JButton();
+        contrasenaPasswordField = new javax.swing.JPasswordField();
+        confirmContrasenaPasswordField = new javax.swing.JPasswordField();
+        subirImagenBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
+        iconTextLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -60,9 +69,9 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         tituloIniciarSesion.setText("Nombre de Usuario");
         jPanel2.add(tituloIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 420, -1, -1));
 
-        tituloIniciarSesion1.setText("Registrar Cuenta");
         tituloIniciarSesion1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 28)); // NOI18N
         tituloIniciarSesion1.setForeground(new java.awt.Color(255, 255, 255));
+        tituloIniciarSesion1.setText("Registrar Cuenta");
         jPanel2.add(tituloIniciarSesion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, -1, -1));
 
         nombreUsuarioTextField.setBackground(new java.awt.Color(51, 51, 51));
@@ -92,38 +101,18 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
 
         tituloIniciarSesion3.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
         tituloIniciarSesion3.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion3.setText("Fecha de nacimiento");
+        tituloIniciarSesion3.setText("Imagen de perfil (opcional)");
         jPanel2.add(tituloIniciarSesion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 570, -1, -1));
-
-        contraseñaTextField.setBackground(new java.awt.Color(51, 51, 51));
-        contraseñaTextField.setColumns(50);
-        contraseñaTextField.setForeground(new java.awt.Color(204, 204, 204));
-        contraseñaTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contraseñaTextFieldActionPerformed(evt);
-            }
-        });
-        jPanel2.add(contraseñaTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 670, 304, 40));
 
         tituloIniciarSesion4.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
         tituloIniciarSesion4.setForeground(new java.awt.Color(255, 255, 255));
         tituloIniciarSesion4.setText("Contraseña");
-        jPanel2.add(tituloIniciarSesion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 650, -1, -1));
-
-        confirmarContraseñaTextField.setBackground(new java.awt.Color(51, 51, 51));
-        confirmarContraseñaTextField.setColumns(50);
-        confirmarContraseñaTextField.setForeground(new java.awt.Color(204, 204, 204));
-        confirmarContraseñaTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmarContraseñaTextFieldActionPerformed(evt);
-            }
-        });
-        jPanel2.add(confirmarContraseñaTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 750, 304, 43));
+        jPanel2.add(tituloIniciarSesion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 720, -1, -1));
 
         tituloIniciarSesion5.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
         tituloIniciarSesion5.setForeground(new java.awt.Color(255, 255, 255));
         tituloIniciarSesion5.setText("Confirmar Contraseña");
-        jPanel2.add(tituloIniciarSesion5, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 730, -1, -1));
+        jPanel2.add(tituloIniciarSesion5, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 800, -1, -1));
 
         terminosCheckBox.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         terminosCheckBox.setForeground(new java.awt.Color(255, 255, 255));
@@ -133,21 +122,40 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
                 terminosCheckBoxActionPerformed(evt);
             }
         });
-        jPanel2.add(terminosCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 810, -1, -1));
+        jPanel2.add(terminosCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 880, -1, -1));
 
-        crearCuentaBtn.setBackground(new java.awt.Color(204, 0, 204));
         crearCuentaBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        crearCuentaBtn.setForeground(new java.awt.Color(255, 255, 255));
         crearCuentaBtn.setText("Crear Cuenta");
         crearCuentaBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.add(crearCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 840, 304, 30));
+        crearCuentaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearCuentaBtnActionPerformed(evt);
+            }
+        });
+        jPanel2.add(crearCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 910, 304, 30));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pexels-photo-374046.png"))); // NOI18N
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 322));
+        contrasenaPasswordField.setBackground(new java.awt.Color(51, 51, 51));
+        contrasenaPasswordField.setColumns(50);
+        jPanel2.add(contrasenaPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 750, 300, 40));
 
-        datePicker1.setBackground(new java.awt.Color(51, 51, 51));
-        datePicker1.setForeground(new java.awt.Color(51, 51, 51));
-        jPanel2.add(datePicker1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 600, 300, 30));
+        confirmContrasenaPasswordField.setBackground(new java.awt.Color(51, 51, 51));
+        confirmContrasenaPasswordField.setColumns(50);
+        jPanel2.add(confirmContrasenaPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 830, 300, 40));
+
+        subirImagenBtn.setText("Subir Imagen");
+        subirImagenBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subirImagenBtnActionPerformed(evt);
+            }
+        });
+        jPanel2.add(subirImagenBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 600, 110, 20));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pexels-photo-374046.png"))); // NOI18N
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 340));
+
+        iconTextLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/profile.png"))); // NOI18N
+        iconTextLabel.setPreferredSize(new java.awt.Dimension(100, 100));
+        jPanel2.add(iconTextLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 600, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -175,69 +183,53 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_correoTextFieldActionPerformed
 
-    private void contraseñaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contraseñaTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contraseñaTextFieldActionPerformed
-
-    private void confirmarContraseñaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarContraseñaTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_confirmarContraseñaTextFieldActionPerformed
-
     private void terminosCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminosCheckBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_terminosCheckBoxActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void crearCuentaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuentaBtnActionPerformed
+        if(imageBytes!=null){
+            UsuarioDTO usuario = new UsuarioDTO(nombreUsuarioTextField.getText(), correoTextField.getText(), imageBytes.toString(),contrasenaPasswordField.getPassword().toString());
+            try {
+                usuariosBO.registrarUsuario(usuario);
+            } catch (BOException ex) {
+                Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                RegistrarUsuarioDlg dialog = new RegistrarUsuarioDlg(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+        else{
+            UsuarioDTO usuario = new UsuarioDTO(nombreUsuarioTextField.getText(), correoTextField.getText(), contrasenaPasswordField.getPassword().toString());
+            try {
+                usuariosBO.registrarUsuario(usuario);
+            } catch (BOException ex) {
+                Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
-    }
+        }
+    }//GEN-LAST:event_crearCuentaBtnActionPerformed
+
+    private void subirImagenBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subirImagenBtnActionPerformed
+        imageBytes = loadImageWithFileChooser();
+        if (imageBytes != null) {
+                ImageIcon imageIcon = new ImageIcon(imageBytes);
+                Image image = imageIcon.getImage().getScaledInstance(iconTextLabel.getWidth(), iconTextLabel.getHeight(), Image.SCALE_SMOOTH);
+                imageIcon = new ImageIcon(image);
+                iconTextLabel.setIcon(imageIcon);
+            } else {
+                System.out.println("No se selecciono ninguna imagen");
+            }
+    }//GEN-LAST:event_subirImagenBtnActionPerformed
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField confirmarContraseñaTextField;
-    private javax.swing.JTextField contraseñaTextField;
+    private javax.swing.JPasswordField confirmContrasenaPasswordField;
+    private javax.swing.JPasswordField contrasenaPasswordField;
     private javax.swing.JTextField correoTextField;
     private javax.swing.JButton crearCuentaBtn;
-    private com.github.lgooddatepicker.components.DatePicker datePicker1;
+    private javax.swing.JLabel iconTextLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField nombreUsuarioTextField;
+    private javax.swing.JButton subirImagenBtn;
     private javax.swing.JCheckBox terminosCheckBox;
     private javax.swing.JLabel tituloIniciarSesion;
     private javax.swing.JLabel tituloIniciarSesion1;

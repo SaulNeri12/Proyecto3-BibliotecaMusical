@@ -1,0 +1,17 @@
+com\equipo7\persistencia\conexion\excepciones\ConexionException.class
+com\equipo7\persistencia\entidades\Cancion.class
+com\equipo7\persistencia\dao\interfaces\IUsuariosDAO.class
+com\equipo7\persistencia\entidades\FiltroBusqueda.class
+com\equipo7\persistencia\dao\UsuariosDAO.class
+com\equipo7\persistencia\dao\interfaces\IAlbumesDAO.class
+excepciones\DAOException.class
+com\equipo7\persistencia\dao\interfaces\IArtistasDAO.class
+com\equipo7\persistencia\entidades\Artista.class
+com\equipo7\persistencia\entidades\Usuario.class
+com\equipo7\persistencia\conexion\Conexion.class
+com\equipo7\persistencia\dao\ArtistasDAO.class
+com\equipo7\persistencia\Persistencia.class
+com\equipo7\persistencia\dao\AlbumesDAO.class
+com\equipo7\persistencia\entidades\FiltroBusqueda$Builder.class
+com\equipo7\persistencia\entidades\Album.class
+com\equipo7\persistencia\entidades\IDocumentable.class

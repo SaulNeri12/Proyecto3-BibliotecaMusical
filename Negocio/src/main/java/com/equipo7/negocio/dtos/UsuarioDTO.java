@@ -12,7 +12,6 @@ public class UsuarioDTO {
     private String nombreUsuario;
     private String correoElectronico;
     private String imagenPerfil;
-    private Instant fechaRegistro;
     private List<String> generosRestringidos;
     private String contrasena;
 
@@ -35,14 +34,31 @@ public class UsuarioDTO {
      * @param fechaRegistro Fecha y hora de registro del usuario.
      * @param generosRestringidos Lista de géneros restringidos para el usuario.
      */
-    public UsuarioDTO(String nombreUsuario, String correoElectronico, String contrasena, String imagenPerfil, Instant fechaRegistro, List<String> generosRestringidos) {
+    public UsuarioDTO(String nombreUsuario, String correoElectronico, String contrasena, String imagenPerfil, List<String> generosRestringidos) {
         this.nombreUsuario = nombreUsuario;
         this.correoElectronico = correoElectronico;
         this.contrasena = contrasena;
         this.imagenPerfil = imagenPerfil;
-        this.fechaRegistro = fechaRegistro;
+        
         this.generosRestringidos = generosRestringidos;
     }
+
+    public UsuarioDTO(String nombreUsuario, String correoElectronico, String contrasena) {
+        this.nombreUsuario = nombreUsuario;
+        this.correoElectronico = correoElectronico;
+        this.contrasena = contrasena;
+    }
+
+    public UsuarioDTO(String nombreUsuario, String correoElectronico, String imagenPerfil, String contrasena) {
+        this.nombreUsuario = nombreUsuario;
+        this.correoElectronico = correoElectronico;
+        this.imagenPerfil = imagenPerfil;
+        this.contrasena = contrasena;
+    }
+
+    
+    
+    
 
     /**
      * Obtiene el nombre del usuario.
@@ -97,25 +113,6 @@ public class UsuarioDTO {
     public void setImagenPerfil(String imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
     }
-
-    /**
-     * Obtiene la fecha de registro del usuario.
-     *
-     * @return La fecha y hora de registro como un objeto Instant.
-     */
-    public Instant getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    /**
-     * Establece la fecha de registro del usuario.
-     *
-     * @param fechaRegistro La fecha y hora de registro como un objeto Instant.
-     */
-    public void setFechaRegistro(Instant fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
     /**
      * Obtiene la lista de géneros restringidos para el usuario.
      *
@@ -166,7 +163,7 @@ public class UsuarioDTO {
                 ", nombreUsuario='" + nombreUsuario + '\'' +
                 ", correoElectronico='" + correoElectronico + '\'' +
                 ", imagenPerfil='" + imagenPerfil + '\'' +
-                ", fechaRegistro=" + fechaRegistro +
+                
                 ", generosRestringidos=" + generosRestringidos +
                 '}';
     }

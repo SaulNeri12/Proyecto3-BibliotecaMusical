@@ -11,13 +11,20 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import excepciones.DAOException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import org.bson.Document;
 
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import java.time.Instant;
 import java.util.*;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  * Implementa las operaciones de la interfaz IUsuariosDAO
@@ -151,8 +158,6 @@ public class UsuariosDAO implements IUsuariosDAO {
             usuario.setId(null);
         }
 
-        // se indica la fecha de registro
-        usuario.setFechaRegistro(Instant.now());
 
         Document documento = usuario.toDocument();
         if (documento == null) {
@@ -271,6 +276,31 @@ public class UsuariosDAO implements IUsuariosDAO {
             }
         } catch (MongoException e) {
             throw new DAOException("Ocurrió un error al actualizar la contraseña.");
+        }
+    }
+    
+    private static void seleccionarImagen(JLabel imageLabel) {
+        // Crear un JFileChooser para seleccionar el archivo
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar una imagen");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
+
+        // Mostrar el diálogo de selección
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                // Cargar la imagen seleccionada
+                BufferedImage img = ImageIO.read(selectedFile);
+
+                // Escalar la imagen para ajustarla al JLabel
+                Image scaledImage = img.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH);
+
+                // Mostrar la imagen en el JLabel
+                imageLabel.setIcon(new ImageIcon(scaledImage));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al cargar la imagen: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
