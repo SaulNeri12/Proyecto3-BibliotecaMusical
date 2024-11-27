@@ -4,6 +4,7 @@
  */
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.presentacion.gui.estilo.Estilo;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
@@ -16,11 +17,15 @@ import javax.swing.border.LineBorder;
  */
 public class FrmPantallaPrincipal extends javax.swing.JFrame {
 
+    private UsuarioDTO usuario;
+    
     /**
      * Creates new form FrmPantallaPrincipal
      */
-    public FrmPantallaPrincipal() {
+    public FrmPantallaPrincipal(UsuarioDTO usuario)  {
         initComponents();
+        
+        this.usuario = usuario;
         
         this.setLocationRelativeTo(null);
         this.setTitle("Biblioteca Musical");

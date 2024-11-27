@@ -9,16 +9,22 @@ import com.equipo7.negocio.bo.UsuariosBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author gaspa
  */
-public class RegistrarUsuarioDlg extends javax.swing.JDialog {
+public class RegistrarUsuarioDlg extends JFrame {
 
     private IUsuariosBO usuariosBO = UsuariosBO.getInstance();
     private byte[] imageBytes = null;
@@ -28,7 +34,42 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
      */
     public RegistrarUsuarioDlg() {
         initComponents();
-        
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.getContentPane().setBackground(new Color(0x10, 0x10, 0x10));
+
+        this.prepararEstilo();
+        this.prepararFuentes();
+        this.prepararHelpers();
+    }
+
+    /**
+     * Asigna las fuentes de letra correspondientes a los distintos componentes
+     * del dialogo de inicio de sesion
+     */
+    private void prepararFuentes() {
+        this.getContentPane().setFont(new Font("Gotham Light", Font.PLAIN, 12));
+        this.contrasenaLbl.setFont(new Font("Gotham Black", Font.PLAIN, 12));
+        this.crearCuentaTituloLbl.setFont(new Font("Gotham Black", Font.PLAIN, 24));
+        this.crearCuentaBtn.setFont(new Font("Gotham Black", Font.PLAIN, 12));
+        //this.emailTextField.setFont(new Font("Gotham Black", Font.PLAIN, 12));
+        this.correoLbl.setFont(new Font("Gotham Black", Font.PLAIN, 12));
+        this.terminosCheckBox.setFont(new Font("Gotham Black", Font.PLAIN, 12));
+        this.crearCuentaBtn.setFont(new Font("Gotham Black", Font.PLAIN, 14));
+    }
+    
+    private void prepararHelpers() {
+        this.nombreUsuarioTextField.setToolTipText("_example_31, eXaMpLe12__, Cyganjok");
+        this.contrasenaPasswordField.setToolTipText("La contraseña debe tener de 8 a 20 caracteres de largo");
+        this.correoTextField.setToolTipText("example@mail.com, example13@mail.itson.mx");
+    }
+
+    /**
+     * Carga los ultimos ajustes de estilo del sistema
+     */
+    private void prepararEstilo() {
+        //UIManager.put("Button.arc", 999);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     /**
@@ -41,14 +82,13 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        tituloIniciarSesion = new javax.swing.JLabel();
-        tituloIniciarSesion1 = new javax.swing.JLabel();
+        nombreLbl = new javax.swing.JLabel();
         nombreUsuarioTextField = new javax.swing.JTextField();
         correoTextField = new javax.swing.JTextField();
-        tituloIniciarSesion2 = new javax.swing.JLabel();
-        tituloIniciarSesion3 = new javax.swing.JLabel();
-        tituloIniciarSesion4 = new javax.swing.JLabel();
-        tituloIniciarSesion5 = new javax.swing.JLabel();
+        correoLbl = new javax.swing.JLabel();
+        imagenLbl = new javax.swing.JLabel();
+        contrasenaLbl = new javax.swing.JLabel();
+        contrasenaConfirmLbl = new javax.swing.JLabel();
         terminosCheckBox = new javax.swing.JCheckBox();
         crearCuentaBtn = new javax.swing.JButton();
         contrasenaPasswordField = new javax.swing.JPasswordField();
@@ -56,25 +96,21 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         subirImagenBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         iconTextLabel = new javax.swing.JLabel();
+        crearCuentaTituloLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(30, 29, 29));
+        jPanel2.setBackground(new java.awt.Color(16, 16, 16));
         jPanel2.setMaximumSize(new java.awt.Dimension(1920, 1080));
         jPanel2.setPreferredSize(new java.awt.Dimension(1920, 1080));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tituloIniciarSesion.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
-        tituloIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion.setText("Nombre de Usuario");
-        jPanel2.add(tituloIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 420, -1, -1));
+        nombreLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        nombreLbl.setForeground(new java.awt.Color(255, 255, 255));
+        nombreLbl.setText("Nombre de Usuario");
+        jPanel2.add(nombreLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 420, -1, -1));
 
-        tituloIniciarSesion1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 28)); // NOI18N
-        tituloIniciarSesion1.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion1.setText("Registrar Cuenta");
-        jPanel2.add(tituloIniciarSesion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, -1, -1));
-
-        nombreUsuarioTextField.setBackground(new java.awt.Color(51, 51, 51));
+        nombreUsuarioTextField.setBackground(new java.awt.Color(16, 16, 16));
         nombreUsuarioTextField.setColumns(50);
         nombreUsuarioTextField.setForeground(new java.awt.Color(204, 204, 204));
         nombreUsuarioTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +120,7 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         });
         jPanel2.add(nombreUsuarioTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 440, 304, 40));
 
-        correoTextField.setBackground(new java.awt.Color(51, 51, 51));
+        correoTextField.setBackground(new java.awt.Color(16, 16, 16));
         correoTextField.setColumns(50);
         correoTextField.setForeground(new java.awt.Color(204, 204, 204));
         correoTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -94,25 +130,25 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         });
         jPanel2.add(correoTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 510, 304, 40));
 
-        tituloIniciarSesion2.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
-        tituloIniciarSesion2.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion2.setText("Correo Electronico");
-        jPanel2.add(tituloIniciarSesion2, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 490, -1, -1));
+        correoLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        correoLbl.setForeground(new java.awt.Color(255, 255, 255));
+        correoLbl.setText("Correo Electronico");
+        jPanel2.add(correoLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 490, -1, -1));
 
-        tituloIniciarSesion3.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
-        tituloIniciarSesion3.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion3.setText("Imagen de perfil (opcional)");
-        jPanel2.add(tituloIniciarSesion3, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 570, -1, -1));
+        imagenLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        imagenLbl.setForeground(new java.awt.Color(255, 255, 255));
+        imagenLbl.setText("Imagen de perfil (opcional)");
+        jPanel2.add(imagenLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 570, -1, -1));
 
-        tituloIniciarSesion4.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
-        tituloIniciarSesion4.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion4.setText("Contraseña");
-        jPanel2.add(tituloIniciarSesion4, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 720, -1, -1));
+        contrasenaLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        contrasenaLbl.setForeground(new java.awt.Color(255, 255, 255));
+        contrasenaLbl.setText("Contraseña");
+        jPanel2.add(contrasenaLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 720, -1, -1));
 
-        tituloIniciarSesion5.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 12)); // NOI18N
-        tituloIniciarSesion5.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion5.setText("Confirmar Contraseña");
-        jPanel2.add(tituloIniciarSesion5, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 800, -1, -1));
+        contrasenaConfirmLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        contrasenaConfirmLbl.setForeground(new java.awt.Color(255, 255, 255));
+        contrasenaConfirmLbl.setText("Confirmar Contraseña");
+        jPanel2.add(contrasenaConfirmLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 800, -1, -1));
 
         terminosCheckBox.setFont(new java.awt.Font("Microsoft Sans Serif", 0, 12)); // NOI18N
         terminosCheckBox.setForeground(new java.awt.Color(255, 255, 255));
@@ -124,7 +160,8 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         });
         jPanel2.add(terminosCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 880, -1, -1));
 
-        crearCuentaBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        crearCuentaBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        crearCuentaBtn.setForeground(new java.awt.Color(255, 255, 255));
         crearCuentaBtn.setText("Crear Cuenta");
         crearCuentaBtn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         crearCuentaBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -132,16 +169,17 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
                 crearCuentaBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(crearCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 910, 304, 30));
+        jPanel2.add(crearCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 910, 304, 35));
 
-        contrasenaPasswordField.setBackground(new java.awt.Color(51, 51, 51));
+        contrasenaPasswordField.setBackground(new java.awt.Color(16, 16, 16));
         contrasenaPasswordField.setColumns(50);
-        jPanel2.add(contrasenaPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 750, 300, 40));
+        jPanel2.add(contrasenaPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 740, 300, 40));
 
-        confirmContrasenaPasswordField.setBackground(new java.awt.Color(51, 51, 51));
+        confirmContrasenaPasswordField.setBackground(new java.awt.Color(16, 16, 16));
         confirmContrasenaPasswordField.setColumns(50);
-        jPanel2.add(confirmContrasenaPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 830, 300, 40));
+        jPanel2.add(confirmContrasenaPasswordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 820, 300, 40));
 
+        subirImagenBtn.setForeground(new java.awt.Color(255, 255, 255));
         subirImagenBtn.setText("Subir Imagen");
         subirImagenBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,17 +195,23 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         iconTextLabel.setPreferredSize(new java.awt.Dimension(100, 100));
         jPanel2.add(iconTextLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 600, -1, -1));
 
+        crearCuentaTituloLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        crearCuentaTituloLbl.setForeground(new java.awt.Color(255, 255, 255));
+        crearCuentaTituloLbl.setText("Crear Cuenta");
+        jPanel2.add(crearCuentaTituloLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 350, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -187,55 +231,141 @@ public class RegistrarUsuarioDlg extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_terminosCheckBoxActionPerformed
 
+    /**
+     * Evalua el nombre de usuario a registrar. El nombre de usuario no debe
+     * tener espacios entre nombres, no debe tener mas que letras mayusculas,
+     * minusculas, numeros y caracter "_" solamente. Los caracteres unicode no
+     * estan permitidos. Debe de ser un nombre de entre 6 y 2- caracteres
+     *
+     * @param nombre Nombre de usuario a evaluar
+     * @return true si el nombre cumple con los requisitos, false en caso
+     * contrario
+     */
+    private boolean nombreUsuarioValido(String nombre) {
+        String regex = "^[a-zA-Z0-9_]{6,20}$";
+        return nombre != null && nombre.matches(regex);
+    }
+
+    /**
+     * Evalua que la direccion de correo electronico tenga el formato correcto
+     * de un correo electronico
+     *
+     * @param email Direccion de correo electronico a probar
+     * @return true si cumple con el formato, false en caso contrario
+     */
+    private boolean correoValido(String email) {
+        String regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+        return email != null && email.matches(regex);
+    }
+
+    /**
+     * Evalua la contrasena ingresada. Esta no debe de contener espacios ni
+     * caracteres unicode, solamente mayusculas, minusculas, numeros y simbolos
+     * como "?_#&". Ademas debe tener solo de 8 a 20 caracteres de largo.
+     *
+     * @param contrasena Contrasena a evaluar
+     * @return true si cumple con el formato correcto, false en caso contrario
+     */
+    private boolean contrasenaValida(String contrasena) {
+        String regex = "^[a-zA-Z0-9?_*#&]{8,20}$";
+        return contrasena != null && contrasena.length() >= 8 && contrasena.length() <= 20 && contrasena.matches(regex);
+    }
+
     private void crearCuentaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuentaBtnActionPerformed
-        if(imageBytes!=null){
-            UsuarioDTO usuario = new UsuarioDTO(nombreUsuarioTextField.getText(), correoTextField.getText(), imageBytes.toString(),contrasenaPasswordField.getPassword().toString());
-            try {
-                usuariosBO.registrarUsuario(usuario);
-            } catch (BOException ex) {
-                Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+        UsuarioDTO usuario = new UsuarioDTO(
+                nombreUsuarioTextField.getText(),
+                correoTextField.getText(),
+                null,
+                new String(contrasenaPasswordField.getPassword())
+        );
+
+        if (imageBytes != null) {
+            usuario.setImagenPerfil(usuario.toString());
         }
-        else{
-            UsuarioDTO usuario = new UsuarioDTO(nombreUsuarioTextField.getText(), correoTextField.getText(), contrasenaPasswordField.getPassword().toString());
-            try {
-                usuariosBO.registrarUsuario(usuario);
-            } catch (BOException ex) {
-                Logger.getLogger(RegistrarUsuarioDlg.class.getName()).log(Level.SEVERE, null, ex);
+
+        // NOTE: OBTENER LAS CONTRASENAS DE ESTA MANERA...
+        //System.out.println(new String(this.contrasenaPasswordField.getPassword()));
+        //System.out.println(new String(this.confirmContrasenaPasswordField.getPassword()));
+        
+        try {
+            
+            if (!this.nombreUsuarioValido(usuario.getNombreUsuario()))
+                throw new BOException("El nombre de usuario no tiene el formato correcto. El nombre de usuario no debe contener espacios ni caracteres unicode.\nDebe tener un largo de entre 6 y 20 caracteres.");
+            else if (!this.correoValido(usuario.getCorreoElectronico()))
+                throw new BOException("El correo electronico dado no cumple con el formato correcto, porfavor, ingrese una direccion de correo valida");
+            else if (!this.contrasenaValida(usuario.getContrasena()))
+                throw new BOException("La contrasena debe de tener entre 8 a 20 caracteres de largo. No debe incluir espacios ni caracteres unicode. Simbolos permitidos: [#_?]");
+            
+            boolean contrasenasIguales = usuario.getContrasena().equals(new String(this.confirmContrasenaPasswordField.getPassword()));
+            if (!contrasenasIguales) {
+                throw new BOException("Las contrasenas no son iguales.");
             }
+            
+            if (!this.terminosCheckBox.isSelected()) {
+                throw new BOException("Para continuar con el registro debes aceptar los Terminos y Condiciones.");
+            }
+            
+            usuariosBO.registrarUsuario(usuario);
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Se creo la cuenta con exito.",
+                    "Crear Cuenta",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            this.llevarALogin();
+
+        } catch (BOException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage(),
+                    "Crear Cuenta",
+                    JOptionPane.WARNING_MESSAGE
+            );
         }
+
     }//GEN-LAST:event_crearCuentaBtnActionPerformed
+
+    /**
+     * Desplaza al usuario de vuelta al login para que inicie sesion
+     */
+    private void llevarALogin() {
+        IniciarSesionDlg dlg = new IniciarSesionDlg();
+        dispose();
+        dlg.setVisible(true);
+    }
 
     private void subirImagenBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subirImagenBtnActionPerformed
         imageBytes = loadImageWithFileChooser();
         if (imageBytes != null) {
-                ImageIcon imageIcon = new ImageIcon(imageBytes);
-                Image image = imageIcon.getImage().getScaledInstance(iconTextLabel.getWidth(), iconTextLabel.getHeight(), Image.SCALE_SMOOTH);
-                imageIcon = new ImageIcon(image);
-                iconTextLabel.setIcon(imageIcon);
-            } else {
-                System.out.println("No se selecciono ninguna imagen");
-            }
+            ImageIcon imageIcon = new ImageIcon(imageBytes);
+            Image image = imageIcon.getImage().getScaledInstance(iconTextLabel.getWidth(), iconTextLabel.getHeight(), Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(image);
+            iconTextLabel.setIcon(imageIcon);
+        } else {
+            System.out.println("No se selecciono ninguna imagen");
+        }
     }//GEN-LAST:event_subirImagenBtnActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField confirmContrasenaPasswordField;
+    private javax.swing.JLabel contrasenaConfirmLbl;
+    private javax.swing.JLabel contrasenaLbl;
     private javax.swing.JPasswordField contrasenaPasswordField;
+    private javax.swing.JLabel correoLbl;
     private javax.swing.JTextField correoTextField;
     private javax.swing.JButton crearCuentaBtn;
+    private javax.swing.JLabel crearCuentaTituloLbl;
     private javax.swing.JLabel iconTextLabel;
+    private javax.swing.JLabel imagenLbl;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel nombreLbl;
     private javax.swing.JTextField nombreUsuarioTextField;
     private javax.swing.JButton subirImagenBtn;
     private javax.swing.JCheckBox terminosCheckBox;
-    private javax.swing.JLabel tituloIniciarSesion;
-    private javax.swing.JLabel tituloIniciarSesion1;
-    private javax.swing.JLabel tituloIniciarSesion2;
-    private javax.swing.JLabel tituloIniciarSesion3;
-    private javax.swing.JLabel tituloIniciarSesion4;
-    private javax.swing.JLabel tituloIniciarSesion5;
     // End of variables declaration//GEN-END:variables
 }

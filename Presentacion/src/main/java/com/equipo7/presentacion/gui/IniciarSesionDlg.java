@@ -1,49 +1,52 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.equipo7.presentacion.gui;
 
 import com.equipo7.negocio.bo.UsuariosBO;
-import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
+import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.negocio.excepciones.BOException;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 /**
- * Frame de inicio de sesion del sistema y punto de partida del mismo
+ *
  * @author neri
  */
-public class IniciarSesionDlg extends javax.swing.JDialog {
+public class IniciarSesionDlg extends javax.swing.JFrame {
 
     private IUsuariosBO usuariosBO = UsuariosBO.getInstance();
     private UsuarioDTO usuarioLogeado;
 
     /**
-     * indica si despues de cerrar el dialogo el usuario puede acceder a la aplicacion
+     * indica si despues de cerrar el dialogo el usuario puede acceder a la
+     * aplicacion
      */
     private boolean validado = false;
-    
+
     /**
      * Creates new form IniciarSesionDlg
      */
-    public IniciarSesionDlg(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public IniciarSesionDlg() {
         FlatDarkLaf.setup();
         initComponents();
-        
+
         this.setTitle("inicio de Sesion");
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.getContentPane().setBackground(new Color(0x10, 0x10, 0x10));
-        
+
         this.prepararEstilo();
         this.prepararFuentes();
     }
-    
+
     /**
      * Asigna las fuentes de letra correspondientes a los distintos componentes
      * del dialogo de inicio de sesion
@@ -51,12 +54,13 @@ public class IniciarSesionDlg extends javax.swing.JDialog {
     private void prepararFuentes() {
         this.getContentPane().setFont(new Font("Gotham Light", Font.PLAIN, 12));
         this.contrasenaLbl.setFont(new Font("Gotham Black", Font.PLAIN, 12));
-        this.tituloIniciarSesion.setFont(new Font("Gotham Black", Font.PLAIN, 24));
+        this.tituloIniciarSesionLbl.setFont(new Font("Gotham Black", Font.PLAIN, 24));
         this.iniciarSesionBtn.setFont(new Font("Gotham Black", Font.PLAIN, 12));
         //this.emailTextField.setFont(new Font("Gotham Black", Font.PLAIN, 12));
         this.correoLbl.setFont(new Font("Gotham Black", Font.PLAIN, 12));
+        this.avisoCrearCuenta.setFont(new Font("Gotham Black", Font.PLAIN, 12));
     }
-    
+
     /**
      * Carga los ultimos ajustes de estilo del sistema
      */
@@ -66,6 +70,46 @@ public class IniciarSesionDlg extends javax.swing.JDialog {
     }
 
     /**
+     * Evalua el nombre de usuario a registrar. El nombre de usuario no debe
+     * tener espacios entre nombres, no debe tener mas que letras mayusculas,
+     * minusculas, numeros y caracter "_" solamente. Los caracteres unicode no
+     * estan permitidos. Debe de ser un nombre de entre 6 y 2- caracteres
+     *
+     * @param nombre Nombre de usuario a evaluar
+     * @return true si el nombre cumple con los requisitos, false en caso
+     * contrario
+     */
+    private boolean nombreUsuarioValido(String nombre) {
+        String regex = "^[a-zA-Z0-9_]{6,20}$";
+        return nombre != null && nombre.matches(regex);
+    }
+
+    /**
+     * Evalua que la direccion de correo electronico tenga el formato correcto
+     * de un correo electronico
+     *
+     * @param email Direccion de correo electronico a probar
+     * @return true si cumple con el formato, false en caso contrario
+     */
+    private boolean correoValido(String email) {
+        String regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+        return email != null && email.matches(regex);
+    }
+
+    /**
+     * Evalua la contrasena ingresada. Esta no debe de contener espacios ni
+     * caracteres unicode, solamente mayusculas, minusculas, numeros y simbolos
+     * como "?_#&". Ademas debe tener solo de 8 a 20 caracteres de largo.
+     *
+     * @param contrasena Contrasena a evaluar
+     * @return true si cumple con el formato correcto, false en caso contrario
+     */
+    private boolean contrasenaValida(String contrasena) {
+        String regex = "^[a-zA-Z0-9?_*#&]{8,20}$";
+        return contrasena != null && contrasena.length() >= 8 && contrasena.length() <= 20 && contrasena.matches(regex);
+    }
+    
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -74,29 +118,31 @@ public class IniciarSesionDlg extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        correoTextField = new javax.swing.JTextField();
-        contrasenaTextField = new javax.swing.JPasswordField();
-        iniciarSesionBtn = new javax.swing.JButton();
-        crearCuentaBtn = new javax.swing.JLabel();
-        tituloIniciarSesion = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
+        tituloIniciarSesionLbl = new javax.swing.JLabel();
         correoLbl = new javax.swing.JLabel();
         contrasenaLbl = new javax.swing.JLabel();
+        correoTextField = new javax.swing.JTextField();
+        contrasenaPasswordField = new javax.swing.JPasswordField();
+        iniciarSesionBtn = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        avisoCrearCuenta = new javax.swing.JLabel();
+        crearCuentaBtn = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel2.setPreferredSize(new java.awt.Dimension(1920, 1080));
+        tituloIniciarSesionLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        tituloIniciarSesionLbl.setForeground(new java.awt.Color(255, 255, 255));
+        tituloIniciarSesionLbl.setText("Iniciar Sesión");
 
-        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        correoLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        correoLbl.setForeground(new java.awt.Color(255, 255, 255));
+        correoLbl.setText("Correo Electrónico");
 
-        contrasenaTextField.setText("jPasswordField1");
+        contrasenaLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        contrasenaLbl.setForeground(new java.awt.Color(255, 255, 255));
+        contrasenaLbl.setText("Contraseña");
 
+        iniciarSesionBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         iniciarSesionBtn.setForeground(new java.awt.Color(255, 255, 255));
         iniciarSesionBtn.setText("Iniciar Sesión");
         iniciarSesionBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -105,148 +151,117 @@ public class IniciarSesionDlg extends javax.swing.JDialog {
             }
         });
 
-        crearCuentaBtn.setForeground(new java.awt.Color(174, 93, 255));
-        crearCuentaBtn.setText("Crear cuenta");
+        jSeparator1.setBackground(new java.awt.Color(204, 204, 204));
+
+        avisoCrearCuenta.setForeground(new java.awt.Color(255, 255, 255));
+        avisoCrearCuenta.setText("¿No tienes una cuenta?");
+
+        crearCuentaBtn.setForeground(new java.awt.Color(204, 51, 255));
+        crearCuentaBtn.setText("Crear Cuenta");
         crearCuentaBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 crearCuentaBtnMouseClicked(evt);
             }
         });
 
-        tituloIniciarSesion.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 28)); // NOI18N
-        tituloIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
-        tituloIniciarSesion.setText("Iniciar Sesión");
-
-        jSeparator1.setBackground(new java.awt.Color(230, 230, 230));
-
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("¿No tienes una cuenta? ");
-
-        correoLbl.setForeground(new java.awt.Color(255, 255, 255));
-        correoLbl.setText("Correo electronico");
-
-        contrasenaLbl.setForeground(new java.awt.Color(255, 255, 255));
-        contrasenaLbl.setText("Contraseña");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(184, 184, 184)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(correoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contrasenaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(crearCuentaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tituloIniciarSesion)
-                    .addComponent(contrasenaLbl))
-                .addGap(187, 187, 187))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(tituloIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(correoLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(contrasenaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contrasenaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(crearCuentaBtn)
-                    .addComponent(jLabel1))
-                .addContainerGap(407, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1920, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(680, 680, 680)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(676, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1080, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(145, 145, 145)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(145, 145, 145)))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(contrasenaPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                    .addComponent(correoTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                    .addComponent(contrasenaLbl)
+                    .addComponent(correoLbl)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(avisoCrearCuenta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(crearCuentaBtn)))
+                .addContainerGap(99, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tituloIniciarSesionLbl)
+                .addGap(131, 131, 131))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(tituloIniciarSesionLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(correoLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(contrasenaLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contrasenaPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(iniciarSesionBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(avisoCrearCuenta)
+                    .addComponent(crearCuentaBtn))
+                .addContainerGap(207, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void iniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBtnActionPerformed
-        // TODO: EVALUAR ENTRADAS
-
-        // encriptar contrasena (despues)
-        //this.usuariosBO.iniciarSesion(correo, contrasena);
-
-        // cierra el frame
-        //dispose();
+        String correoElectronico = this.correoTextField.getText();
+        String contrasenha = new String(this.contrasenaPasswordField.getPassword());
+        
+        try {
+          
+            if (!this.correoValido(correoElectronico))
+                throw new BOException("El correo electrónico dado no cumple con el formato correcto, porfavor, ingrese una dirección de correo valida");
+            else if (!this.contrasenaValida(contrasenha))
+                throw new BOException("La contraseña no es valida. Ingrese una contraseña con el formato correcto");
+            
+            this.usuarioLogeado = this.usuariosBO.iniciarSesion(correoElectronico, contrasenha);
+            
+            this.abrirPantallaInicio();
+            
+        } catch (BOException ex) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage(),
+                    "Iniciar Sesión",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
     }//GEN-LAST:event_iniciarSesionBtnActionPerformed
 
-    /**
-     * Obtiene el usuario logeado al cerrar el form
-     * @return
-     */
-    public UsuarioDTO getUsuarioLogeado() {
-        return this.usuarioLogeado;
-    }
-
     private void crearCuentaBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearCuentaBtnMouseClicked
-        RegistrarUsuarioDlg RUDlg = new RegistrarUsuarioDlg();
-        dispose();
-        RUDlg.setVisible(true);
+        RegistrarUsuarioDlg dlg = new RegistrarUsuarioDlg();
+        this.dispose();
+        dlg.setVisible(true);
     }//GEN-LAST:event_crearCuentaBtnMouseClicked
+
+    private void abrirPantallaInicio() {
+        FrmPantallaPrincipal frm = new FrmPantallaPrincipal(this.usuarioLogeado);
+        this.dispose();
+        frm.setVisible(true);
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel avisoCrearCuenta;
     private javax.swing.JLabel contrasenaLbl;
-    private javax.swing.JPasswordField contrasenaTextField;
+    private javax.swing.JPasswordField contrasenaPasswordField;
     private javax.swing.JLabel correoLbl;
     private javax.swing.JTextField correoTextField;
     private javax.swing.JLabel crearCuentaBtn;
     private javax.swing.JButton iniciarSesionBtn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel tituloIniciarSesion;
+    private javax.swing.JLabel tituloIniciarSesionLbl;
     // End of variables declaration//GEN-END:variables
 }
