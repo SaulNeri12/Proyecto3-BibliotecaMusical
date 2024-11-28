@@ -9,6 +9,7 @@ import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
 
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  * Define las operaciones necesarias para manejar artistas en el sistema
@@ -16,6 +17,14 @@ import java.util.List;
  */
 public interface IArtistasDAO {
 
+    /**
+     * Obtiene el artista con el ID especificado.
+     * @param id ID del artista a buscar.
+     * @return Artista encontrado
+     * @throws DAOException Si ocurre un error en la consulta.
+     */
+    public Artista obtenerPorId(ObjectId id) throws DAOException;
+    
     /**
      * Obtiene todos los artistas almacenados en la base de datos.
      *

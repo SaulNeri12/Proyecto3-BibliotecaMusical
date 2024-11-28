@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import java.util.Arrays;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  * Representa la informacion de un artista en el sistema
@@ -21,11 +22,17 @@ public class Artista {
     public static final String NOMBRE_COLLECTION = "artistas";
 
     private ObjectId _id;
+    @BsonProperty(value="nombre")
     private String nombreArtista;
+    @BsonProperty(value="tipo")
+    private String tipo;
+    @BsonProperty(value="descripcion")
     private String descripcion;
+    @BsonProperty(value="generoMusical")
     private String generoMusical;
+    @BsonProperty(value="albumes")
     private List<ObjectId> referenciasAlbumes;
-
+    
     /**
      * Constructor vacio por defecto.
      */
@@ -171,6 +178,20 @@ public class Artista {
      */
     public void setReferenciasAlbumes(List<ObjectId> referenciasAlbumes) {
         this.referenciasAlbumes = referenciasAlbumes;
+    }
+
+    /**
+     * @return the tipo
+     */
+    public String getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
 }

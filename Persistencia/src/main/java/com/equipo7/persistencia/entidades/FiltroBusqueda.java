@@ -7,26 +7,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Contiene la informacion que se utilizara para aplicarla a una busqueda de contenido en el sistema
+ * Contiene la informacion que se utilizara para aplicarla a una busqueda de
+ * contenido en el sistema
+ *
  * @author Saul Neri
  */
 public class FiltroBusqueda {
 
+    private String coincidenciaBusqueda;
     private String nombreArtista;
     private int anioDesde;
     private int anioHasta;
     private List<String> generos;
+    private List<String> generosRestringidos;
 
     /**
-     * Crea una nueva instancia de filtro de busqueda usando los ajustes
-     * dados por el Builder
-     * @param ajustes Objeto Builder de ajuste con informacion que contendra el filtro de busqueda
+     * Crea una nueva instancia de filtro de busqueda usando los ajustes dados
+     * por el Builder
+     *
+     * @param ajustes Objeto Builder de ajuste con informacion que contendra el
+     * filtro de busqueda
      */
     public FiltroBusqueda(FiltroBusqueda.Builder ajustes) {
         this.nombreArtista = ajustes.nombreArtista;
         this.generos = ajustes.generos;
         this.anioDesde = ajustes.anioDesde;
         this.anioHasta = ajustes.anioHasta;
+        this.generosRestringidos = ajustes.generosRestringidos;
+        this.coincidenciaBusqueda = ajustes.coincidenciaBusqueda;
     }
 
     /**
@@ -66,57 +74,54 @@ public class FiltroBusqueda {
     }
 
     /**
-     * Convierte el objeto FiltroBusqueda a un filtro BSON para usar en las consultas de MongoDB.
+     * Convierte el objeto FiltroBusqueda a un filtro BSON para usar en las
+     * consultas de MongoDB.
+     *
      * @return un filtro BSON
      */
     public Bson toBson() {
 
-        /*
-        Bson filtro = Filters.empty();  // Empezamos con un filtro vacío
+        Bson filtro = Filters.empty();
 
-        // Si el nombre del artista no es nulo, agregamos la condición al filtro
+        // Si el nombre del artista no es nulo o vacío, agregamos una condición de búsqueda para el nombre
         if (nombreArtista != null && !nombreArtista.isEmpty()) {
-            filtro = Filters.and(filtro, Filters.eq("nombreArtista", nombreArtista));
+            filtro = Filters.and(filtro, Filters.regex("nombreArtista", nombreArtista, "i"));
         }
 
         // Si se ha especificado un rango de años, agregamos las condiciones de rango
         if (anioDesde > 0) {
-            filtro = Filters.and(filtro, Filters.gte("anio", anioDesde));
+            filtro = Filters.and(filtro, Filters.gte("anio", anioDesde));  // Año mayor o igual a 'anioDesde'
         }
         if (anioHasta > 0) {
-            filtro = Filters.and(filtro, Filters.lte("anio", anioHasta));
+            filtro = Filters.and(filtro, Filters.lte("anio", anioHasta));  // Año menor o igual a 'anioHasta'
         }
 
         // Si la lista de géneros no está vacía, agregamos la condición para buscar documentos que tengan géneros específicos
         if (generos != null && !generos.isEmpty()) {
-            filtro = Filters.and(filtro, Filters.in("generos", generos));
+            filtro = Filters.and(filtro, Filters.in("generoMusical", generos));  // Géneros especificados
         }
 
-        // Si los géneros deben ser insensibles a mayúsculas y minúsculas, usamos Collation
-        if (generos != null && !generos.isEmpty()) {
-            Collation collation = Collation.builder()
-                    .locale("en")
-                    .caseLevel(false)  // No distinguir entre mayúsculas y minúsculas
-                    .build();
-
-            filtro = Filters.and(filtro, Filters.in("generos", generos).collation(collation));
+        // Si los géneros restringidos no están vacíos, agregamos una condición para excluir esos géneros
+        if (generosRestringidos != null && !generosRestringidos.isEmpty()) {
+            filtro = Filters.and(filtro, Filters.nin("generoMusical", generosRestringidos));  // Géneros restringidos (excluirlos)
         }
-
-        return filtro;  // Devuelve el filtro completo
-        *
-         */
-        return null;
+        
+        return filtro;
     }
 
     /**
      * Clase que sirve como constructor de la misma usando el patron Builder
+     *
      * @author Saul Neri
      */
     public static class Builder {
+
+        private String coincidenciaBusqueda;
         private String nombreArtista;
         private Integer anioDesde;
         private Integer anioHasta;
         private List<String> generos;
+        private List<String> generosRestringidos;
 
         /**
          * Prepara los ajustes del filtro
@@ -125,6 +130,29 @@ public class FiltroBusqueda {
             this.anioDesde = 1900;
             this.anioHasta = null;
             this.generos = new ArrayList<>();
+            this.generosRestringidos = new ArrayList<>();
+        }
+
+        /**
+         * Agrega un genero restringido al filtro
+         *
+         * @param generoRestringido Nombre del genero restringido.
+         * @return El objeto Builder para el filtro.
+         */
+        public Builder agregarGeneroRestringido(String generoRestringido) {
+            this.generosRestringidos.add(generoRestringido);
+            return this;
+        }
+
+        /**
+         * Asigna los generos restringidos para el filtro de busqueda.
+         *
+         * @param generosRestringidos Lista de generos restringidos.
+         * @return El objeto builder para el filtro.
+         */
+        public Builder asignarGenerosRestringidos(List<String> generosRestringidos) {
+            this.generosRestringidos = generosRestringidos;
+            return this;
         }
 
         /**
@@ -183,12 +211,31 @@ public class FiltroBusqueda {
         }
 
         /**
-         * Crea el objeto final FiltroBusqueda con los valores configurados en el Builder.
+         * Crea el objeto final FiltroBusqueda con los valores configurados en
+         * el Builder.
          *
          * @return Un objeto FiltroBusqueda con los valores proporcionados.
          */
         public FiltroBusqueda build() {
             return new FiltroBusqueda(this);
+        }
+
+        /**
+         * Obtiene el patron de la busqueda. Indica el patron que coincide con el nombre
+         * de las canciones, albumes y artistas.
+         * @return the coincidenciaBusqueda
+         */
+        public String getCoincidenciaBusqueda() {
+            return coincidenciaBusqueda;
+        }
+
+        /**
+         * Asigna el patron de la busqueda. Indica el patron que coincide con el nombre
+         * de las canciones, albumes y artistas.
+         * @param coincidenciaBusqueda the coincidenciaBusqueda to set
+         */
+        public void setCoincidenciaBusqueda(String coincidenciaBusqueda) {
+            this.coincidenciaBusqueda = coincidenciaBusqueda;
         }
     }
 
@@ -214,5 +261,33 @@ public class FiltroBusqueda {
 
         sb.append(" }");
         return sb.toString();
+    }
+
+    /**
+     * @return the generosRestringidos
+     */
+    public List<String> getGenerosRestringidos() {
+        return generosRestringidos;
+    }
+
+    /**
+     * @param generosRestringidos the generosRestringidos to set
+     */
+    public void setGenerosRestringidos(List<String> generosRestringidos) {
+        this.generosRestringidos = generosRestringidos;
+    }
+
+    /**
+     * @return the coincidenciaBusqueda
+     */
+    public String getCoincidenciaBusqueda() {
+        return coincidenciaBusqueda;
+    }
+
+    /**
+     * @param coincidenciaBusqueda the coincidenciaBusqueda to set
+     */
+    public void setCoincidenciaBusqueda(String coincidenciaBusqueda) {
+        this.coincidenciaBusqueda = coincidenciaBusqueda;
     }
 }

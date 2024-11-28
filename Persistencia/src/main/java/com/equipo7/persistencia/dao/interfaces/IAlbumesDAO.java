@@ -55,11 +55,11 @@ public interface IAlbumesDAO {
     /**
      * Obtiene todos los álbumes de un artista específico.
      *
-     * @param nombreArtista El nombre del artista cuyos álbumes se desean obtener.
+     * @param idArtista El ID del artista cuyos álbumes se desean obtener.
      * @return Una lista de álbumes del artista especificado.
      * @throws DAOException Si ocurre un error durante la operación de obtención de datos desde la base de datos.
      */
-    public List<Album> obtenerTodosPorArtista(String nombreArtista) throws DAOException;
+    public List<Album> obtenerTodosPorArtista(ObjectId idArtista) throws DAOException;
 
     /**
      * Realiza una inserción masiva de registros en la base de datos para agregar varios álbumes de una sola vez.
