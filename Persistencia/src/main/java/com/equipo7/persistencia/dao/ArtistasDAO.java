@@ -16,7 +16,7 @@ public class ArtistasDAO implements IArtistasDAO {
 
     private static ArtistasDAO instance;  // Instancia única de la clase ArtistasDAO
     private MongoDatabase bibliotecaMusicalBD;  // Conexión con la base de datos de la biblioteca musical
-    private MongoCollection<Document> artistas;  // Colección de artistas en la base de datos
+    private MongoCollection<Artista> artistas;  // Colección de artistas en la base de datos
 
     /**
      * Constructor privado para la generación de la instancia única.
@@ -27,9 +27,8 @@ public class ArtistasDAO implements IArtistasDAO {
     private ArtistasDAO() throws ConexionException {
         // Se obtiene la instancia de la conexión a la base de datos
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
-
         // Se obtiene la colección de artistas de la base de datos
-        artistas = bibliotecaMusicalBD.getCollection(Artista.NOMBRE_COLLECTION);
+        artistas = bibliotecaMusicalBD.getCollection(Artista.NOMBRE_COLLECTION, Artista.class);
     }
 
     /**

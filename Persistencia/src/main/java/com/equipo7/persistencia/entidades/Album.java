@@ -11,21 +11,31 @@ import org.bson.types.ObjectId;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  * Contiene la informacion de un album en el sistema
  * @author Saul Neri
  */
-public class Album implements IDocumentable {
+public class Album {
 
     public static final String NOMBRE_COLLECTION = "albumes";
 
     private ObjectId _id;
+    @BsonProperty(value = "nombre")
     private String nombre;
+    @BsonProperty(value = "fechaLanzamiento")
     private Instant fechaLanzamiento;
+    @BsonProperty(value="referenciaArtista")
+    private ObjectId referenciaArtista;
+    @BsonProperty(value = "generoMusical")
     private String generoMusical;
+    @BsonProperty(value = "imagenURL")
     private String imagenPortadaUrl;
+    @BsonProperty(value = "canciones")
     private List<String> canciones;
+    @BsonProperty(value="integrantes")
+    private List<Integrante> integrantes;
 
     /**
      * Constructor vacio por defecto.
@@ -166,11 +176,6 @@ public class Album implements IDocumentable {
 
 
     @Override
-    public Document toDocument() {
-        return null;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Album { ");
@@ -184,6 +189,34 @@ public class Album implements IDocumentable {
 
         sb.append(" }");
         return sb.toString();
+    }
+
+    /**
+     * @return the referenciaArtista
+     */
+    public ObjectId getReferenciaArtista() {
+        return referenciaArtista;
+    }
+
+    /**
+     * @param referenciaArtista the referenciaArtista to set
+     */
+    public void setReferenciaArtista(ObjectId referenciaArtista) {
+        this.referenciaArtista = referenciaArtista;
+    }
+
+    /**
+     * @return the integrantes
+     */
+    public List<Integrante> getIntegrantes() {
+        return integrantes;
+    }
+
+    /**
+     * @param integrantes the integrantes to set
+     */
+    public void setIntegrantes(List<Integrante> integrantes) {
+        this.integrantes = integrantes;
     }
 
 }

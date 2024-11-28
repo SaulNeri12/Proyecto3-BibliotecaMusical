@@ -5,6 +5,7 @@
 
 package com.equipo7.persistencia.entidades;
 
+import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Representa la informacion de un artista en el sistema
  * @author Saul Neri
  */
-public class Artista implements IDocumentable {
+public class Artista {
 
     public static final String NOMBRE_COLLECTION = "artistas";
 
@@ -23,13 +24,13 @@ public class Artista implements IDocumentable {
     private String nombreArtista;
     private String descripcion;
     private String generoMusical;
-    private List<Album> albumes;
+    private List<ObjectId> referenciasAlbumes;
 
     /**
      * Constructor vacio por defecto.
      */
     public Artista() {
-        this.albumes = Arrays.asList();
+        this.referenciasAlbumes = new ArrayList<>();
     }
 
     /**
@@ -50,11 +51,11 @@ public class Artista implements IDocumentable {
      * @param generoMusical Género musical del artista.
      * @param albumes Lista de álbumes asociados al artista.
      */
-    public Artista(String nombreArtista, String descripcion, String generoMusical, List<Album> albumes) {
+    public Artista(String nombreArtista, String descripcion, String generoMusical, List<ObjectId> albumes) {
         this.nombreArtista = nombreArtista;
         this.descripcion = descripcion;
         this.generoMusical = generoMusical;
-        this.albumes = albumes;
+        this.referenciasAlbumes = albumes;
     }
 
     /**
@@ -116,8 +117,8 @@ public class Artista implements IDocumentable {
      *
      * @return La lista de álbumes del artista.
      */
-    public List<Album> getAlbumes() {
-        return albumes;
+    public List<ObjectId> getAlbumes() {
+        return this.referenciasAlbumes;
     }
 
     /**
@@ -125,13 +126,8 @@ public class Artista implements IDocumentable {
      *
      * @param albumes La nueva lista de álbumes asociados al artista.
      */
-    public void setAlbumes(List<Album> albumes) {
-        this.albumes = albumes;
-    }
-
-    @Override
-    public Document toDocument() {
-        return null;
+    public void setAlbumes(List<ObjectId> albumes) {
+        this.referenciasAlbumes = albumes;
     }
 
     @Override
@@ -139,14 +135,42 @@ public class Artista implements IDocumentable {
         StringBuilder sb = new StringBuilder();
         sb.append("Artista { ");
 
-        sb.append("_id=").append(_id != null ? _id.toHexString() : "No especificado").append(", ");
+        sb.append("_id=").append(getId() != null ? getId().toHexString() : "No especificado").append(", ");
         sb.append("nombreArtista='").append(nombreArtista != null ? nombreArtista : "No especificado").append("', ");
         sb.append("descripcion='").append(descripcion != null ? descripcion : "No especificada").append("', ");
         sb.append("generoMusical='").append(generoMusical != null ? generoMusical : "No especificado").append("', ");
-        sb.append("albumes=").append(albumes != null && !albumes.isEmpty() ? albumes : "No especificados");
+        sb.append("albumes=").append(this.referenciasAlbumes != null && !this.referenciasAlbumes.isEmpty() ? this.referenciasAlbumes.toString() : "No especificados");
 
         sb.append(" }");
         return sb.toString();
+    }
+
+    /**
+     * @return the _id
+     */
+    public ObjectId getId() {
+        return _id;
+    }
+
+    /**
+     * @param _id the _id to set
+     */
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+
+    /**
+     * @return the referenciasAlbumes
+     */
+    public List<ObjectId> getReferenciasAlbumes() {
+        return referenciasAlbumes;
+    }
+
+    /**
+     * @param referenciasAlbumes the referenciasAlbumes to set
+     */
+    public void setReferenciasAlbumes(List<ObjectId> referenciasAlbumes) {
+        this.referenciasAlbumes = referenciasAlbumes;
     }
 
 }

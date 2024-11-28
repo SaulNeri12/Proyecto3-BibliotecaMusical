@@ -5,38 +5,45 @@
 
 package com.equipo7.persistencia.entidades;
 
-import org.bson.Document;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 /**
  * Representa la informacion de una cancion de un Album en el sistema
  * @author Saul Neri
  */
-public class Cancion implements IDocumentable {
+public class Cancion {
 
-    private String nombre;
-    private int minutos;
-    private int segundos;
-
+    @BsonProperty(value="refAlbum")
+    private ObjectId referenciaAlbum;
+    @BsonProperty(value="nombreCancion")
+    private String nombreCancion;
+    @BsonProperty(value="nombreArtista")
+    private String nombreArtista;
+    @BsonProperty(value="nombreAlbum")
+    private String nombreAlbum;
+    
+    
     /**
      * Constructor vacio por defecto.
      */
     public Cancion() {
-        this.nombre = "";
-        this.minutos = 0;
-        this.segundos = 0;
+        this.nombreCancion = "";
     }
 
     /**
      * Constructor con parámetros para crear una canción con los valores proporcionados.
      *
-     * @param nombre El nombre de la canción.
-     * @param minutos La duración de la canción en minutos.
-     * @param segundos La duración de la canción en segundos.
+     * @param referenciaAlbum Referencia al album que pertenece la cancion
+     * @param nombreCancion Nombre de la cancion
+     * @param nombreArtista Nombre del artista
+     * @param nombreAlbum Nombre del album
      */
-    public Cancion(String nombre, int minutos, int segundos) {
-        this.nombre = nombre;
-        this.minutos = minutos;
-        this.segundos = segundos;
+    public Cancion(ObjectId referenciaAlbum, String nombreCancion, String nombreArtista, String nombreAlbum) {
+        this.referenciaAlbum = referenciaAlbum;
+        this.nombreCancion = nombreCancion;
+        this.nombreArtista = nombreArtista;
+        this.nombreAlbum = nombreAlbum;
     }
 
     /**
@@ -44,8 +51,8 @@ public class Cancion implements IDocumentable {
      *
      * @return El nombre de la canción.
      */
-    public String getNombre() {
-        return nombre;
+    public String getNombreCancion() {
+        return nombreCancion;
     }
 
     /**
@@ -53,48 +60,49 @@ public class Cancion implements IDocumentable {
      *
      * @param nombre El nuevo nombre de la canción.
      */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreCancion(String nombre) {
+        this.nombreCancion = nombre;
     }
 
     /**
-     * Obtiene la duración en minutos de la canción.
-     *
-     * @return La duración en minutos.
+     * @return the referenciaAlbum
      */
-    public int getMinutos() {
-        return minutos;
+    public ObjectId getReferenciaAlbum() {
+        return referenciaAlbum;
     }
 
     /**
-     * Establece la duración en minutos de la canción.
-     *
-     * @param minutos La nueva duración en minutos.
+     * @param referenciaAlbum the referenciaAlbum to set
      */
-    public void setMinutos(int minutos) {
-        this.minutos = minutos;
+    public void setReferenciaAlbum(ObjectId referenciaAlbum) {
+        this.referenciaAlbum = referenciaAlbum;
     }
 
     /**
-     * Obtiene la duración en segundos de la canción.
-     *
-     * @return La duración en segundos.
+     * @return the nombreArtista
      */
-    public int getSegundos() {
-        return segundos;
+    public String getNombreArtista() {
+        return nombreArtista;
     }
 
     /**
-     * Establece la duración en segundos de la canción.
-     *
-     * @param segundos La nueva duración en segundos.
+     * @param nombreArtista the nombreArtista to set
      */
-    public void setSegundos(int segundos) {
-        this.segundos = segundos;
+    public void setNombreArtista(String nombreArtista) {
+        this.nombreArtista = nombreArtista;
     }
 
-    @Override
-    public Document toDocument() {
-        return null;
+    /**
+     * @return the nombreAlbum
+     */
+    public String getNombreAlbum() {
+        return nombreAlbum;
+    }
+
+    /**
+     * @param nombreAlbum the nombreAlbum to set
+     */
+    public void setNombreAlbum(String nombreAlbum) {
+        this.nombreAlbum = nombreAlbum;
     }
 }

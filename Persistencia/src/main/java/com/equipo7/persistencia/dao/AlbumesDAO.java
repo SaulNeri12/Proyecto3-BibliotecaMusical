@@ -11,6 +11,7 @@ import excepciones.DAOException;
 import org.bson.Document;
 
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  * Implementa los metodos de la interfaz IAlbumesDAO para proveer la funcionalidad
@@ -20,7 +21,7 @@ import java.util.List;
 public class AlbumesDAO implements IAlbumesDAO {
     private static AlbumesDAO instance;
     private MongoDatabase bibliotecaMusicalBD;
-    private MongoCollection<Document> albumes;
+    private MongoCollection<Album> albumes;
 
     /**
      * Constructor privado para generacion de instancia unica
@@ -29,7 +30,7 @@ public class AlbumesDAO implements IAlbumesDAO {
     private AlbumesDAO() throws ConexionException {
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
 
-         albumes = bibliotecaMusicalBD.getCollection(Album.NOMBRE_COLLECTION);
+         albumes = bibliotecaMusicalBD.getCollection(Album.NOMBRE_COLLECTION, Album.class);
     }
 
     /**
@@ -68,5 +69,10 @@ public class AlbumesDAO implements IAlbumesDAO {
     @Override
     public void insercionMasiva() throws DAOException {
 
+    }
+
+    @Override
+    public Album obtenerPorId(ObjectId id) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

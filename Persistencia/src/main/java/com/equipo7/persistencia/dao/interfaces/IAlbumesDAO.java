@@ -16,6 +16,15 @@ import java.util.List;
  * @author neri
  */
 public interface IAlbumesDAO {
+    
+    /**
+     * Obtiene el album con el ID especificado.
+     * @param id ID del album.
+     * @return Album
+     * @throws DAOException Si ocurre un error.
+     */
+    public Album obtenerPorId(ObjectId id) throws DAOException;
+    
     /**
      * Obtiene todos los álbumes cuyo nombre coincide con el proporcionado.
      *
