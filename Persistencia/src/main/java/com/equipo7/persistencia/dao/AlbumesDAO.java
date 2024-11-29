@@ -20,11 +20,7 @@ import java.util.List;
 public class AlbumesDAO implements IAlbumesDAO {
     private static AlbumesDAO instance;
     private MongoDatabase bibliotecaMusicalBD;
-<<<<<<< Updated upstream
     private MongoCollection<Document> albumes;
-=======
-    public MongoCollection<Album> albumes;
->>>>>>> Stashed changes
 
     /**
      * Constructor privado para generacion de instancia unica
