@@ -5,17 +5,29 @@
 
 package com.equipo7.persistencia.entidades;
 
+<<<<<<< Updated upstream
 import org.bson.Document;
+=======
+import java.util.ArrayList;
+>>>>>>> Stashed changes
 import org.bson.types.ObjectId;
 
-import java.util.Arrays;
 import java.util.List;
+<<<<<<< Updated upstream
+=======
+import org.bson.Document;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+>>>>>>> Stashed changes
 
 /**
  * Representa la informacion de un artista en el sistema
  * @author Saul Neri
  */
+<<<<<<< Updated upstream
 public class Artista implements IDocumentable {
+=======
+public class Artista implements IDocumentable{
+>>>>>>> Stashed changes
 
     public static final String NOMBRE_COLLECTION = "artistas";
 
@@ -31,6 +43,8 @@ public class Artista implements IDocumentable {
     public Artista() {
         this.albumes = Arrays.asList();
     }
+    
+    
 
     /**
      * Se crea un nuevo artista y se le asigna un ID de MongoBD
@@ -57,6 +71,26 @@ public class Artista implements IDocumentable {
         this.albumes = albumes;
     }
 
+    public Artista(String nombreArtista, String tipo, String descripcion, String generoMusical, List<ObjectId> referenciasAlbumes) {
+        this.nombreArtista = nombreArtista;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.generoMusical = generoMusical;
+        this.referenciasAlbumes = referenciasAlbumes;
+    }
+
+    public Artista(ObjectId _id, String nombreArtista, String tipo, String descripcion, String generoMusical, List<ObjectId> referenciasAlbumes) {
+        this._id = _id;
+        this.nombreArtista = nombreArtista;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.generoMusical = generoMusical;
+        this.referenciasAlbumes = referenciasAlbumes;
+    }
+    
+    
+    
+
     /**
      * Obtiene el nombre del artista.
      *
@@ -65,7 +99,7 @@ public class Artista implements IDocumentable {
     public String getNombreArtista() {
         return nombreArtista;
     }
-
+    
     /**
      * Establece el nombre del artista.
      *
@@ -149,4 +183,70 @@ public class Artista implements IDocumentable {
         return sb.toString();
     }
 
+<<<<<<< Updated upstream
+=======
+    /**
+     * @return the _id
+     */
+    public ObjectId getId() {
+        return _id;
+    }
+
+    /**
+     * @param _id the _id to set
+     */
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+
+    /**
+     * @return the referenciasAlbumes
+     */
+    public List<ObjectId> getReferenciasAlbumes() {
+        return referenciasAlbumes;
+    }
+
+    /**
+     * @param referenciasAlbumes the referenciasAlbumes to set
+     */
+    public void setReferenciasAlbumes(List<ObjectId> referenciasAlbumes) {
+        this.referenciasAlbumes = referenciasAlbumes;
+    }
+
+    /**
+     * @return the tipo
+     */
+    public String getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    @Override
+    public Document toDocument() {
+        Document doc = new Document();
+        
+        if(_id != null){
+            doc.append("_id", this._id);
+        }
+        
+        if(this.nombreArtista==null) return null;
+        else if(this.generoMusical==null) return null;
+        else if(this.tipo==null) return null;
+        
+        doc.append("nombre", this.nombreArtista);
+        doc.append("descripcion", this.descripcion);
+        doc.append("generoMusical", this.generoMusical);
+        doc.append("albumes", this.referenciasAlbumes);
+        doc.append("tipo", this.tipo);
+        return doc;
+    }
+    
+
+>>>>>>> Stashed changes
 }

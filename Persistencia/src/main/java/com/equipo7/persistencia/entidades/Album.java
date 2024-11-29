@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +23,15 @@ public class Album implements IDocumentable {
 
     private ObjectId _id;
     private String nombre;
+<<<<<<< Updated upstream
     private Instant fechaLanzamiento;
+=======
+    @BsonProperty(value = "fechaLanzamiento")
+    private Date fechaLanzamiento;
+    @BsonProperty(value="referenciaArtista")
+    private ObjectId referenciaArtista;
+    @BsonProperty(value = "generoMusical")
+>>>>>>> Stashed changes
     private String generoMusical;
     private String imagenPortadaUrl;
     private List<String> canciones;
@@ -54,7 +63,7 @@ public class Album implements IDocumentable {
      * @param imagenPortadaUrl La URL de la imagen de portada.
      * @param canciones La lista de canciones del álbum.
      */
-    public Album(ObjectId _id, String nombre, Instant fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this._id = _id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -97,7 +106,7 @@ public class Album implements IDocumentable {
      *
      * @return La fecha de lanzamiento del álbum.
      */
-    public Instant getFechaLanzamiento() {
+    public Date getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
@@ -106,7 +115,7 @@ public class Album implements IDocumentable {
      *
      * @param fechaLanzamiento La nueva fecha de lanzamiento del álbum.
      */
-    public void setFechaLanzamiento(Instant fechaLanzamiento) {
+    public void setFechaLanzamiento(Date fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 
