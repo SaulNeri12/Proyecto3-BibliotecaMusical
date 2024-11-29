@@ -34,7 +34,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 
     private static UsuariosDAO instance;
     private MongoDatabase bibliotecaMusicalBD;
-    private MongoCollection<Document> usuarios;
+    private MongoCollection<Usuario> usuarios;
 
     /**
      * Constructor privado para generación de instancia única
@@ -42,7 +42,7 @@ public class UsuariosDAO implements IUsuariosDAO {
      */
     private UsuariosDAO() throws ConexionException {
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
-        usuarios = bibliotecaMusicalBD.getCollection(Usuario.NOMBRE_COLLECTION);
+        usuarios = bibliotecaMusicalBD.getCollection(Usuario.NOMBRE_COLLECTION, Usuario.class);
     }
 
     /**
@@ -133,12 +133,12 @@ public class UsuariosDAO implements IUsuariosDAO {
         Filters.and(filtro, Filters.eq("email", correoElectronico));
         Filters.and(filtro, Filters.eq("contrasena", contrasenha));
 
-        Document document = this.usuarios.find(filtro).first();
-        if (document == null) {
+        Usuario usuario = this.usuarios.find(filtro).first();
+        if (usuario == null) {
             throw new DAOException("El correo o la contrasena son incorrectos");
         }
 
-        return this.documentoAObjeto(document);
+        return usuario;
     }
 
     @Override
@@ -158,14 +158,8 @@ public class UsuariosDAO implements IUsuariosDAO {
             usuario.setId(null);
         }
 
-
-        Document documento = usuario.toDocument();
-        if (documento == null) {
-            throw new DAOException("No se proporciono la informacion suficiente, porfavor, llene los campos restantes");
-        }
-
         try {
-            InsertOneResult resultado = this.usuarios.insertOne(documento);
+            InsertOneResult resultado = this.usuarios.insertOne(usuario);
 
             if (resultado.getInsertedId() == null) {
                 throw new DAOException("No se pudo crear la cuenta debido a un error, porfavor, intente mas tarde...");
@@ -181,26 +175,14 @@ public class UsuariosDAO implements IUsuariosDAO {
         if (usuario == null || usuario.getId() == null) {
             throw new DAOException("Informacion incompleta, porfavor, llene los todos los campos");
         }
-
-        /*
-        Usuario usuario = this.iniciarSesion();
-        if (existe) {
-            throw new DAOException("Ya existe una cuenta registrada con el nombre de usuario o correo electronico dado, porfavor, escriba un nombre o correo diferente");
-        }*/
-
-        // Convertir el usuario en un Document para actualización
-        Document documento = usuario.toDocument();
-        if (documento == null) {
-            throw new DAOException("No se pudo convertir el usuario a un documento válido");
-        }
-
+        
         // Crear el filtro por ID
         Bson filtro = Filters.empty();
 
         Filters.and(filtro, Filters.eq("_id", usuario.getId()));
         Filters.or(filtro, Filters.eq("nombre", usuario.getNombreUsuario()));
 
-        Document actualizacion = new Document("$set", documento);
+        Document actualizacion = new Document("$set", usuario);
 
         try {
             UpdateResult resultado = this.usuarios.updateOne(filtro, actualizacion);
@@ -279,6 +261,7 @@ public class UsuariosDAO implements IUsuariosDAO {
         }
     }
     
+    /*
     private static void seleccionarImagen(JLabel imageLabel) {
         // Crear un JFileChooser para seleccionar el archivo
         JFileChooser fileChooser = new JFileChooser();
@@ -302,6 +285,7 @@ public class UsuariosDAO implements IUsuariosDAO {
                 JOptionPane.showMessageDialog(null, "Error al cargar la imagen: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
+    }*/
+
 
 }

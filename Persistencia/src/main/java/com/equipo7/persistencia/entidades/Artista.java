@@ -5,43 +5,40 @@
 
 package com.equipo7.persistencia.entidades;
 
-<<<<<<< Updated upstream
-import org.bson.Document;
-=======
+
 import java.util.ArrayList;
->>>>>>> Stashed changes
+import java.util.Arrays;
+
 import org.bson.types.ObjectId;
 
 import java.util.List;
-<<<<<<< Updated upstream
-=======
+
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
->>>>>>> Stashed changes
+
 
 /**
  * Representa la informacion de un artista en el sistema
  * @author Saul Neri
  */
-<<<<<<< Updated upstream
-public class Artista implements IDocumentable {
-=======
+
 public class Artista implements IDocumentable{
->>>>>>> Stashed changes
+
 
     public static final String NOMBRE_COLLECTION = "artistas";
 
     private ObjectId _id;
     private String nombreArtista;
     private String descripcion;
+    private String tipo;
     private String generoMusical;
-    private List<Album> albumes;
+    private List<ObjectId> referenciasAlbumes;
 
     /**
      * Constructor vacio por defecto.
      */
     public Artista() {
-        this.albumes = Arrays.asList();
+        this.referenciasAlbumes = Arrays.asList();
     }
     
     
@@ -64,11 +61,11 @@ public class Artista implements IDocumentable{
      * @param generoMusical Género musical del artista.
      * @param albumes Lista de álbumes asociados al artista.
      */
-    public Artista(String nombreArtista, String descripcion, String generoMusical, List<Album> albumes) {
+    public Artista(String nombreArtista, String descripcion, String generoMusical, List<ObjectId> albumes) {
         this.nombreArtista = nombreArtista;
         this.descripcion = descripcion;
         this.generoMusical = generoMusical;
-        this.albumes = albumes;
+        this.referenciasAlbumes = albumes;
     }
 
     public Artista(String nombreArtista, String tipo, String descripcion, String generoMusical, List<ObjectId> referenciasAlbumes) {
@@ -150,8 +147,8 @@ public class Artista implements IDocumentable{
      *
      * @return La lista de álbumes del artista.
      */
-    public List<Album> getAlbumes() {
-        return albumes;
+    public List<ObjectId> getAlbumes() {
+        return referenciasAlbumes;
     }
 
     /**
@@ -159,14 +156,10 @@ public class Artista implements IDocumentable{
      *
      * @param albumes La nueva lista de álbumes asociados al artista.
      */
-    public void setAlbumes(List<Album> albumes) {
-        this.albumes = albumes;
+    public void setAlbumes(List<ObjectId> albumes) {
+        this.referenciasAlbumes = albumes;
     }
 
-    @Override
-    public Document toDocument() {
-        return null;
-    }
 
     @Override
     public String toString() {
@@ -177,14 +170,12 @@ public class Artista implements IDocumentable{
         sb.append("nombreArtista='").append(nombreArtista != null ? nombreArtista : "No especificado").append("', ");
         sb.append("descripcion='").append(descripcion != null ? descripcion : "No especificada").append("', ");
         sb.append("generoMusical='").append(generoMusical != null ? generoMusical : "No especificado").append("', ");
-        sb.append("albumes=").append(albumes != null && !albumes.isEmpty() ? albumes : "No especificados");
+        sb.append("albumes=").append(referenciasAlbumes != null && !referenciasAlbumes.isEmpty() ? referenciasAlbumes : "No especificados");
 
         sb.append(" }");
         return sb.toString();
     }
 
-<<<<<<< Updated upstream
-=======
     /**
      * @return the _id
      */
@@ -247,6 +238,4 @@ public class Artista implements IDocumentable{
         return doc;
     }
     
-
->>>>>>> Stashed changes
 }

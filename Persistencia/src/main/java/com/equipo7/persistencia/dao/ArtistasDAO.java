@@ -5,14 +5,7 @@ import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.interfaces.IArtistasDAO;
 import com.equipo7.persistencia.entidades.Artista;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
-<<<<<<< Updated upstream
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import excepciones.DAOException;
-import org.bson.Document;
 
-import java.util.List;
-=======
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
@@ -32,7 +25,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
->>>>>>> Stashed changes
+
 
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.result.DeleteResult;
@@ -42,25 +35,7 @@ import com.mongodb.client.result.DeleteResult;
  * eliminar y consultar artistas.
  */
 public class ArtistasDAO implements IArtistasDAO {
-<<<<<<< Updated upstream
 
-    private static ArtistasDAO instance;  // Instancia única de la clase ArtistasDAO
-    private MongoDatabase bibliotecaMusicalBD;  // Conexión con la base de datos de la biblioteca musical
-    private MongoCollection<Document> artistas;  // Colección de artistas en la base de datos
-
-    /**
-     * Constructor privado para la generación de la instancia única.
-     * Inicializa la colección de artistas desde la base de datos.
-     *
-     * @throws ConexionException Si ocurre un error al obtener la colección de artistas.
-     */
-    private ArtistasDAO() throws ConexionException {
-        // Se obtiene la instancia de la conexión a la base de datos
-        this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
-
-        // Se obtiene la colección de artistas de la base de datos
-        artistas = bibliotecaMusicalBD.getCollection(Artista.NOMBRE_COLLECTION);
-=======
     private static ArtistasDAO instance;
     private final MongoCollection<Document> collection;
 
@@ -71,22 +46,16 @@ public class ArtistasDAO implements IArtistasDAO {
     public ArtistasDAO() throws ConexionException {
         // Obtiene la base de datos desde la conexión única.
         this.collection = Conexion.getInstance().getBibliotecaMusicalBD().getCollection("artistas");
->>>>>>> Stashed changes
+
     }
     /**
-<<<<<<< Updated upstream
-     * Obtiene la instancia única del DAO de artistas.
-     * Si la instancia no existe, se crea una nueva.
-     *
-     * @return Instancia única del DAO de artistas.
-     * @throws ConexionException Si ocurre un error al tratar de obtener la instancia.
-=======
+
      * Obtiene la instancia única de ArtistasDAO.
      * Si la instancia no existe, la crea y la devuelve.
      * 
      * @return La instancia única de ArtistasDAO.
      * @throws ConexionException Si ocurre un error al obtener la conexión.
->>>>>>> Stashed changes
+
      */
     public static ArtistasDAO getInstance() throws ConexionException {
         if (instance == null) {
@@ -103,16 +72,13 @@ public class ArtistasDAO implements IArtistasDAO {
      * @return El Artista con su ID generado por MongoDB.
      */
     @Override
-<<<<<<< Updated upstream
-    public List<Artista> obtenerTodos() throws DAOException {
-        return List.of();
-=======
+
     public Artista registrar(Artista artista) {
         Document document = artista.toDocument();
         collection.insertOne(document);
         artista.setId(document.getObjectId("_id")); // Asignar el ID generado por MongoDB
         return artista;
->>>>>>> Stashed changes
+
     }
     /**
      * Obtiene un artista por su ID.
@@ -122,15 +88,12 @@ public class ArtistasDAO implements IArtistasDAO {
      * @return El Artista con el ID especificado, o null si no se encuentra.
      */
     @Override
-<<<<<<< Updated upstream
-    public List<Artista> obtenerTodosPorNombre(String nombreArtista) throws DAOException {
-        return List.of();
-=======
+
     public Artista obtener(ObjectId id) {
         Document doc = collection.find(eq("_id", id)).first();
         if (doc == null) return null;
         return documentToArtista(doc);
->>>>>>> Stashed changes
+
     }
     /**
      * Obtiene todos los artistas de la base de datos.
@@ -138,10 +101,7 @@ public class ArtistasDAO implements IArtistasDAO {
      * @return Una lista de todos los artistas registrados en la base de datos.
      */
     @Override
-<<<<<<< Updated upstream
-    public List<Artista> obtenerTodosPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException {
-        return List.of();
-=======
+
     public List<Artista> obtenerTodos() {
         List<Artista> artistas = new ArrayList<>();
         for (Document doc : collection.find()) {
@@ -264,6 +224,6 @@ public class ArtistasDAO implements IArtistasDAO {
         artista.setReferenciasAlbumes((List<ObjectId>) doc.get("albumes"));
         artista.setTipo(doc.getString("tipo"));
         return artista;
->>>>>>> Stashed changes
+ 
     }
 }

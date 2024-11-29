@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  * Contiene la informacion de un album en el sistema
@@ -23,15 +24,12 @@ public class Album implements IDocumentable {
 
     private ObjectId _id;
     private String nombre;
-<<<<<<< Updated upstream
-    private Instant fechaLanzamiento;
-=======
+
     @BsonProperty(value = "fechaLanzamiento")
     private Date fechaLanzamiento;
     @BsonProperty(value="referenciaArtista")
     private ObjectId referenciaArtista;
     @BsonProperty(value = "generoMusical")
->>>>>>> Stashed changes
     private String generoMusical;
     private String imagenPortadaUrl;
     private List<String> canciones;
