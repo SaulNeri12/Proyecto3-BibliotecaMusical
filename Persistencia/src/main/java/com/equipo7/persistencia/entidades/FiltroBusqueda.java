@@ -81,17 +81,10 @@ public class FiltroBusqueda {
 
         // Si se ha especificado un rango de años, agregamos las condiciones de rango
         if (anioDesde > 0) {
-<<<<<<< Updated upstream
             filtro = Filters.and(filtro, Filters.gte("anio", anioDesde));
         }
         if (anioHasta > 0) {
             filtro = Filters.and(filtro, Filters.lte("anio", anioHasta));
-=======
-            filtro = Filters.and(filtro, Filters.gte("año", anioDesde));  // Año mayor o igual a 'anioDesde'
-        }
-        if (anioHasta > 0) {
-            filtro = Filters.and(filtro, Filters.lte("año", anioHasta));  // Año menor o igual a 'anioHasta'
->>>>>>> Stashed changes
         }
 
         // Si la lista de géneros no está vacía, agregamos la condición para buscar documentos que tengan géneros específicos
