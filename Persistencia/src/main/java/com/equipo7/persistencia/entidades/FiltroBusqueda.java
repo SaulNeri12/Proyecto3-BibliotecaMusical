@@ -46,6 +46,24 @@ public class FiltroBusqueda {
         return nombreArtista;
     }
 
+    public String getCoincidenciaBusqueda() {
+        return coincidenciaBusqueda;
+    }
+
+    public void setCoincidenciaBusqueda(String coincidenciaBusqueda) {
+        this.coincidenciaBusqueda = coincidenciaBusqueda;
+    }
+
+    public List<String> getGenerosRestringidos() {
+        return generosRestringidos;
+    }
+
+    public void setGenerosRestringidos(List<String> generosRestringidos) {
+        this.generosRestringidos = generosRestringidos;
+    }
+    
+    
+
     /**
      * Obtiene el año de inicio del filtro.
      *
@@ -233,11 +251,13 @@ public class FiltroBusqueda {
          * Asigna el patron de la busqueda. Indica el patron que coincide con el nombre
          * de las canciones, albumes y artistas.
          * @param coincidenciaBusqueda the coincidenciaBusqueda to set
+         * @return 
          */
-        public void setCoincidenciaBusqueda(String coincidenciaBusqueda) {
-            this.coincidenciaBusqueda = coincidenciaBusqueda;
-        }
-    }
+        public Builder setCoincidenciaBusqueda(String coincidenciaBusqueda) {
+    this.coincidenciaBusqueda = coincidenciaBusqueda;
+    return this; // Permitir encadenamiento
+}
+
 
     @Override
     public String toString() {
@@ -280,14 +300,6 @@ public class FiltroBusqueda {
     /**
      * @return the coincidenciaBusqueda
      */
-    public String getCoincidenciaBusqueda() {
-        return coincidenciaBusqueda;
-    }
-
-    /**
-     * @param coincidenciaBusqueda the coincidenciaBusqueda to set
-     */
-    public void setCoincidenciaBusqueda(String coincidenciaBusqueda) {
-        this.coincidenciaBusqueda = coincidenciaBusqueda;
+   
     }
 }

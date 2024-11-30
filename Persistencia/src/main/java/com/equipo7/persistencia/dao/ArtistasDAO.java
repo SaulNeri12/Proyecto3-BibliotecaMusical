@@ -6,7 +6,6 @@ import com.equipo7.persistencia.dao.interfaces.IArtistasDAO;
 import com.equipo7.persistencia.entidades.Artista;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 
-import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -19,16 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.bson.Document;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 
-import static com.mongodb.client.model.Filters.eq;
-import com.mongodb.client.result.DeleteResult;
 /**
  * La clase ArtistasDAO es responsable de interactuar con la colección de artistas
  * en la base de datos MongoDB. Proporciona métodos para registrar, obtener, actualizar,

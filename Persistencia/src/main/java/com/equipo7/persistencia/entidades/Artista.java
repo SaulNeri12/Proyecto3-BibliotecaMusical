@@ -6,7 +6,6 @@
 package com.equipo7.persistencia.entidades;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.bson.types.ObjectId;
