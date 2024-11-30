@@ -8,16 +8,19 @@ package com.equipo7.negocio.bo;
  *
  * @author caarl
  */
-import com.equipo7.negocio.converter.ArtistaConverter;
-import com.equipo7.negocio.dto.ArtistaDTO;
-import com.equipo7.negocio.ibo.IArtistasBO;
+import com.equipo7.negocio.bo.interfaces.IArtistasBO;
+
+import com.equipo7.negocio.dtos.ArtistaDTO;
+import com.equipo7.negocio.dtos.convertidor.ArtistaConverter;
+
 import com.equipo7.persistencia.dao.interfaces.IArtistasDAO;
 import com.equipo7.persistencia.entidades.Artista;
 import excepciones.DAOException;
-import excepciones.NegocioException;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.bson.types.ObjectId;
 
 public class ArtistasBO implements IArtistasBO {
 
@@ -30,61 +33,61 @@ public class ArtistasBO implements IArtistasBO {
     }
 
     @Override
-    public List<ArtistaDTO> obtenerTodos() throws NegocioException {
+    public List<ArtistaDTO> obtenerTodos() throws DAOException {
         try {
             List<Artista> artistas = artistasDAO.obtenerTodos();
             return artistas.stream().map(converter::toDTO).collect(Collectors.toList());
         } catch (DAOException e) {
-            throw new NegocioException("Error al obtener todos los artistas", e);
+            throw new DAOException("Error al obtener todos los artistas");
         }
     }
 
     @Override
-    public ArtistaDTO obtenerPorId(String id) throws NegocioException {
+    public ArtistaDTO obtenerPorId(String id) throws DAOException {
         try {
             Artista artista = artistasDAO.obtenerPorId(new ObjectId(id));
             return converter.toDTO(artista);
         } catch (DAOException e) {
-            throw new NegocioException("Error al obtener el artista por ID", e);
+            throw new DAOException("Error al obtener el artista por ID");
         }
     }
 
     @Override
-    public void insertar(ArtistaDTO artista) throws NegocioException {
+    public void insertar(ArtistaDTO artista) throws DAOException {
         try {
             Artista entity = converter.toEntity(artista);
             artistasDAO.insertar(entity);
         } catch (DAOException e) {
-            throw new NegocioException("Error al insertar el artista", e);
+            throw new DAOException("Error al insertar el artista");
         }
     }
 
     @Override
-    public void actualizar(ArtistaDTO artista) throws NegocioException {
+    public void actualizar(ArtistaDTO artista) throws DAOException {
         try {
             Artista entity = converter.toEntity(artista);
             artistasDAO.actualizar(entity);
         } catch (DAOException e) {
-            throw new NegocioException("Error al actualizar el artista", e);
+            throw new DAOException("Error al actualizar el artista");
         }
     }
 
     @Override
-    public void eliminar(String id) throws NegocioException {
+    public void eliminar(String id) throws DAOException {
         try {
             artistasDAO.eliminar(new ObjectId(id));
         } catch (DAOException e) {
-            throw new NegocioException("Error al eliminar el artista", e);
+            throw new DAOException("Error al eliminar el artista");
         }
     }
 
     @Override
-    public List<ArtistaDTO> buscarPorNombre(String nombre) throws NegocioException {
+    public List<ArtistaDTO> buscarPorNombre(String nombre) throws DAOException {
         try {
             List<Artista> artistas = artistasDAO.obtenerTodosPorNombre(nombre);
             return artistas.stream().map(converter::toDTO).collect(Collectors.toList());
         } catch (DAOException e) {
-            throw new NegocioException("Error al buscar artistas por nombre", e);
+            throw new DAOException("Error al buscar artistas por nombre");
         }
     }
 }

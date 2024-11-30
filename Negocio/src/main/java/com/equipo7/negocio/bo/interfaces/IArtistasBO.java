@@ -8,16 +8,18 @@ package com.equipo7.negocio.bo.interfaces;
  *
  * @author caarl
  */
-import com.equipo7.negocio.dto.ArtistaDTO;
-import excepciones.NegocioException;
 
+
+import com.equipo7.negocio.dtos.ArtistaDTO;
+import com.equipo7.negocio.excepciones.BOException;
+import excepciones.DAOException;
 import java.util.List;
 
 public interface IArtistasBO {
-    List<ArtistaDTO> obtenerTodos() throws NegocioException;
-    ArtistaDTO obtenerPorId(String id) throws NegocioException;
-    void insertar(ArtistaDTO artista) throws NegocioException;
-    void actualizar(ArtistaDTO artista) throws NegocioException;
-    void eliminar(String id) throws NegocioException;
-    List<ArtistaDTO> buscarPorNombre(String nombre) throws NegocioException;
+    List<ArtistaDTO> obtenerTodos() throws DAOException;
+    ArtistaDTO obtenerPorId(String id) throws DAOException;
+    void insertar(ArtistaDTO artista) throws DAOException;
+    void actualizar(ArtistaDTO artista) throws DAOException;
+    void eliminar(String id) throws DAOException;
+    List<ArtistaDTO> buscarPorNombre(String nombre) throws DAOException;
 }

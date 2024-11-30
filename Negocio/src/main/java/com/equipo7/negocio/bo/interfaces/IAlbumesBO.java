@@ -4,19 +4,25 @@
  */
 package com.equipo7.negocio.bo.interfaces;
 
+import com.equipo7.negocio.dtos.AlbumesDTO;
+import com.equipo7.negocio.excepciones.BOException;
+import com.equipo7.persistencia.entidades.FiltroBusqueda;
+import excepciones.DAOException;
+import java.util.List;
+
 /**
  *
  * @author caarl
  */
 public interface IAlbumesBO {
  
-    AlbumDTO obtenerAlbumPorNombre(String nombreAlbum) throws BOException;
+    AlbumesDTO obtenerAlbumPorNombre(String nombreAlbum) throws DAOException;
 
-    List<AlbumDTO> obtenerAlbumesPorFiltro(FiltroBusqueda filtroBusqueda) throws BOException;
+    List<AlbumesDTO> obtenerAlbumesPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException;
 
-    List<AlbumDTO> obtenerTodos() throws DAOException;
+    List<AlbumesDTO> obtenerTodos() throws DAOException;
 
-    List<AlbumDTO> obtenerAlbumesPorArtista(String nombreArtista) throws BOException;
+    List<AlbumesDTO> obtenerAlbumesPorArtista(String nombreArtista) throws DAOException;
 
-    void realizarInsercionMasiva() throws BOException;
+    void realizarInsercionMasiva() throws DAOException;
 }

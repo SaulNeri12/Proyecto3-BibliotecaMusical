@@ -4,13 +4,16 @@
  */
 package com.equipo7.negocio.dtos.convertidor;
 
+import com.equipo7.negocio.dtos.AlbumesDTO;
+import com.equipo7.persistencia.entidades.Album;
+
 /**
  *
  * @author caarl
  */
 public class AlbumesConverter {
- public static AlbumDTO entidadADto(Album album) {
-        return new AlbumDTO(
+ public static AlbumesDTO entidadADto(Album album) {
+        return new AlbumesDTO(
             album.getId(),
             album.getNombre(),
             album.getFechaLanzamiento(),
@@ -20,7 +23,7 @@ public class AlbumesConverter {
         );
     }
 
-    public static Album dtoAEntidad(AlbumDTO albumDTO) {
+    public static Album dtoAEntidad(AlbumesDTO albumDTO) {
         return new Album(
             albumDTO.getId(),
             albumDTO.getNombre(),

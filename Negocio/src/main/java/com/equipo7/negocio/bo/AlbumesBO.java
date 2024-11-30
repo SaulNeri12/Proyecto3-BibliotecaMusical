@@ -8,9 +8,10 @@ package com.equipo7.negocio.bo;
  *
  * @author caarl
  */
-import com.equipo7.negocio.converters.AlbumConvertidor;
-import com.equipo7.negocio.dto.AlbumDTO;
-import com.equipo7.negocio.interfaces.IAlbumesBO;
+
+import com.equipo7.negocio.bo.interfaces.IAlbumesBO;
+import com.equipo7.negocio.dtos.AlbumesDTO;
+import com.equipo7.negocio.dtos.convertidor.AlbumesConverter;
 import com.equipo7.persistencia.dao.interfaces.IAlbumesDAO;
 import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
@@ -28,31 +29,31 @@ public class AlbumesBO implements IAlbumesBO {
     }
 
     @Override
-    public AlbumDTO obtenerAlbumPorNombre(String nombreAlbum) throws BOException {
+    public AlbumesDTO obtenerAlbumPorNombre(String nombreAlbum) throws DAOException {
         Album album = albumesDAO.obtenerTodosPorNombre(nombreAlbum);
-        return album != null ? AlbumConvertidor.entidadADto(album) : null;
+        return album != null ? AlbumesConverter.entidadADto(album) : null;
     }
 
     @Override
-    public List<AlbumDTO> obtenerAlbumesPorFiltro(FiltroBusqueda filtroBusqueda) throws BOException {
+    public List<AlbumesDTO> obtenerAlbumesPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException {
         List<Album> albumes = albumesDAO.obtenerTodosPorFiltro(filtroBusqueda);
-        return albumes.stream().map(AlbumConvertidor::entidadADto).collect(Collectors.toList());
+        return albumes.stream().map(AlbumesConverter::entidadADto).collect(Collectors.toList());
     }
 
     @Override
-    public List<AlbumDTO> obtenerTodos() throws BOException {
+    public List<AlbumesDTO> obtenerTodos() throws DAOException {
         List<Album> albumes = albumesDAO.obtenerTodos();
-        return albumes.stream().map(AlbumConvertidor::entidadADto).collect(Collectors.toList());
+        return albumes.stream().map(AlbumesConverter::entidadADto).collect(Collectors.toList());
     }
 
     @Override
-    public List<AlbumDTO> obtenerAlbumesPorArtista(String nombreArtista) throws BOException {
+    public List<AlbumesDTO> obtenerAlbumesPorArtista(String nombreArtista) throws DAOException {
         List<Album> albumes = albumesDAO.obtenerTodosPorArtista(nombreArtista);
-        return albumes.stream().map(AlbumConvertidor::entidadADto).collect(Collectors.toList());
+        return albumes.stream().map(AlbumesConverter::entidadADto).collect(Collectors.toList());
     }
 
     @Override
-    public void realizarInsercionMasiva() throws BOException {
+    public void realizarInsercionMasiva() throws DAOException {
         albumesDAO.insercionMasiva();
     }
 }

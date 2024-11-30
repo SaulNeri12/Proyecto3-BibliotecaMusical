@@ -8,7 +8,9 @@ package com.equipo7.negocio.dtos.convertidor;
  *
  * @author caarl
  */
-import com.equipo7.negocio.dto.ArtistaDTO;
+
+import com.equipo7.negocio.dtos.ArtistaDTO;
+import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.Artista;
 
 import java.util.stream.Collectors;
@@ -37,7 +39,7 @@ public class ArtistaConverter {
                 dto.getNombreArtista(),
                 dto.getDescripcion(),
                 dto.getGeneroMusical(),
-                dto.getAlbumes().stream().map(album -> new Album(album)).collect(Collectors.toList())
+                dto.getAlbumes().stream().map(album -> new Album()).collect(Collectors.toList())
         );
     }
 }

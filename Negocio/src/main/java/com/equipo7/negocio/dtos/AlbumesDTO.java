@@ -4,6 +4,10 @@
  */
 package com.equipo7.negocio.dtos;
 
+import java.time.Instant;
+import java.util.List;
+import org.bson.types.ObjectId;
+
 /**
  *
  * @author caarl
@@ -17,10 +21,10 @@ private ObjectId id;
     private List<String> canciones;
 
     // Constructor vacío
-    public AlbumDTO() {}
+    public AlbumesDTO() {}
 
     // Constructor completo
-    public AlbumDTO(ObjectId id, String nombre, Instant fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+    public AlbumesDTO(ObjectId id, String nombre, Instant fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this.id = id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
