@@ -7,38 +7,80 @@ package com.equipo7.persistencia.dao.interfaces;
 import com.equipo7.persistencia.entidades.Artista;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
 /**
- * Define las operaciones necesarias para manejar artistas en el sistema
- * @author Saul Neri
+ * Interfaz que define los métodos de acceso a datos para la entidad Artista.
  */
 public interface IArtistasDAO {
 
     /**
-     * Obtiene todos los artistas almacenados en la base de datos.
+     * Obtiene todos los artistas de la colección.
      *
-     * @return Una lista de objetos Artista que contiene todos los artistas.
-     * @throws DAOException Si ocurre un error al intentar recuperar los artistas desde la base de datos.
+     * @return Lista de todos los artistas.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public List<Artista> obtenerTodos() throws DAOException;
+    List<Artista> obtenerTodos() throws DAOException;
 
     /**
-     * Obtiene todos los artistas que coinciden con el nombre proporcionado.
+     * Obtiene una lista de artistas por un nombre parcial o completo.
      *
-     * @param nombreArtista El nombre del artista a buscar.
-     * @return Una lista de objetos Artista que coinciden con el nombre proporcionado.
-     * @throws DAOException Si ocurre un error al intentar recuperar los artistas desde la base de datos.
+     * @param nombreArtista El nombre o patrón del artista.
+     * @return Lista de artistas que coinciden con el nombre.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public List<Artista> obtenerTodosPorNombre(String nombreArtista) throws DAOException;
+    List<Artista> obtenerTodosPorNombre(String nombreArtista) throws DAOException;
 
     /**
-     * Obtiene todos los artistas que coinciden con el filtro de búsqueda proporcionado.
+     * Obtiene un artista por su nombre exacto.
      *
-     * @param filtroBusqueda Un objeto FiltroBusqueda que contiene los criterios para filtrar los artistas.
-     * @return Una lista de objetos Artista que cumplen con los criterios de búsqueda.
-     * @throws DAOException Si ocurre un error al intentar recuperar los artistas desde la base de datos.
+     * @param nombreArtista El nombre exacto del artista.
+     * @return El artista encontrado o null si no existe.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public List<Artista> obtenerTodosPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException;
+    Artista obtenerArtistaPorNombre(String nombreArtista) throws DAOException;
+
+    /**
+     * Inserta un nuevo artista en la colección.
+     *
+     * @param artista El artista a insertar.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    void insertar(Artista artista) throws DAOException;
+
+    /**
+     * Obtiene un artista por su ID.
+     *
+     * @param id El ID del artista.
+     * @return El artista encontrado o null si no existe.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    Artista obtenerPorId(ObjectId id) throws DAOException;
+
+    /**
+     * Actualiza los datos de un artista en la colección.
+     *
+     * @param artista El artista con los datos actualizados.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    void actualizar(Artista artista) throws DAOException;
+
+    /**
+     * Elimina un artista de la colección por su ID.
+     *
+     * @param id El ID del artista a eliminar.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    void eliminar(ObjectId id) throws DAOException;
+
+    /**
+     * Obtiene una lista de artistas que cumplen con los criterios especificados en el filtro.
+     *
+     * @param filtroBusqueda Los criterios de búsqueda.
+     * @return Lista de artistas que cumplen con los criterios.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    List<Artista> obtenerTodosPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException;
 }

@@ -32,6 +32,17 @@ public class Artista implements IDocumentable {
         this.albumes = Arrays.asList();
     }
 
+    public Artista(ObjectId _id, String nombreArtista, String descripcion, String generoMusical, List<Album> albumes) {
+        this._id = _id;
+        this.nombreArtista = nombreArtista;
+        this.descripcion = descripcion;
+        this.generoMusical = generoMusical;
+        this.albumes = albumes;
+    }
+    
+    
+    
+
     /**
      * Se crea un nuevo artista y se le asigna un ID de MongoBD
      * @param _id ID de MongoDB
@@ -128,6 +139,16 @@ public class Artista implements IDocumentable {
     public void setAlbumes(List<Album> albumes) {
         this.albumes = albumes;
     }
+
+    public ObjectId getId() {
+        return _id;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+    
+    
 
     @Override
     public Document toDocument() {
