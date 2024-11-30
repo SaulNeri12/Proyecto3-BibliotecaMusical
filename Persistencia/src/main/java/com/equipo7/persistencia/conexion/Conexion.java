@@ -28,24 +28,18 @@ public class Conexion {
      * @throws ConexionException Si ocurre un error en la creacion de la conexion
      */
     private Conexion() throws ConexionException {
-        
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
+
         MongoClientSettings clientSettings = MongoClientSettings.builder()
-                                                                .applyConnectionString(new ConnectionString(conexionString))
-                                                                .codecRegistry(codecRegistry)
-                                                                .build();
-        
+                .applyConnectionString(new ConnectionString(conexionString))
+                .codecRegistry(codecRegistry) 
+                .build();
+
         mongoClient = MongoClients.create(clientSettings);
-        
         bibliotecaMusicalBD = mongoClient.getDatabase("bibliotecaMusical");
-
-        if (bibliotecaMusicalBD != null) {
-            return;
-        }
-
-        throw new ConexionException("No se pudo conectar con el servidor, porfavor intente mas tarde...");
     }
+
 
     /**
      * Obtiene la instancia unica de conexion a la base de datos MongoDB

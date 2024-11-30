@@ -23,15 +23,19 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
  */
 
 public class Artista implements IDocumentable{
-
-
+    
     public static final String NOMBRE_COLLECTION = "artistas";
-
+    
     private ObjectId _id;
+    @BsonProperty(value = "nombre")
     private String nombreArtista;
+    @BsonProperty(value = "descripcion")
     private String descripcion;
+    @BsonProperty(value = "tipo")
     private String tipo;
+    @BsonProperty(value = "genero")
     private String generoMusical;
+    @BsonProperty(value = "referenciasAlbumes")
     private List<ObjectId> referenciasAlbumes;
 
     /**
@@ -48,7 +52,6 @@ public class Artista implements IDocumentable{
      * @param _id ID de MongoDB
      */
     public Artista(ObjectId _id) {
-        super();
         this._id = _id;
     }
 
@@ -84,6 +87,15 @@ public class Artista implements IDocumentable{
         this.generoMusical = generoMusical;
         this.referenciasAlbumes = referenciasAlbumes;
     }
+
+    public Artista(String nombreArtista, String descripcion, String tipo, String generoMusical) {
+        this.nombreArtista = nombreArtista;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.generoMusical = generoMusical;
+    }
+    
+    
     
     
     
@@ -170,7 +182,7 @@ public class Artista implements IDocumentable{
         sb.append("nombreArtista='").append(nombreArtista != null ? nombreArtista : "No especificado").append("', ");
         sb.append("descripcion='").append(descripcion != null ? descripcion : "No especificada").append("', ");
         sb.append("generoMusical='").append(generoMusical != null ? generoMusical : "No especificado").append("', ");
-        sb.append("albumes=").append(referenciasAlbumes != null && !referenciasAlbumes.isEmpty() ? referenciasAlbumes : "No especificados");
+        sb.append("referenciasAlbumes=").append(referenciasAlbumes != null && !referenciasAlbumes.isEmpty() ? referenciasAlbumes : "No especificados");
 
         sb.append(" }");
         return sb.toString();
@@ -233,7 +245,7 @@ public class Artista implements IDocumentable{
         doc.append("nombre", this.nombreArtista);
         doc.append("descripcion", this.descripcion);
         doc.append("generoMusical", this.generoMusical);
-        doc.append("albumes", this.referenciasAlbumes);
+        doc.append("referenciasAlbumes", this.referenciasAlbumes);
         doc.append("tipo", this.tipo);
         return doc;
     }

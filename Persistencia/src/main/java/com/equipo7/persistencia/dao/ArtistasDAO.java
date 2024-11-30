@@ -37,25 +37,33 @@ import com.mongodb.client.result.DeleteResult;
 public class ArtistasDAO implements IArtistasDAO {
 
     private static ArtistasDAO instance;
-    private final MongoCollection<Document> collection;
-
+    private MongoDatabase bibliotecaMusicalBD;
+    private MongoCollection<Artista> artistas;
+    
+    
     /**
      * Constructor que obtiene la colección desde la conexión única.
+     * 
+     * Este constructor establece la conexión a la base de datos y obtiene la
+     * colección de artistas desde la base de datos utilizando una conexión 
+     * compartida. Si ocurre un error al obtener la conexión, se lanza una 
+     * excepción de tipo ConexionException.
+     * 
      * @throws ConexionException Si ocurre un error al obtener la conexión.
      */
     public ArtistasDAO() throws ConexionException {
-        // Obtiene la base de datos desde la conexión única.
-        this.collection = Conexion.getInstance().getBibliotecaMusicalBD().getCollection("artistas");
-
+        this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
+        artistas = bibliotecaMusicalBD.getCollection("artistas", Artista.class);
     }
     /**
-
      * Obtiene la instancia única de ArtistasDAO.
      * Si la instancia no existe, la crea y la devuelve.
      * 
+     * Este método implementa el patrón Singleton, asegurando que solo exista
+     * una instancia de ArtistasDAO a lo largo de la aplicación.
+     * 
      * @return La instancia única de ArtistasDAO.
      * @throws ConexionException Si ocurre un error al obtener la conexión.
-
      */
     public static ArtistasDAO getInstance() throws ConexionException {
         if (instance == null) {
@@ -68,162 +76,149 @@ public class ArtistasDAO implements IArtistasDAO {
      * Registra un nuevo artista en la base de datos.
      * Convierte el objeto Artista a un documento BSON y lo inserta en la colección de artistas.
      * 
+     * Este método valida que el artista no sea nulo y que no exista un artista
+     * con el mismo nombre en la base de datos. Si el artista ya existe, lanza
+     * una excepción DAOException. Si el artista no tiene un ID asignado, lo
+     * establece en null antes de la inserción.
+     * 
      * @param artista El objeto Artista que se desea registrar.
-     * @return El Artista con su ID generado por MongoDB.
+     * @throws DAOException Si ocurre un error durante el registro del artista o si ya existe un artista con el mismo nombre.
      */
     @Override
-
-    public Artista registrar(Artista artista) {
-        Document document = artista.toDocument();
-        collection.insertOne(document);
-        artista.setId(document.getObjectId("_id")); // Asignar el ID generado por MongoDB
-        return artista;
-
-    }
-    /**
-     * Obtiene un artista por su ID.
-     * Realiza una búsqueda en la base de datos utilizando el ID proporcionado.
-     * 
-     * @param id El ID del artista a buscar.
-     * @return El Artista con el ID especificado, o null si no se encuentra.
-     */
-    @Override
-
-    public Artista obtener(ObjectId id) {
-        Document doc = collection.find(eq("_id", id)).first();
-        if (doc == null) return null;
-        return documentToArtista(doc);
-
-    }
-    /**
-     * Obtiene todos los artistas de la base de datos.
-     * 
-     * @return Una lista de todos los artistas registrados en la base de datos.
-     */
-    @Override
-
-    public List<Artista> obtenerTodos() {
-        List<Artista> artistas = new ArrayList<>();
-        for (Document doc : collection.find()) {
-            artistas.add(documentToArtista(doc));
+    public void registrar(Artista artista) throws DAOException{
+        if (artista == null) {
+            throw new DAOException("No se pudo crear el artista debido a informacion faltante");
         }
-        return artistas;
+
+        boolean existe = this.artistaExiste(artista.getNombreArtista());
+        if (existe) {
+            throw new DAOException("Ya existe ese artista, porfavor, escriba un artista diferente");
+        }
+
+        // si tiene un ID debe de removerse para no causar conflicto en la insercion
+        if (artista.getId() != null) {
+            artista.setId(null);
+        }
+
+        try {
+            InsertOneResult resultado = this.artistas.insertOne(artista);
+
+            if (resultado.getInsertedId() == null) {
+                throw new DAOException("No se pudo crear el artista debido a un error, porfavor, intente mas tarde...");
+            }
+
+        } catch (MongoException e) {
+            throw new DAOException("No se pudo crear el artista debido a un error, porfavor, intente mas tarde...");
+        }
     }
-    
     /**
-     * Obtiene todos los artistas cuyo nombre coincida con el filtro proporcionado.
-     * La búsqueda es sensible a mayúsculas/minúsculas.
+     * Verifica si un artista con el nombre proporcionado ya existe en la base de datos.
      * 
-     * @param nombre El nombre o parte del nombre de los artistas a buscar.
-     * @return Lista de artistas que coinciden con el nombre.
+     * Este método busca en la colección de artistas para verificar si ya existe un
+     * artista con el nombre especificado. Devuelve true si el artista existe, de lo
+     * contrario devuelve false.
+     * 
+     * @param nombre El nombre del artista a verificar.
+     * @return true si el artista ya existe en la base de datos; false en caso contrario.
      */
     @Override
-    public List<Artista> obtenerTodosPorNombre(String nombre) {
-        List<Artista> artistas = new ArrayList<>();
-        
-        
-        Document filtro = new Document("nombre", new Document("$regex", nombre).append("$options", "i")); 
-        
-        // Ejecutar la consulta
-        for (Document doc : collection.find(filtro)) {
-            // Convertir cada documento a un objeto Artista
-            Artista artista = new Artista( 
-                doc.getString("nombre"),
-                doc.getString("descripcion"),
-                doc.getString("tipo"),
-                doc.getString("generoMusical"),
-                (List<ObjectId>) doc.get("albumes")
-            );
-            artistas.add(artista);
+    public boolean artistaExiste(String nombre) {
+
+        if (nombre == null || nombre.isEmpty() || nombre.isBlank()) {
+            return false;
         }
-        
-        return artistas;
+
+        Bson filtroNombre = Filters.eq("nombre", nombre);
+
+        Bson filtro = Filters.or(filtroNombre);
+
+        return this.artistas.find(filtro).first() != null;
     }
        
     /**
      * Obtiene todos los artistas que coinciden con el filtro proporcionado.
      *
+     * Este método permite obtener una lista de artistas que coinciden con los criterios
+     * del filtro proporcionado. Si se incluye un patrón de búsqueda, también se filtran
+     * los resultados en función de la coincidencia con el nombre, los álbumes o las canciones.
+     * 
      * @param filtro El filtro de búsqueda con las condiciones deseadas.
      * @return Lista de artistas que cumplen con el filtro.
+     * @throws DAOException Si ocurre un error al realizar la consulta.
      */
     @Override
-    public List<Artista> obtenerTodosPorFiltro(FiltroBusqueda filtro) {
-        List<Artista> artistas = new ArrayList<>();
+    public List<Artista> obtenerTodosPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException {
 
-        // Obtener el filtro BSON desde el objeto FiltroBusqueda
-        Bson filtroBson = filtro.toBson();
+        // Convertir el objeto FiltroBusqueda a un filtro BSON utilizando el método toBson() del filtro
+        Bson filtro = filtroBusqueda.toBson();
 
-        // Ejecuta la consulta con el filtro generado
-        for (Document doc : collection.find(filtroBson)) {
-            // Convertir cada documento a un objeto Artista
-            Artista artista = new Artista(
-                doc.getObjectId("_id"),
-                doc.getString("nombreArtista"),
-                doc.getString("descripcion"),
-                doc.getString("tipo"),
-                doc.getString("generoMusical"),
-                (List<ObjectId>) doc.get("albumes")
+        // Si se ha especificado un patrón de coincidencia para la búsqueda, añadimos ese filtro también
+        if (filtroBusqueda.getCoincidenciaBusqueda() != null && !filtroBusqueda.getCoincidenciaBusqueda().isEmpty()) {
+            String patronBusqueda = filtroBusqueda.getCoincidenciaBusqueda();
+            Bson filtroCoincidencia = Filters.or(
+                    Filters.regex("nombre", ".*" + Pattern.quote(patronBusqueda) + ".*", "i"),
+                    Filters.regex("albumes.nombre", ".*" + Pattern.quote(patronBusqueda) + ".*", "i"),
+                    Filters.regex("albumes.canciones", ".*" + Pattern.quote(patronBusqueda) + ".*", "i")
             );
-            artistas.add(artista);
+            filtro = Filters.and(filtro, filtroCoincidencia);  // Combinar los filtros
+        }
+
+        // Ejecutar la consulta con el filtro combinado
+        List<Artista> artistas = new ArrayList<>();
+        FindIterable<Artista> resultado = this.artistas.find(filtro);  // Ejecutar la consulta en la colección de artistas
+
+        for (Artista artista : resultado) {
+            artistas.add(artista);  // Agregar los resultados a la lista
         }
 
         return artistas;
     }
-
     /**
-     * Actualiza un artista en la base de datos.
-     * Si el artista tiene un ID asignado, reemplaza el documento existente con los nuevos datos.
+     * Convierte un documento de base de datos (MongoDB) en un objeto Artista.
      * 
-     * @param artista El objeto Artista con los datos actualizados.
-     * @return true si la actualización fue exitosa, false en caso contrario.
-     */
-
-    @Override
-    public boolean actualizar(Artista artista) {
-        if (artista.getId() == null) return false;
-        Document updateDocument = artista.toDocument();
-        return collection.replaceOne(eq("_id", artista.getId()), updateDocument).getMatchedCount() > 0;
-    }
-    /**
-     * Elimina un artista de la base de datos por su ID.
+     * Este método transforma un documento BSON (que se obtiene al consultar la base
+     * de datos) en un objeto de tipo Artista, extrayendo los valores de los campos
+     * y asignándolos a las propiedades correspondientes del objeto.
      * 
-     * @param id El ID del artista a eliminar.
-     * @return true si el artista fue eliminado, false si no se encontró.
-     */
-
-    @Override
-    public boolean eliminar(ObjectId id) {
-        return collection.deleteOne(eq("_id", id)).getDeletedCount() > 0;
-    }
-    
-   
-    /**
-     * Elimina los artistas que coincidan con el filtro especificado.
-     * 
-     * @param filtro El filtro BSON para seleccionar los documentos a eliminar.
-     * @return El número de documentos eliminados.
+     * @param document El documento de la base de datos que contiene los datos del artista.
+     * @return El objeto Artista correspondiente con los datos extraídos del documento.
      */
     @Override
-    public long deleteMany(Document filtro) {
-        // Eliminamos los documentos que coincidan con el filtro
-        DeleteResult result = collection.deleteMany(filtro);
-        return result.getDeletedCount();  // Retorna el número de documentos eliminados
-    }
-    /**
-     * Convierte un documento BSON en un objeto Artista.
-     * 
-     * @param doc El documento BSON que representa a un artista.
-     * @return El objeto Artista correspondiente al documento BSON.
-     */
+    public Artista documentoAObjeto(Document document) {
+        Artista artista = new Artista();
 
-    private Artista documentToArtista(Document doc) {
-        Artista artista = new Artista(doc.getObjectId("_id"));
-        artista.setNombreArtista(doc.getString("nombre"));
-        artista.setDescripcion(doc.getString("descripcion"));
-        artista.setGeneroMusical(doc.getString("generoMusical"));
-        artista.setReferenciasAlbumes((List<ObjectId>) doc.get("albumes"));
-        artista.setTipo(doc.getString("tipo"));
+        // Mapeo del campo _id
+        if (document.containsKey("_id")) {
+            artista.setId((ObjectId) document.get("_id"));
+        }
+
+        // Mapeo del campo nombre
+        if (document.containsKey("nombre")) {
+            artista.setNombreArtista(document.getString("nombre"));
+        }
+
+        // Mapeo del campo correo
+        if (document.containsKey("descripcion")) {
+            artista.setDescripcion(document.getString("descripcion"));
+        }
+
+        // Mapeo del campo contrasena
+        if (document.containsKey("tipo")) {
+            artista.setTipo(document.getString("tipo"));
+        }
+
+        // Mapeo del campo genero
+        if (document.containsKey("genero")) {
+            artista.setGeneroMusical(document.getString("genero"));
+        }
+
+        // Mapeo del campo generosRestringidos (opcional)
+        if (document.containsKey("referenciasAlbumes")) {
+            List<ObjectId> referenciasAlbumes = (List<ObjectId>) document.get("referenciasAlbumes");
+            artista.setReferenciasAlbumes(referenciasAlbumes);
+            // Puedes almacenar esta lista en algún campo de Usuario, si corresponde
+        }
+
         return artista;
- 
     }
 }

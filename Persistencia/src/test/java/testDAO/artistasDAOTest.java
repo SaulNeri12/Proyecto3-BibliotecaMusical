@@ -4,14 +4,17 @@
  */
 package testDAO;
 
+import com.equipo7.persistencia.conexion.Conexion;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.ArtistasDAO;
 import com.equipo7.persistencia.entidades.Artista;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,117 +35,99 @@ public class artistasDAOTest {
     public void setup() {
         try {
             artistasDAO = ArtistasDAO.getInstance();
+            System.out.println("setup");
         } catch (ConexionException e) {
             fail("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
-
     @BeforeEach
-    public void prepararDatos() {
-        try {
-            // Inserta datos de prueba antes de cada test
-            Artista artista1 = new Artista();
-            artista1.setId(new ObjectId());
-            artista1.setNombreArtista("Artista Prueba 1");
-            artista1.setGeneroMusical("Pop");
-            artista1.setDescripcion("descripcion prueba 1");
-            artista1.setTipo("Solista");
-            
-
-            Artista artista2 = new Artista();
-            artista2.setId(new ObjectId());
-            artista2.setId(new ObjectId());
-            artista2.setNombreArtista("Artista Prueba 2");
-            artista2.setGeneroMusical("Rock");
-            artista2.setDescripcion("descripcion prueba 2");
-            artista2.setTipo("Solista");
-
-            Artista artista3 = new Artista();
-            artista3.setId(new ObjectId());
-            artista3.setNombreArtista("Artista Filtrado");
-            artista3.setGeneroMusical("Jazz");
-            artista3.setDescripcion("Descripcion prueba 3");
-            artista3.setTipo("Banda");
-
-            artistasDAO.registrar(artista1);
-            artistasDAO.registrar(artista2);
-            artistasDAO.registrar(artista3);
-        } catch (Exception e) {
-            fail("Error al preparar datos de prueba: " + e.getMessage());
-        }
+    void limpiarBaseDeDatos() throws DAOException, ConexionException {
+        // Limpiar todos los usuarios antes de cada prueba
+        Conexion.getInstance().getBibliotecaMusicalBD()
+                .getCollection("artistas")
+                .deleteMany(new org.bson.Document());
     }
-
-    @AfterEach
-    public void limpiarDatos() {
-        try {
-            // Limpia los datos después de cada test
-            artistasDAO.deleteMany(new org.bson.Document());
-        } catch (Exception e) {
-            fail("Error al limpiar datos de prueba: " + e.getMessage());
-        }
-    }
-    
-    
     @Test
-    @Order(1)
-    public void testRegistrarArtista() throws DAOException {
+    void testRegistrarUsuario() throws DAOException {
+        Artista artista = new Artista("artista prueba", "prueba", "pruebaaa", "hola");
 
-            Artista artista = new Artista();
-            artista.setNombreArtista("Nuevo Artista");
-            artista.setGeneroMusical("Pop");
-            artista.setDescripcion("Argentina");
-            artista.setTipo("hola");
-
-            assertDoesNotThrow(() -> artistasDAO.registrar(artista),
-                    "No debería lanzar excepciones al registrar un usuario válido");
-
-    }
-    
-    @Test
-    @Order(2)
-    public void testObtenerTodos() {
-        List<Artista> artistas = artistasDAO.obtenerTodos();
-        assertNotNull(artistas, "La lista de artistas no debería ser nula");
-        assertTrue(artistas.size() >= 3, "Debería haber al menos tres artistas en la base de datos");
-    }
-    
-    @Test
-    @Order(3)
-    public void testObtenerPorNombre() {
-        List<Artista> artistas = artistasDAO.obtenerTodosPorNombre("Artista Prueba");
-        assertNotNull(artistas, "La lista de artistas no debería ser nula");
-        assertTrue(artistas.size() >= 2, "Debería haber al menos dos artistas con 'Artista Prueba' en el nombre");
+        assertDoesNotThrow(() -> artistasDAO.registrar(artista),
+                "No debería lanzar excepciones al registrar un artista válido");
     }
 
     @Test
-    @Order(4)
-    public void testObtenerPorId() {
-        // Inserta un artista específico para probar el ID
-        ObjectId idTest = new ObjectId();
+    public void testRegistrarArtistaDuplicado() {
         Artista artista = new Artista();
-        artista.setId(idTest);
-        artista.setNombreArtista("Artista Específico");
-        artista.setGeneroMusical("Clásica");
-        artista.setDescripcion("descripcion prueba");
-        artista.setTipo("Solista");
+        artista.setNombreArtista("Juan");
+
+        assertThrows(DAOException.class, () -> {
+            artistasDAO.registrar(artista);
+            artistasDAO.registrar(artista); // Segundo intento debería fallar
+        });
+    }
+    @Test
+    void testArtistaExiste() throws DAOException {
+        // Registrar un artista
+        Artista artista = new Artista();
+        artista.setNombreArtista("TestArtist");
+        artista.setDescripcion("Un artista de prueba");
+        artista.setTipo("Cantante");
+        artista.setGeneroMusical("Pop");
+
         artistasDAO.registrar(artista);
-        Artista resultado = artistasDAO.obtener(idTest);
-        assertNotNull(resultado, "El artista no debería ser nulo");
-        assertEquals("Artista Específico", resultado.getNombreArtista(), "El nombre del artista no coincide");
+
+        // Verificar si el artista existe
+        boolean existe = artistasDAO.artistaExiste("TestArtist");
+        assertTrue(existe, "El artista debería existir en la base de datos");
+
+        // Verificar si un artista inexistente no existe
+        boolean noExiste = artistasDAO.artistaExiste("NonExistentArtist");
+        assertFalse(noExiste, "El artista no debería existir en la base de datos");
     }
-    
-    
     //@Test
-    @Order(5)
-    public void testObtenerPorFiltro() {
+    void testObtenerArtistasPorFiltro() throws DAOException {
+        Artista artista1 = new Artista();
+        artista1.setNombreArtista("TestArtist1");
+        artista1.setDescripcion("Descripción del artista 1");
+        artista1.setGeneroMusical("Pop");
+        artistasDAO.registrar(artista1);
+
+        Artista artista2 = new Artista();
+        artista2.setNombreArtista("TestArtist2");
+        artista2.setDescripcion("Descripción del artista 2");
+        artista2.setGeneroMusical("Rock");
+        artistasDAO.registrar(artista2);
+
+        // Crear un filtro para obtener artistas de género "Pop"
         FiltroBusqueda filtro = new FiltroBusqueda.Builder()
-            
-            .conGeneros(Arrays.asList("Rock", "Pop"))
-            .desdeAnio(2000)
-            .hastaAnio(2020)
-            .build();
+                .conGeneros(Arrays.asList("Pop"))
+                .hastaAnio(2020)
+                .build();
+
         List<Artista> artistas = artistasDAO.obtenerTodosPorFiltro(filtro);
-        assertNotNull(artistas, "La lista de artistas no debería ser nula");
-        assertTrue(artistas.size() >= 1, "Debería haber al menos tres artistas en la base de datos");
+        assertEquals(1, artistas.size(), "Debería haber 1 artista con género Pop");
+        assertEquals("TestArtist1", artistas.get(0).getNombreArtista(), "El nombre del artista debería coincidir");
     }
+    @Test
+    void testDocumentoAObjeto() {
+        // Crear un documento BSON de ejemplo
+        org.bson.Document document = new org.bson.Document();
+        document.append("_id", new ObjectId());
+        document.append("nombre", "TestArtist");
+        document.append("descripcion", "Un artista de prueba");
+        document.append("tipo", "Cantante");
+        document.append("genero", "Pop");
+        document.append("referenciasAlbumes", List.of(new ObjectId()));
+
+        // Convertir el documento a un objeto Artista
+        Artista artista = artistasDAO.documentoAObjeto(document);
+
+        assertNotNull(artista, "El artista no debería ser nulo");
+        assertEquals("TestArtist", artista.getNombreArtista(), "El nombre del artista debería ser 'TestArtist'");
+        assertEquals("Un artista de prueba", artista.getDescripcion(), "La descripción del artista debería ser correcta");
+        assertEquals("Cantante", artista.getTipo(), "El tipo del artista debería ser 'Cantante'");
+        assertEquals("Pop", artista.getGeneroMusical(), "El género del artista debería ser 'Pop'");
+    }
+    
+    
 }
