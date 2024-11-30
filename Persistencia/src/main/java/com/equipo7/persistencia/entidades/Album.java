@@ -23,16 +23,18 @@ public class Album implements IDocumentable {
     public static final String NOMBRE_COLLECTION = "albumes";
 
     private ObjectId _id;
+    @BsonProperty(value = "nombre")
     private String nombre;
-
     @BsonProperty(value = "fechaLanzamiento")
     private Date fechaLanzamiento;
     @BsonProperty(value="referenciaArtista")
     private ObjectId referenciaArtista;
     @BsonProperty(value = "generoMusical")
     private String generoMusical;
+    @BsonProperty(value = "imagenPortadaUrl")
     private String imagenPortadaUrl;
-    private List<String> canciones;
+    @BsonProperty(value = "canciones")
+    private List<ObjectId> canciones;
 
     /**
      * Constructor vacio por defecto.
@@ -61,7 +63,7 @@ public class Album implements IDocumentable {
      * @param imagenPortadaUrl La URL de la imagen de portada.
      * @param canciones La lista de canciones del álbum.
      */
-    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<ObjectId> canciones) {
         this._id = _id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -70,6 +72,33 @@ public class Album implements IDocumentable {
         this.canciones = canciones;
     }
 
+    public Album(String nombre, Date fechaLanzamiento, String generoMusical, List<ObjectId> canciones) {
+        this.nombre = nombre;
+        this.fechaLanzamiento = fechaLanzamiento;
+        this.generoMusical = generoMusical;
+        this.canciones = canciones;
+    }
+
+    public Album(String nombre, Date fechaLanzamiento, String generoMusical) {
+        this.nombre = nombre;
+        this.fechaLanzamiento = fechaLanzamiento;
+        this.generoMusical = generoMusical;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+
+    public void setReferenciaArtista(ObjectId referenciaArtista) {
+        this.referenciaArtista = referenciaArtista;
+    }
+
+    public ObjectId getReferenciaArtista() {
+        return referenciaArtista;
+    }
+    
+    
+    
     // Métodos getter y setter para los atributos de la clase
 
     /**
@@ -158,7 +187,7 @@ public class Album implements IDocumentable {
      *
      * @return La lista de canciones.
      */
-    public List<String> getCanciones() {
+    public List<ObjectId> getCanciones() {
         return canciones;
     }
 
@@ -167,7 +196,7 @@ public class Album implements IDocumentable {
      *
      * @param canciones La nueva lista de canciones.
      */
-    public void setCanciones(List<String> canciones) {
+    public void setCanciones(List<ObjectId> canciones) {
         this.canciones = canciones;
     }
 

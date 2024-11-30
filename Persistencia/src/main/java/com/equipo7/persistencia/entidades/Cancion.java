@@ -6,25 +6,35 @@
 package com.equipo7.persistencia.entidades;
 
 import org.bson.Document;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 /**
  * Representa la informacion de una cancion de un Album en el sistema
  * @author Saul Neri
  */
 public class Cancion implements IDocumentable {
-
+    
+    public static final String NOMBRE_COLLECTION = "canciones";
+    
+    private ObjectId _id;
+    @BsonProperty(value = "nombre")
     private String nombre;
-    private int minutos;
-    private int segundos;
+    @BsonProperty(value = "idAlbum")
+    private ObjectId idAlbum;
+    
 
     /**
      * Constructor vacio por defecto.
      */
     public Cancion() {
         this.nombre = "";
-        this.minutos = 0;
-        this.segundos = 0;
     }
+
+    public Cancion(ObjectId _id) {
+        this._id = _id;
+    }
+    
 
     /**
      * Constructor con parámetros para crear una canción con los valores proporcionados.
@@ -33,11 +43,32 @@ public class Cancion implements IDocumentable {
      * @param minutos La duración de la canción en minutos.
      * @param segundos La duración de la canción en segundos.
      */
-    public Cancion(String nombre, int minutos, int segundos) {
+    public Cancion(String nombre) {
         this.nombre = nombre;
-        this.minutos = minutos;
-        this.segundos = segundos;
     }
+
+    public Cancion(String nombre, ObjectId idAlbum) {
+        this.nombre = nombre;
+        this.idAlbum = idAlbum;
+    }
+
+    public ObjectId getId() {
+        return _id;
+    }
+
+    public void setId(ObjectId id) {
+        this._id = id;
+    }
+
+    public ObjectId getIdAlbum() {
+        return idAlbum;
+    }
+
+    public void setIdAlbum(ObjectId idAlbum) {
+        this.idAlbum = idAlbum;
+    }
+    
+    
 
     /**
      * Obtiene el nombre de la canción.
@@ -57,44 +88,33 @@ public class Cancion implements IDocumentable {
         this.nombre = nombre;
     }
 
-    /**
-     * Obtiene la duración en minutos de la canción.
-     *
-     * @return La duración en minutos.
-     */
-    public int getMinutos() {
-        return minutos;
-    }
-
-    /**
-     * Establece la duración en minutos de la canción.
-     *
-     * @param minutos La nueva duración en minutos.
-     */
-    public void setMinutos(int minutos) {
-        this.minutos = minutos;
-    }
-
-    /**
-     * Obtiene la duración en segundos de la canción.
-     *
-     * @return La duración en segundos.
-     */
-    public int getSegundos() {
-        return segundos;
-    }
-
-    /**
-     * Establece la duración en segundos de la canción.
-     *
-     * @param segundos La nueva duración en segundos.
-     */
-    public void setSegundos(int segundos) {
-        this.segundos = segundos;
-    }
 
     @Override
     public Document toDocument() {
-        return null;
+        Document doc = new Document();
+        doc.append("nombre", nombre)
+            .append("idAlbum", idAlbum);
+
+        // Si el ID de la canción es no nulo, lo agregamos al documento
+        if (_id != null) {
+            doc.append("_id", _id);
+        }
+
+        return doc;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Cancion { ");
+
+        sb.append("_id=").append(_id != null ? _id.toHexString() : "No especificado").append(", ");
+        sb.append("nombre='").append(nombre != null ? nombre : "No especificado").append("', ");
+        sb.append("idAlbum='").append(idAlbum != null ? idAlbum : "No especificada").append("', ");
+
+        sb.append(" }");
+        return sb.toString();
+    }
+    
+
 }

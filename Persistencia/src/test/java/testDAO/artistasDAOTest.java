@@ -35,7 +35,6 @@ public class artistasDAOTest {
     public void setup() {
         try {
             artistasDAO = ArtistasDAO.getInstance();
-            System.out.println("setup");
         } catch (ConexionException e) {
             fail("Error al conectar con la base de datos: " + e.getMessage());
         }
