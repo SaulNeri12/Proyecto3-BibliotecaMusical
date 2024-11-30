@@ -40,7 +40,7 @@ public class CancionesDAO implements ICancionesDAO {
      */
     private CancionesDAO() throws ConexionException {
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
-        canciones = bibliotecaMusicalBD.getCollection(Cancion.NOMBRE_COLLECTION, Cancion.class);
+        //canciones = bibliotecaMusicalBD.getCollection(Cancion.NOMBRE_COLLECTION, Cancion.class);
         albumes = bibliotecaMusicalBD.getCollection(Album.NOMBRE_COLLECTION, Album.class);
     }
 

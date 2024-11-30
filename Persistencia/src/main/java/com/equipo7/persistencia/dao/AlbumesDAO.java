@@ -17,28 +17,34 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
- * Implementa los metodos de la interfaz IAlbumesDAO para proveer la funcionalidad
- * de la misma
+ * Implementa los metodos de la interfaz IAlbumesDAO para proveer la
+ * funcionalidad de la misma
+ *
  * @author Saul Neri
  */
 public class AlbumesDAO implements IAlbumesDAO {
+
     private static AlbumesDAO instance;
     private MongoDatabase bibliotecaMusicalBD;
     private MongoCollection<Album> albumes;
 
     /**
      * Constructor privado para generacion de instancia unica
-     * @throws ConexionException Si ocurre un error al obtener la coleccion de albumes
+     *
+     * @throws ConexionException Si ocurre un error al obtener la coleccion de
+     * albumes
      */
     private AlbumesDAO() throws ConexionException {
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
-         albumes = bibliotecaMusicalBD.getCollection(Album.NOMBRE_COLLECTION, Album.class);
+        albumes = bibliotecaMusicalBD.getCollection(Album.NOMBRE_COLLECTION, Album.class);
     }
 
     /**
      * Obtiene la instancia unica del DAO de albumes
+     *
      * @return Instancia unica del DAO
-     * @throws ConexionException si ocurre un error al tratar de obtener la instancia
+     * @throws ConexionException si ocurre un error al tratar de obtener la
+     * instancia
      */
     public static AlbumesDAO getInstance() throws ConexionException {
         if (instance == null) {
@@ -52,9 +58,10 @@ public class AlbumesDAO implements IAlbumesDAO {
     public Album obtenerTodosPorNombre(String nombreAlbum) throws DAOException {
         return null;
     }
+
     /**
      * Obtiene el ObjectId de un álbum basado en su nombre.
-     * 
+     *
      * @param nombreAlbum El nombre del álbum.
      * @return El ObjectId del álbum si se encuentra, o null si no existe.
      * @throws DAOException Si ocurre un error en la consulta.
@@ -62,7 +69,7 @@ public class AlbumesDAO implements IAlbumesDAO {
     public ObjectId getObjectId(String nombreAlbum) throws DAOException {
         try {
             Album album = albumes.find(Filters.eq("nombre", nombreAlbum)).first(); // Busca el álbum usando el filtro.
-            
+
             if (album != null) {
                 return album.getId(); // Devuelve el ObjectId desde el POJO.
             }
@@ -81,22 +88,24 @@ public class AlbumesDAO implements IAlbumesDAO {
     public List<Album> obtenerTodos() throws DAOException {
         return List.of();
     }
-    
+
     @Override
     public List<Album> obtenerTodosPorArtista(String nombreArtista) throws DAOException {
         return List.of();
     }
+
     /**
-     * Método para registrar un nuevo álbum en la base de datos y asignarle un ID
-     * automáticamente después de la inserción.
-     * 
+     * Método para registrar un nuevo álbum en la base de datos y asignarle un
+     * ID automáticamente después de la inserción.
+     *
      * @param album El objeto Album a registrar.
      */
+    @Override
     public void registrar(Album album) throws DAOException {
         try {
             // Insertar el álbum en la base de datos
             albumes.insertOne(album);
-            
+
             // Después de la inserción, asignamos el ObjectId generado al objeto Album
             if (album.getId() == null) {
                 // MongoDB genera automáticamente el ObjectId si no existe uno
@@ -112,43 +121,21 @@ public class AlbumesDAO implements IAlbumesDAO {
     public void insercionMasiva() throws DAOException {
 
     }
-    /**
-     * Método para actualizar un álbum en la base de datos.
-     * 
-     * @param album El objeto Album a actualizar.
-     * @throws DAOException Si ocurre un error durante la actualización.
-     */
-    public void actualizar(Album album) throws DAOException {
+
+    public Album obtenerPorId(ObjectId id) throws DAOException {
         try {
-            // Validar que el álbum tiene un ID asignado para poder actualizarlo.
-            if (album.getId() == null) {
-                throw new IllegalArgumentException("El álbum debe tener un ID para poder ser actualizado.");
+            // Busca el álbum por su ObjectId en la colección de álbumes
+            Album album = albumes.find(Filters.eq("_id", id)).first();
+
+            if (album == null) {
+                // Si no se encuentra el álbum, lanzamos una excepción
+                throw new DAOException("No se encontró el álbum con ID: " + id);
             }
 
-            // Usamos la biblioteca de POJOs para actualizar el documento.
-            albumes.replaceOne(
-                Filters.eq("_id", album.getId()), // Filtro por el ID del álbum.
-                album                             // El POJO actualizado se almacena directamente.
-            );
+            return album;
         } catch (Exception e) {
-            // En caso de error, lanzamos una excepción personalizada.
-            throw new DAOException("Error al actualizar el álbum con ID: " + album.getId());
+            // En caso de error, lanzamos una excepción personalizada
+            throw new DAOException("Error al obtener el álbum con ID: " + id + " - " + e.getMessage());
         }
     }
-    public Album obtenerPorId(ObjectId id) throws DAOException {
-    try {
-        // Busca el álbum por su ObjectId en la colección de álbumes
-        Album album = albumes.find(Filters.eq("_id", id)).first();
-
-        if (album == null) {
-            // Si no se encuentra el álbum, lanzamos una excepción
-            throw new DAOException("No se encontró el álbum con ID: " + id);
-        }
-
-        return album;
-    } catch (Exception e) {
-        // En caso de error, lanzamos una excepción personalizada
-        throw new DAOException("Error al obtener el álbum con ID: " + id + " - " + e.getMessage());
-    }
-}
 }

@@ -58,5 +58,12 @@ public interface IAlbumesDAO {
      * @throws DAOException Si ocurre un error durante la operación de inserción masiva en la base de datos.
      */
     public void insercionMasiva() throws DAOException;
+    
+    /**
+     * 
+     * @param album
+     * @throws DAOException 
+     */
+    public void registrar(Album album) throws DAOException;
 
 }

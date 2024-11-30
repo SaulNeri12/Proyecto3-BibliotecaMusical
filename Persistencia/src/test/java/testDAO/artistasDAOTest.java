@@ -41,10 +41,12 @@ public class artistasDAOTest {
     }
     @BeforeEach
     void limpiarBaseDeDatos() throws DAOException, ConexionException {
+        /*
         // Limpiar todos los usuarios antes de cada prueba
         Conexion.getInstance().getBibliotecaMusicalBD()
                 .getCollection("artistas")
                 .deleteMany(new org.bson.Document());
+*/
     }
     @Test
     void testRegistrarUsuario() throws DAOException {

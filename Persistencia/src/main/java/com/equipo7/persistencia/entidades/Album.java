@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
  * Contiene la informacion de un album en el sistema
  * @author Saul Neri
  */
-public class Album implements IDocumentable {
+public class Album {
 
     public static final String NOMBRE_COLLECTION = "albumes";
 
@@ -34,13 +35,13 @@ public class Album implements IDocumentable {
     @BsonProperty(value = "imagenPortadaUrl")
     private String imagenPortadaUrl;
     @BsonProperty(value = "canciones")
-    private List<ObjectId> canciones;
+    private List<String> canciones;
 
     /**
      * Constructor vacio por defecto.
      */
     public Album() {
-        this.canciones = Arrays.asList();
+        this.canciones = new ArrayList<>();
     }
 
     /**
@@ -63,7 +64,7 @@ public class Album implements IDocumentable {
      * @param imagenPortadaUrl La URL de la imagen de portada.
      * @param canciones La lista de canciones del álbum.
      */
-    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<ObjectId> canciones) {
+    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this._id = _id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -72,7 +73,7 @@ public class Album implements IDocumentable {
         this.canciones = canciones;
     }
 
-    public Album(String nombre, Date fechaLanzamiento, String generoMusical, List<ObjectId> canciones) {
+    public Album(String nombre, Date fechaLanzamiento, String generoMusical, List<String> canciones) {
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
         this.generoMusical = generoMusical;
@@ -187,7 +188,7 @@ public class Album implements IDocumentable {
      *
      * @return La lista de canciones.
      */
-    public List<ObjectId> getCanciones() {
+    public List<String> getCanciones() {
         return canciones;
     }
 
@@ -196,15 +197,10 @@ public class Album implements IDocumentable {
      *
      * @param canciones La nueva lista de canciones.
      */
-    public void setCanciones(List<ObjectId> canciones) {
+    public void setCanciones(List<String> canciones) {
         this.canciones = canciones;
     }
 
-
-    @Override
-    public Document toDocument() {
-        return null;
-    }
 
     @Override
     public String toString() {

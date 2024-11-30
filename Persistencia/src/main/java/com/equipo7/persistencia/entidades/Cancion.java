@@ -13,11 +13,11 @@ import org.bson.types.ObjectId;
  * Representa la informacion de una cancion de un Album en el sistema
  * @author Saul Neri
  */
-public class Cancion implements IDocumentable {
+public class Cancion {
     
     public static final String NOMBRE_COLLECTION = "canciones";
     
-    private ObjectId _id;
+    //private ObjectId _id;
     @BsonProperty(value = "nombre")
     private String nombre;
     @BsonProperty(value = "idAlbum")
@@ -26,14 +26,14 @@ public class Cancion implements IDocumentable {
 
     /**
      * Constructor vacio por defecto.
-     */
+     
     public Cancion() {
         this.nombre = "";
     }
 
     public Cancion(ObjectId _id) {
         this._id = _id;
-    }
+    }*/
     
 
     /**
@@ -51,7 +51,7 @@ public class Cancion implements IDocumentable {
         this.nombre = nombre;
         this.idAlbum = idAlbum;
     }
-
+/*
     public ObjectId getId() {
         return _id;
     }
@@ -59,7 +59,7 @@ public class Cancion implements IDocumentable {
     public void setId(ObjectId id) {
         this._id = id;
     }
-
+*/
     public ObjectId getIdAlbum() {
         return idAlbum;
     }
@@ -89,26 +89,13 @@ public class Cancion implements IDocumentable {
     }
 
 
-    @Override
-    public Document toDocument() {
-        Document doc = new Document();
-        doc.append("nombre", nombre)
-            .append("idAlbum", idAlbum);
-
-        // Si el ID de la canción es no nulo, lo agregamos al documento
-        if (_id != null) {
-            doc.append("_id", _id);
-        }
-
-        return doc;
-    }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Cancion { ");
 
-        sb.append("_id=").append(_id != null ? _id.toHexString() : "No especificado").append(", ");
+        //sb.append("_id=").append(_id != null ? _id.toHexString() : "No especificado").append(", ");
         sb.append("nombre='").append(nombre != null ? nombre : "No especificado").append("', ");
         sb.append("idAlbum='").append(idAlbum != null ? idAlbum : "No especificada").append("', ");
 
