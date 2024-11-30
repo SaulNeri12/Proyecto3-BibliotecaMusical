@@ -1,6 +1,5 @@
 package com.equipo7.persistencia.entidades;
 
-import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
