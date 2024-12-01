@@ -83,6 +83,26 @@ public class Album {
         this.generoMusical = generoMusical;
     }
 
+    public Album(String nombre, ObjectId referenciaArtista, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+        this.nombre = nombre;
+        this.referenciaArtista = referenciaArtista;
+        this.generoMusical = generoMusical;
+        this.imagenPortadaUrl = imagenPortadaUrl;
+        this.canciones = canciones;
+    }
+
+    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, ObjectId referenciaArtista, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+        this._id = _id;
+        this.nombre = nombre;
+        this.fechaLanzamiento = fechaLanzamiento;
+        this.referenciaArtista = referenciaArtista;
+        this.generoMusical = generoMusical;
+        this.imagenPortadaUrl = imagenPortadaUrl;
+        this.canciones = canciones;
+    }
+    
+    
+
     public void setId(ObjectId _id) {
         this._id = _id;
     }

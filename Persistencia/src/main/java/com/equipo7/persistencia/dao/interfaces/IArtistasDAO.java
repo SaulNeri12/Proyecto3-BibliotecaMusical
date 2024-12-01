@@ -27,7 +27,7 @@ import org.bson.types.ObjectId;
      * @param artista El objeto Artista que se desea registrar en la base de datos.
      * @return El Artista registrado con su ID generado por la base de datos.
      */
-    void registrar(Artista artista)throws DAOException;
+    ObjectId registrar(Artista artista)throws DAOException;
     
     /**
      * Obtiene todos los artistas que coinciden con los criterios de búsqueda especificados

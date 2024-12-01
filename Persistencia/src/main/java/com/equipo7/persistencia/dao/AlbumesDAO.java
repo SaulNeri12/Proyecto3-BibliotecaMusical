@@ -19,10 +19,10 @@ import java.util.List;
  * Implementación del DAO para manejar la entidad Album en MongoDB.
  */
 public class AlbumesDAO implements IAlbumesDAO {
-
+    private static AlbumesDAO instance;
     private MongoCollection<Album> coleccionAlbumes;
 
-    private static AlbumesDAO instance;
+
     
     private AlbumesDAO() {
         try {
@@ -33,7 +33,6 @@ public class AlbumesDAO implements IAlbumesDAO {
             System.out.println("### no se pudo conectar a la base de datos de mongo [albumDAO]");
         }
     }
-    
     /**
      * 
      * @return 

@@ -81,10 +81,11 @@ public class ArtistasDAO implements IArtistasDAO {
      * establece en null antes de la inserción.
      * 
      * @param artista El objeto Artista que se desea registrar.
+     * @return 
      * @throws DAOException Si ocurre un error durante el registro del artista o si ya existe un artista con el mismo nombre.
      */
     @Override
-    public void registrar(Artista artista) throws DAOException{
+    public ObjectId registrar(Artista artista) throws DAOException{
         if (artista == null) {
             throw new DAOException("No se pudo crear el artista debido a informacion faltante");
         }
@@ -109,6 +110,7 @@ public class ArtistasDAO implements IArtistasDAO {
         } catch (MongoException e) {
             throw new DAOException("No se pudo crear el artista debido a un error, porfavor, intente mas tarde...");
         }
+        return artista.getId();
     }
     /**
      * Verifica si un artista con el nombre proporcionado ya existe en la base de datos.
@@ -172,6 +174,13 @@ public class ArtistasDAO implements IArtistasDAO {
 
         return artistas;
     }
+    public ObjectId agregarArtistaConAlbum(ObjectId idAlbumInicial, Artista artista) {
+        // Agregar el ObjectId del álbum inicial al artista
+        artista.getAlbumes().add(idAlbumInicial);
+        artistas.insertOne(artista);
+        return artista.getId(); // Devolver el ID del artista
+    }
+    
     /**
      * Convierte un documento de base de datos (MongoDB) en un objeto Artista.
      * 
