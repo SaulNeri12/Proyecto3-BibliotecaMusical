@@ -30,7 +30,7 @@ public interface IUsuariosBO {
      * Cambia el nombre de un usuario en el sistema con uno nuevo
      * @param correoElectronico Correo electronico del dueño de la cuenta
      * @param nuevoNombre Nuevo nombre de usuario
-     * @throws DAOException si ocurre un error al cambiar el nombre de usuario
+     * @throws BOException si ocurre un error al cambiar el nombre de usuario
      */
     public void actualizarNombreUsuario(String correoElectronico, String nuevoNombre) throws BOException;
 

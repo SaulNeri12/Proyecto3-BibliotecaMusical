@@ -10,20 +10,21 @@ package com.equipo7.negocio.dtos;
  */
 import java.util.Date;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 public class AlbumDTO {
-    private String id;
+    private ObjectId id;
     private String nombre;
     private Date fechaLanzamiento;
     private String generoMusical;
     private String imagenPortadaUrl;
     private List<String> canciones;
-    private String referenciaArtista;
+    private ObjectId referenciaArtista;
 
     // Constructores
     public AlbumDTO() { }
 
-    public AlbumDTO(String id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones, String referenciaArtista) {
+    public AlbumDTO(ObjectId id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones, ObjectId referenciaArtista) {
         this.id = id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -33,11 +34,11 @@ public class AlbumDTO {
         this.referenciaArtista = referenciaArtista;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -81,11 +82,11 @@ public class AlbumDTO {
         this.canciones = canciones;
     }
 
-    public String getReferenciaArtista() {
+    public ObjectId getReferenciaArtista() {
         return referenciaArtista;
     }
 
-    public void setReferenciaArtista(String referenciaArtista) {
+    public void setReferenciaArtista(ObjectId referenciaArtista) {
         this.referenciaArtista = referenciaArtista;
     }
 

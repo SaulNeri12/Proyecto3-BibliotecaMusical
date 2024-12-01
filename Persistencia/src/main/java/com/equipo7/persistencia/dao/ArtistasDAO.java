@@ -16,6 +16,8 @@ import excepciones.DAOException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -44,9 +46,13 @@ public class ArtistasDAO implements IArtistasDAO {
      * 
      * @throws ConexionException Si ocurre un error al obtener la conexión.
      */
-    public ArtistasDAO() throws ConexionException {
-        this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
-        artistas = bibliotecaMusicalBD.getCollection("artistas", Artista.class);
+    private ArtistasDAO() {
+        try {
+            this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
+            artistas = bibliotecaMusicalBD.getCollection("artistas", Artista.class);
+        } catch (ConexionException ex) {
+            System.out.println("### %s".formatted(ex.getMessage()));
+        }
     }
     /**
      * Obtiene la instancia única de ArtistasDAO.

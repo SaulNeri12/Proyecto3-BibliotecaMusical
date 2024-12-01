@@ -20,6 +20,37 @@ import org.bson.types.ObjectId;
  */
 public class CancionesBO implements ICancionesBO {
 
+    @Override
+    public List<CancionDTO> obtenerTodas() throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<CancionDTO> obtenerPorNombre(String nombre) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public CancionDTO obtenerPorId(String id) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void agregarCancion(CancionDTO cancionDTO) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<CancionDTO> obtenerPorGenero(String genero) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<CancionDTO> obtenerPorAlbum(String idAlbum) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    /*
     private final CancionesDAO cancionesDAO;
 
     public CancionesBO(CancionesDAO cancionesDAO) {
@@ -64,5 +95,5 @@ public class CancionesBO implements ICancionesBO {
         return cancionesDAO.obtenerCancionesPorAlbum(new ObjectId(idAlbum)).stream()
                 .map(CancionConvertidor::aDTO)
                 .collect(Collectors.toList());
-    }
+    }*/
 }
