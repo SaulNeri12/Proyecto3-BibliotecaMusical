@@ -111,8 +111,8 @@ public class CancionesDAO implements ICancionesDAO {
             canciones.insertOne(cancion);
 
             // Asegurar que la canción tenga un ID
-            if (cancion.getId() == null) {
-                cancion.setId(canciones.find(Filters.eq("nombre", cancion.getNombre())).first().getId());
+            if (cancion.getIdAlbum() == null) {
+                cancion.setIdAlbum(canciones.find(Filters.eq("nombre", cancion.getNombre())).first().getIdAlbum());
             }
         } catch (Exception e) {
             throw new DAOException("Error al crear la canción: " + e.getMessage());

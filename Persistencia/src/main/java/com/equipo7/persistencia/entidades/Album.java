@@ -5,12 +5,9 @@
 
 package com.equipo7.persistencia.entidades;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.bson.codecs.pojo.annotations.BsonProperty;
