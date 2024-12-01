@@ -4,9 +4,20 @@
  */
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.presentacion.gui.paneles.AlbumPanel;
+import com.equipo7.presentacion.gui.paneles.ArtistaPanel;
+import com.equipo7.presentacion.gui.paneles.PanelResultadosFlexible;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
- * @author nerix
+ * @author neri
  */
 public class FrmFavoritos extends javax.swing.JFrame {
 
@@ -15,6 +26,31 @@ public class FrmFavoritos extends javax.swing.JFrame {
      */
     public FrmFavoritos() {
         initComponents();
+
+        this.resultadosArtistasPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.resultadosArtistasScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        
+        this.prepararEstilo();
+        this.cargarResultados();
+    }
+
+    private void cargarResultados() {
+        for (int i = 0; i < 20; i++) {
+            AlbumPanel pnl = new AlbumPanel();
+            this.resultadosArtistasPanel.add(pnl);
+        }
+        
+        this.resultadosArtistasPanel.repaint();
+        this.resultadosArtistasScrollPane.revalidate();
+        this.resultadosArtistasScrollPane.repaint();
+    }
+
+    /**
+     * Carga los ultimos ajustes de estilo del sistema
+     */
+    private void prepararEstilo() {
+        //UIManager.put("Button.arc", 999);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     /**
@@ -27,8 +63,10 @@ public class FrmFavoritos extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        resultadosScrollPane = new javax.swing.JScrollPane();
         volverBtn = new javax.swing.JButton();
+        resultadosArtistasScrollPane = new javax.swing.JScrollPane();
+        resultadosArtistasPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(20, 20, 20));
@@ -36,9 +74,32 @@ public class FrmFavoritos extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("Resultados");
 
-        resultadosScrollPane.setMinimumSize(new java.awt.Dimension(370, 280));
-
         volverBtn.setText("ICONO FLECHA");
+        volverBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverBtnActionPerformed(evt);
+            }
+        });
+
+        resultadosArtistasScrollPane.setMaximumSize(new java.awt.Dimension(400, 250));
+        resultadosArtistasScrollPane.setMinimumSize(new java.awt.Dimension(400, 250));
+        resultadosArtistasScrollPane.setPreferredSize(new java.awt.Dimension(400, 250));
+
+        javax.swing.GroupLayout resultadosArtistasPanelLayout = new javax.swing.GroupLayout(resultadosArtistasPanel);
+        resultadosArtistasPanel.setLayout(resultadosArtistasPanelLayout);
+        resultadosArtistasPanelLayout.setHorizontalGroup(
+            resultadosArtistasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1133, Short.MAX_VALUE)
+        );
+        resultadosArtistasPanelLayout.setVerticalGroup(
+            resultadosArtistasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 244, Short.MAX_VALUE)
+        );
+
+        resultadosArtistasScrollPane.setViewportView(resultadosArtistasPanel);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setText("Artistas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -47,29 +108,36 @@ public class FrmFavoritos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(volverBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(resultadosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 962, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(volverBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(resultadosArtistasScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1139, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(volverBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(resultadosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resultadosArtistasScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(556, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_volverBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -108,7 +176,9 @@ public class FrmFavoritos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane resultadosScrollPane;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel resultadosArtistasPanel;
+    private javax.swing.JScrollPane resultadosArtistasScrollPane;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 }

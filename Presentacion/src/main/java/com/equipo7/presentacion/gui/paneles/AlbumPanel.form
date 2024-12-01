@@ -10,13 +10,14 @@
       </Border>
     </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[220, 250]"/>
+      <Dimension value="[150, 220]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[220, 250]"/>
+      <Dimension value="[150, 220]"/>
     </Property>
+    <Property name="name" type="java.lang.String" value="" noResource="true"/>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[220, 250]"/>
+      <Dimension value="[150, 220]"/>
     </Property>
   </Properties>
   <AuxValues>
@@ -34,12 +35,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="generoLbl" max="32767" attributes="0"/>
-                  <Component id="imagenPanel" alignment="1" max="-2" attributes="0"/>
-                  <Component id="nombreArtistaLbl" alignment="1" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="imagenPanel" max="32767" attributes="0"/>
+                  <Component id="nombreArtistaLbl" alignment="0" pref="186" max="32767" attributes="0"/>
+                  <Component id="generoLbl" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -50,10 +51,10 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="imagenPanel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="nombreArtistaLbl" min="-2" pref="32" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="nombreArtistaLbl" min="-2" pref="44" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="generoLbl" pref="25" max="32767" attributes="0"/>
+              <Component id="generoLbl" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -63,25 +64,25 @@
     <Container class="javax.swing.JPanel" name="imagenPanel">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[208, 155]"/>
+          <Dimension value="[186, 145]"/>
         </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[208, 155]"/>
+          <Dimension value="[186, 145]"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[208, 155]"/>
+          <Dimension value="[186, 145]"/>
         </Property>
       </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="208" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="155" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="145" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -89,7 +90,7 @@
     <Component class="javax.swing.JLabel" name="nombreArtistaLbl">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="15" style="1"/>
+          <Font name="Segoe UI" size="14" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="Nombre del Album"/>
