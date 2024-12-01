@@ -12,11 +12,11 @@ import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.bo.interfaces.IArtistaBO;
 import com.equipo7.negocio.dtos.convertidor.ArtistaConvertidor;
 
-
 import com.equipo7.persistencia.dao.interfaces.IArtistasDAO;
 import com.equipo7.persistencia.dao.ArtistasDAO;
 
 import com.equipo7.negocio.excepciones.BOException;
+import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import com.equipo7.persistencia.entidades.Artista;
 
@@ -29,14 +29,23 @@ import java.util.stream.Collectors;
  */
 public class ArtistaBO implements IArtistaBO {
 
-    private final IArtistasDAO artistasDAO;
+    private IArtistasDAO artistasDAO;
+    private static ArtistaBO instance;
 
-    public ArtistaBO() throws BOException {
+    private ArtistaBO() {
         try {
             this.artistasDAO = ArtistasDAO.getInstance();
-        } catch (Exception e) {
-            throw new BOException("Error inicializando ArtistaBO");
+        } catch (ConexionException e) {
+            System.out.println("### %s".formatted(e.getMessage()));
         }
+    }
+
+    public static ArtistaBO getInstance() {
+        if (instance == null) {
+            instance = new ArtistaBO();
+        }
+
+        return instance;
     }
 
     @Override
@@ -50,28 +59,27 @@ public class ArtistaBO implements IArtistaBO {
     }
 
     @Override
-public List<ArtistaDTO> obtenerArtistasPorFiltro(String filtroBusqueda) throws BOException {
-    try {
-        // Usar el Builder de FiltroBusqueda para inicializar la instancia
-        FiltroBusqueda filtro = new FiltroBusqueda.Builder()
-            .setCoincidenciaBusqueda(filtroBusqueda) // Configurar el filtro de coincidencia
-            .build();
+    public List<ArtistaDTO> obtenerArtistasPorFiltro(String filtroBusqueda) throws BOException {
+        try {
+            // Usar el Builder de FiltroBusqueda para inicializar la instancia
+            FiltroBusqueda filtro = new FiltroBusqueda.Builder()
+                    .setCoincidenciaBusqueda(filtroBusqueda) // Configurar el filtro de coincidencia
+                    .build();
 
-        // Obtener los artistas que cumplen con el filtro
-        List<Artista> artistas = artistasDAO.obtenerTodosPorFiltro(filtro);
+            // Obtener los artistas que cumplen con el filtro
+            List<Artista> artistas = artistasDAO.obtenerTodosPorFiltro(filtro);
 
-        // Convertir las entidades Artista a ArtistaDTO
-        return artistas.stream()
-            .map(ArtistaConvertidor::entidadADto)
-            .collect(Collectors.toList());
-    } catch (DAOException e) {
-        throw new BOException("Error obteniendo artistas por filtro");
+            // Convertir las entidades Artista a ArtistaDTO
+            return artistas.stream()
+                    .map(ArtistaConvertidor::entidadADto)
+                    .collect(Collectors.toList());
+        } catch (DAOException e) {
+            throw new BOException("Error obteniendo artistas por filtro");
+        }
     }
-}
-
 
     @Override
     public boolean existeArtista(String nombre) throws BOException {
         return artistasDAO.artistaExiste(nombre);
     }
-    }
+}

@@ -20,16 +20,30 @@ import java.util.List;
  */
 public class AlbumesDAO implements IAlbumesDAO {
 
-    private final MongoCollection<Album> coleccionAlbumes;
+    private MongoCollection<Album> coleccionAlbumes;
 
-    public AlbumesDAO() throws DAOException {
+    private static AlbumesDAO instance;
+    
+    private AlbumesDAO() {
         try {
             coleccionAlbumes = Conexion.getInstance()
                     .getBibliotecaMusicalBD()
                     .getCollection("albumes", Album.class);
         } catch (ConexionException e) {
-            throw new DAOException("Error al conectar con la base de datos");
+            System.out.println("### no se pudo conectar a la base de datos de mongo [albumDAO]");
         }
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public static AlbumesDAO getInstance() {
+        if (instance == null) {
+            instance = new AlbumesDAO();
+        }
+        
+        return instance;
     }
 
     @Override
