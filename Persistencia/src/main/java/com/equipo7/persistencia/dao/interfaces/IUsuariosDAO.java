@@ -41,7 +41,7 @@ public interface IUsuariosDAO {
      * contraseña u otros datos asociados.
      * Si el usuario no existe o si ocurre un error durante la actualización, se lanza una excepción.
      *
-     * @deprecated
+     * 
      * @param usuario El objeto `Usuario` que contiene los datos actualizados del usuario.
      * @throws DAOException Si ocurre un error durante la actualización (por ejemplo, si no se encuentra el usuario o hay un problema de conexión a la base de datos).
      */

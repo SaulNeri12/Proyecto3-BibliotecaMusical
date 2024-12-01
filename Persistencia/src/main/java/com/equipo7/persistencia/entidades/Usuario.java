@@ -10,6 +10,7 @@ import org.bson.types.ObjectId;
 
 import java.time.Instant;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  * Representa la informacion de un usuario en el sistema
@@ -20,11 +21,17 @@ public class Usuario implements IDocumentable {
     public static final String NOMBRE_COLLECTION = "usuarios";
 
     private ObjectId _id;
+    @BsonProperty(value = "nombre")
     private String nombreUsuario;
+    @BsonProperty(value = "email")
     private String correoElectronico;
+    @BsonProperty(value = "contrasena")
     private String contrasena;
+    @BsonProperty(value = "imagenURL")
     private String imagenPerfil;
+    @BsonProperty(value = "fechaRegistro")
     private Instant fechaRegistro;
+    @BsonProperty(value = "generosRestringidos")
     private List<String> generosRestringidos;
 
     /**

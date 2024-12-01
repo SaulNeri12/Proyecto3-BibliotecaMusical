@@ -5,33 +5,40 @@
 
 package com.equipo7.persistencia.entidades;
 
-import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import java.time.Instant;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  * Contiene la informacion de un album en el sistema
  * @author Saul Neri
  */
-public class Album implements IDocumentable {
+public class Album {
 
     public static final String NOMBRE_COLLECTION = "albumes";
 
     private ObjectId _id;
+    @BsonProperty(value = "nombre")
     private String nombre;
-    private Instant fechaLanzamiento;
+    @BsonProperty(value = "fechaLanzamiento")
+    private Date fechaLanzamiento;
+    @BsonProperty(value="referenciaArtista")
+    private ObjectId referenciaArtista;
+    @BsonProperty(value = "generoMusical")
     private String generoMusical;
+    @BsonProperty(value = "imagenPortadaUrl")
     private String imagenPortadaUrl;
+    @BsonProperty(value = "canciones")
     private List<String> canciones;
 
     /**
      * Constructor vacio por defecto.
      */
     public Album() {
-        this.canciones = Arrays.asList();
+        this.canciones = new ArrayList<>();
     }
 
     /**
@@ -54,7 +61,7 @@ public class Album implements IDocumentable {
      * @param imagenPortadaUrl La URL de la imagen de portada.
      * @param canciones La lista de canciones del álbum.
      */
-    public Album(ObjectId _id, String nombre, Instant fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this._id = _id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -63,6 +70,33 @@ public class Album implements IDocumentable {
         this.canciones = canciones;
     }
 
+    public Album(String nombre, Date fechaLanzamiento, String generoMusical, List<String> canciones) {
+        this.nombre = nombre;
+        this.fechaLanzamiento = fechaLanzamiento;
+        this.generoMusical = generoMusical;
+        this.canciones = canciones;
+    }
+
+    public Album(String nombre, Date fechaLanzamiento, String generoMusical) {
+        this.nombre = nombre;
+        this.fechaLanzamiento = fechaLanzamiento;
+        this.generoMusical = generoMusical;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+
+    public void setReferenciaArtista(ObjectId referenciaArtista) {
+        this.referenciaArtista = referenciaArtista;
+    }
+
+    public ObjectId getReferenciaArtista() {
+        return referenciaArtista;
+    }
+    
+    
+    
     // Métodos getter y setter para los atributos de la clase
 
     /**
@@ -97,7 +131,7 @@ public class Album implements IDocumentable {
      *
      * @return La fecha de lanzamiento del álbum.
      */
-    public Instant getFechaLanzamiento() {
+    public Date getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
@@ -106,7 +140,7 @@ public class Album implements IDocumentable {
      *
      * @param fechaLanzamiento La nueva fecha de lanzamiento del álbum.
      */
-    public void setFechaLanzamiento(Instant fechaLanzamiento) {
+    public void setFechaLanzamiento(Date fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 
@@ -164,11 +198,6 @@ public class Album implements IDocumentable {
         this.canciones = canciones;
     }
 
-
-    @Override
-    public Document toDocument() {
-        return null;
-    }
 
     @Override
     public String toString() {
