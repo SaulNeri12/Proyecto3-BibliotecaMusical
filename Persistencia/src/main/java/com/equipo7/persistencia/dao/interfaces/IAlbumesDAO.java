@@ -7,63 +7,63 @@ package com.equipo7.persistencia.dao.interfaces;
 import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
-import org.bson.types.ObjectId;
-
 import java.util.List;
 
 /**
- * Define las operaciones necesarias para interactuar
- * @author neri
+ * Interfaz para definir los métodos del DAO de álbumes.
+ *
+ * @author
  */
 public interface IAlbumesDAO {
-    /**
-     * Obtiene todos los álbumes cuyo nombre coincide con el proporcionado.
-     *
-     * @param nombreAlbum El nombre del álbum que se desea buscar.
-     * @return Una lista de álbumes que coinciden con el nombre proporcionado.
-     * @throws DAOException Si ocurre un error durante la operación de obtención de datos desde la base de datos.
-     */
-    public Album obtenerTodosPorNombre(String nombreAlbum) throws DAOException;
 
     /**
-     * Obtiene todos los álbumes que coinciden con los criterios proporcionados en el filtro de búsqueda.
-     * El filtro puede incluir propiedades como el nombre del álbum, el artista, el año, entre otros.
+     * Obtiene una lista de todos los álbumes en la base de datos.
      *
-     * @param filtroBusqueda El objeto que contiene los criterios de búsqueda para filtrar los álbumes.
-     * @return Una lista de álbumes que cumplen con los criterios del filtro de búsqueda.
-     * @throws DAOException Si ocurre un error durante la operación de obtención de datos desde la base de datos.
+     * @return Lista de álbumes.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public List<Album> obtenerTodosPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException;
+    List<Album> obtenerTodos() throws DAOException;
 
     /**
-     * Obtiene todos los álbumes disponibles en la base de datos sin aplicar ningún filtro.
+     * Obtiene una lista de álbumes que coinciden con un nombre dado.
      *
-     * @return Una lista de todos los álbumes en la base de datos.
-     * @throws DAOException Si ocurre un error durante la operación de obtención de datos desde la base de datos.
+     * @param nombreAlbum El nombre del álbum para buscar.
+     * @return Lista de álbumes que coinciden con el nombre.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public List<Album> obtenerTodos() throws DAOException;
+    List<Album> obtenerTodosPorNombre(String nombreAlbum) throws DAOException;
 
     /**
-     * Obtiene todos los álbumes de un artista específico.
+     * Obtiene una lista de álbumes que coinciden con los criterios de búsqueda especificados.
      *
-     * @param nombreArtista El nombre del artista cuyos álbumes se desean obtener.
-     * @return Una lista de álbumes del artista especificado.
-     * @throws DAOException Si ocurre un error durante la operación de obtención de datos desde la base de datos.
+     * @param filtroBusqueda El objeto con los criterios de búsqueda.
+     * @return Lista de álbumes que cumplen con los criterios.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public List<Album> obtenerTodosPorArtista(String nombreArtista) throws DAOException;
+    List<Album> obtenerTodosPorFiltro(FiltroBusqueda filtroBusqueda) throws DAOException;
 
     /**
-     * Realiza una inserción masiva de registros en la base de datos para agregar varios álbumes de una sola vez.
+     * Obtiene una lista de álbumes asociados a un artista.
      *
-     * @throws DAOException Si ocurre un error durante la operación de inserción masiva en la base de datos.
+     * @param nombreArtista El nombre del artista.
+     * @return Lista de álbumes asociados al artista.
+     * @throws DAOException Si ocurre un error durante la operación.
      */
-    public void insercionMasiva() throws DAOException;
-    
-    /**
-     * 
-     * @param album
-     * @throws DAOException 
-     */
-    public void registrar(Album album) throws DAOException;
+    List<Album> obtenerTodosPorArtista(String nombreArtista) throws DAOException;
 
+    /**
+     * Registra un nuevo álbum en la base de datos.
+     *
+     * @param album El álbum a registrar.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    void registrar(Album album) throws DAOException;
+
+    /**
+     * Realiza la inserción masiva de álbumes en la base de datos.
+     *
+     * @param albumesLista Lista de álbumes a insertar.
+     * @throws DAOException Si ocurre un error durante la operación.
+     */
+    void insercionMasiva(List<Album> albumesLista) throws DAOException;
 }
