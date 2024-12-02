@@ -38,8 +38,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="imagenPanel" max="32767" attributes="0"/>
-                  <Component id="nombreArtistaLbl" alignment="0" pref="186" max="32767" attributes="0"/>
+                  <Component id="imagenContainerPanel" pref="0" max="32767" attributes="0"/>
+                  <Component id="nombreArtistaLbl" alignment="0" pref="136" max="32767" attributes="0"/>
                   <Component id="generoLbl" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -50,7 +50,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="imagenPanel" min="-2" max="-2" attributes="0"/>
+              <Component id="imagenContainerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="nombreArtistaLbl" min="-2" pref="32" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -61,7 +61,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="imagenPanel">
+    <Container class="javax.swing.JPanel" name="imagenContainerPanel">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[186, 145]"/>

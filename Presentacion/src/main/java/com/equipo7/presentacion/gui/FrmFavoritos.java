@@ -7,7 +7,6 @@ package com.equipo7.presentacion.gui;
 import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.paneles.AlbumPanel;
 import com.equipo7.presentacion.gui.paneles.ArtistaPanel;
-import com.equipo7.presentacion.gui.paneles.PanelResultadosFlexible;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.Box;
@@ -46,7 +45,7 @@ public class FrmFavoritos extends javax.swing.JFrame {
 
     private void cargarResultados() {
         for (int i = 0; i < 20; i++) {
-            AlbumPanel pnl = new AlbumPanel();
+            ArtistaPanel pnl = new ArtistaPanel();
             this.resultadosArtistasPanel.add(pnl);
             this.resultadosArtistasPanel.add(Box.createRigidArea(new Dimension(10, 0))); // espacio
         }
