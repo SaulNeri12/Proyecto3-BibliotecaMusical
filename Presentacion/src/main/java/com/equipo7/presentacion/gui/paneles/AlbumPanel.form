@@ -2,13 +2,6 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
-    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-        <LineBorder roundedCorners="true">
-          <Color PropertyName="color" blue="cc" green="cc" red="cc" type="rgb"/>
-        </LineBorder>
-      </Border>
-    </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[150, 220]"/>
     </Property>
@@ -38,9 +31,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="imagenPanel" max="32767" attributes="0"/>
-                  <Component id="nombreArtistaLbl" alignment="0" pref="186" max="32767" attributes="0"/>
-                  <Component id="generoLbl" alignment="0" max="32767" attributes="0"/>
+                  <Component id="imagenContainerPanel" pref="138" max="32767" attributes="0"/>
+                  <Component id="nombreAlbumLbl" alignment="0" pref="138" max="32767" attributes="0"/>
+                  <Component id="anioPublicacionLbl" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -50,18 +43,18 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="imagenPanel" min="-2" max="-2" attributes="0"/>
+              <Component id="imagenContainerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="nombreArtistaLbl" min="-2" pref="32" max="-2" attributes="0"/>
+              <Component id="nombreAlbumLbl" min="-2" pref="26" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="generoLbl" min="-2" pref="24" max="-2" attributes="0"/>
+              <Component id="anioPublicacionLbl" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="imagenPanel">
+    <Container class="javax.swing.JPanel" name="imagenContainerPanel">
       <Properties>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[186, 145]"/>
@@ -87,17 +80,20 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Component class="javax.swing.JLabel" name="nombreArtistaLbl">
+    <Component class="javax.swing.JLabel" name="nombreAlbumLbl">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="Nombre del Album"/>
         <Property name="verticalAlignment" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="generoLbl">
+    <Component class="javax.swing.JLabel" name="anioPublicacionLbl">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>

@@ -14,6 +14,7 @@ import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  * Implementación del DAO para manejar la entidad Album en MongoDB.
@@ -23,7 +24,7 @@ public class AlbumesDAO implements IAlbumesDAO {
     private MongoCollection<Album> coleccionAlbumes;
 
     private static AlbumesDAO instance;
-    
+
     private AlbumesDAO() {
         try {
             coleccionAlbumes = Conexion.getInstance()
@@ -33,16 +34,16 @@ public class AlbumesDAO implements IAlbumesDAO {
             System.out.println("### no se pudo conectar a la base de datos de mongo [albumDAO]");
         }
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public static AlbumesDAO getInstance() {
         if (instance == null) {
             instance = new AlbumesDAO();
         }
-        
+
         return instance;
     }
 
@@ -106,4 +107,34 @@ public class AlbumesDAO implements IAlbumesDAO {
             throw new DAOException("Error en la inserción masiva de álbumes");
         }
     }
+
+    @Override
+    public Album obtenerPorId(ObjectId id) throws DAOException {
+        try {
+            return coleccionAlbumes.find(Filters.eq("_id", id)).first();
+        } catch (Exception e) {
+            throw new DAOException("Error en la inserción masiva de álbumes");
+        }
+    }
+
+    @Override
+    public List<Album> obtenerPorArtista(ObjectId id) throws DAOException {
+        try {
+            Bson filtro = Filters.eq("referenciaArtista", id);
+            return coleccionAlbumes.find(filtro).into(new ArrayList<>());
+        } catch (Exception e) {
+            throw new DAOException("Error al buscar álbumes por artista");
+        }
+    }
+    
+    @Override
+    public List<String> obtenerGenerosMusicales() throws DAOException {
+    try {
+        // Ejecutar la consulta 'distinct' para obtener géneros únicos
+        return coleccionAlbumes.distinct("generoMusical", String.class).into(new ArrayList<>());
+    } catch (Exception e) {
+        // Manejar posibles errores de la base de datos
+        throw new DAOException("Error al obtener los géneros musicales");
+    }
+}
 }

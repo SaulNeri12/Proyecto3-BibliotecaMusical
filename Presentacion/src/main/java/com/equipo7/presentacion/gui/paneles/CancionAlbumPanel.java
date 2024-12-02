@@ -5,7 +5,7 @@ package com.equipo7.presentacion.gui.paneles;
  *
  * @author neri
  */
-public class CancionAlbum extends javax.swing.JPanel {
+public class CancionAlbumPanel extends javax.swing.JPanel {
 
     //private IUsuariosBO usuariosBO;
     
@@ -14,7 +14,7 @@ public class CancionAlbum extends javax.swing.JPanel {
     /**
      * Creates new form CancionAlbum
      */
-    public CancionAlbum() {
+    public CancionAlbumPanel() {
         initComponents();
     }
 

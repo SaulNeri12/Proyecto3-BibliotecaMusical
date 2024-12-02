@@ -8,23 +8,26 @@ package com.equipo7.negocio.dtos;
  *
  * @author caarl
  */
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 
 public class AlbumDTO {
+
     private ObjectId id;
     private String nombre;
-    private Date fechaLanzamiento;
+    private Instant fechaLanzamiento;
     private String generoMusical;
     private String imagenPortadaUrl;
     private List<String> canciones;
     private ObjectId referenciaArtista;
 
     // Constructores
-    public AlbumDTO() { }
+    public AlbumDTO() {
+    }
 
-    public AlbumDTO(ObjectId id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones, ObjectId referenciaArtista) {
+    public AlbumDTO(ObjectId id, String nombre, Instant fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones, ObjectId referenciaArtista) {
         this.id = id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -50,11 +53,11 @@ public class AlbumDTO {
         this.nombre = nombre;
     }
 
-    public Date getFechaLanzamiento() {
+    public Instant getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
-    public void setFechaLanzamiento(Date fechaLanzamiento) {
+    public void setFechaLanzamiento(Instant fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 
@@ -90,5 +93,17 @@ public class AlbumDTO {
         this.referenciaArtista = referenciaArtista;
     }
 
-    
+    @Override
+    public String toString() {
+        return "AlbumDTO{"
+                + "id=" + id
+                + ", nombre='" + nombre + '\''
+                + ", fechaLanzamiento=" + fechaLanzamiento
+                + ", generoMusical='" + generoMusical + '\''
+                + ", imagenPortadaUrl='" + imagenPortadaUrl + '\''
+                + ", canciones=" + canciones
+                + ", referenciaArtista=" + referenciaArtista
+                + '}';
+    }
+
 }
