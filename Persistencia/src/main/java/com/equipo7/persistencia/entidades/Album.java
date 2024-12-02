@@ -69,6 +69,8 @@ public class Album {
         this.imagenPortadaUrl = imagenPortadaUrl;
         this.canciones = canciones;
     }
+    
+    
 
     public Album(String nombre, Date fechaLanzamiento, String generoMusical, List<String> canciones) {
         this.nombre = nombre;
@@ -90,6 +92,8 @@ public class Album {
         this.imagenPortadaUrl = imagenPortadaUrl;
         this.canciones = canciones;
     }
+    
+    
 
     public Album(ObjectId _id, String nombre, Date fechaLanzamiento, ObjectId referenciaArtista, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this._id = _id;

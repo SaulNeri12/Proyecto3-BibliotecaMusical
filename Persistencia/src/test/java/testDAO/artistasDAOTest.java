@@ -4,7 +4,6 @@
  */
 package testDAO;
 
-import com.equipo7.persistencia.conexion.Conexion;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.AlbumesDAO;
 import com.equipo7.persistencia.dao.ArtistasDAO;
@@ -12,19 +11,15 @@ import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.Artista;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 

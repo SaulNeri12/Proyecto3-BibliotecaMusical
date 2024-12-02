@@ -9,16 +9,12 @@ import com.equipo7.persistencia.conexion.Conexion;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.interfaces.ICancionesDAO;
 import com.equipo7.persistencia.entidades.Album;
-import com.equipo7.persistencia.entidades.Cancion;
-import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import excepciones.DAOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.bson.types.ObjectId;
 
 /**
      * Constructor privado para generación de instancia única
