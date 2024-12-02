@@ -6,14 +6,20 @@ package com.equipo7.presentacion.gui;
 
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.presentacion.gui.estilo.Estilo;
+import com.equipo7.presentacion.gui.filtro.FiltroAvanzadoDlg;
 import com.equipo7.presentacion.gui.paneles.AlbumPanel;
 import com.equipo7.presentacion.gui.paneles.ArtistaPanel;
+import com.equipo7.presentacion.gui.paneles.CancionPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
@@ -24,6 +30,7 @@ import javax.swing.border.LineBorder;
 public class FrmPantallaPrincipal extends javax.swing.JFrame {
 
     private UsuarioDTO usuario;
+    private JFrame _this;
     
     /**
      * Creates new form FrmPantallaPrincipal
@@ -31,26 +38,52 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     public FrmPantallaPrincipal(UsuarioDTO usuario)  {
         initComponents();
         
+        _this = this; // ????
+        
         this.usuario = usuario;
         
         this.setLocationRelativeTo(null);
         this.setTitle("Biblioteca Musical");
         
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Deshabilitar el cierre predeterminado
+
+        // Añadir un WindowListener para gestionar el cierre
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        _this,
+                        "¿Estás seguro de que quieres salir?",
+                        "Confirmar salida",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    _this.dispose(); // Cierra el frame si se confirma
+                }
+            }
+        });
         
+        // NOTE: NO MODIFICAR
         this.resultadosArtistasPanel.setLayout(new BoxLayout(this.resultadosArtistasPanel, BoxLayout.X_AXIS));
         this.resultadosArtistasScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.resultadosArtistasScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         this.resultadosArtistasScrollPane.setPreferredSize(new Dimension(1100, 250));
         
+        // NOTE: NO MODIFICAR
         this.resultadosAlbumsPanel.setLayout(new BoxLayout(this.resultadosAlbumsPanel, BoxLayout.X_AXIS));
         this.resultadosAlbumsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.resultadosAlbumsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         this.resultadosAlbumsScrollPane.setPreferredSize(new Dimension(1100, 250));
         
+        this.resultadosCancionesPanel.setLayout(new BoxLayout(this.resultadosCancionesPanel, BoxLayout.Y_AXIS));
+        this.cancionesScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        this.cancionesScrollPane.setPreferredSize(new Dimension(1100, 64));
         
         this.cargarResultados();
         
-        this.prepararEstiloCampos();
     }
     
     private void cargarResultados() {
@@ -72,6 +105,12 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
             this.resultadosAlbumsPanel.add(pnl);
         }
         
+        for (int i = 0; i < 20; i++) {
+            CancionPanel pnl = new CancionPanel();
+            this.resultadosCancionesPanel.add(pnl);
+        }
+        
+        
         /*
         this.resultadosAlbumsPanel.revalidate();
         this.resultadosAlbumsPanel.repaint();
@@ -80,21 +119,6 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         
         this.revalidate();
         this.repaint();
-    }
-    
-    private void prepararEstiloCampos() {
-        this.barraBusquedaTextField.addFocusListener(new FocusListener() {
-                    @Override
-                    public void focusGained(FocusEvent e) {
-                        barraBusquedaTextField.setBorder(new LineBorder(Estilo.colorPrimario, 1)); // Borde azul cuando tiene el foco
-                    }
-
-                    @Override
-                    public void focusLost(FocusEvent e) {
-                        barraBusquedaTextField.setBorder(new LineBorder(Color.GRAY, 1)); // Restaurar el borde original cuando pierde el foco
-                    }
-                });
-
     }
 
     /**
@@ -120,6 +144,9 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         resultadosAlbumsScrollPane = new javax.swing.JScrollPane();
         resultadosAlbumsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        cancionesScrollPane = new javax.swing.JScrollPane();
+        resultadosCancionesPanel = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,7 +160,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         );
         misFavoritosPanelLayout.setVerticalGroup(
             misFavoritosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGap(0, 911, Short.MAX_VALUE)
         );
 
         favoritosScrollPane.setViewportView(misFavoritosPanel);
@@ -242,6 +269,25 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Artistas");
 
+        cancionesScrollPane.setBorder(null);
+
+        javax.swing.GroupLayout resultadosCancionesPanelLayout = new javax.swing.GroupLayout(resultadosCancionesPanel);
+        resultadosCancionesPanel.setLayout(resultadosCancionesPanelLayout);
+        resultadosCancionesPanelLayout.setHorizontalGroup(
+            resultadosCancionesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1023, Short.MAX_VALUE)
+        );
+        resultadosCancionesPanelLayout.setVerticalGroup(
+            resultadosCancionesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 307, Short.MAX_VALUE)
+        );
+
+        cancionesScrollPane.setViewportView(resultadosCancionesPanel);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 21)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Canciones");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -254,19 +300,18 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(favoritosScrollPane))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(resultadosArtistasScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resultadosAlbumsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(cancionesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(resultadosAlbumsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1029, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(277, 277, 277)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(829, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,26 +325,27 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(favoritosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(resultadosArtistasScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
                         .addComponent(resultadosAlbumsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 288, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(cancionesScrollPane)))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(83, 83, 83)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(851, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void busquedaFiltradaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaFiltradaBtnActionPerformed
-        
+
+        FiltroAvanzadoDlg dlg = new FiltroAvanzadoDlg(this, true);
+        dlg.setVisible(true);
         // 1. mostrar frame de filtro
         // 2. ejecutar la busqueda por filtro
         // 3. anadir un panel al frame o panel de resultados para cada tipo de elemento (cancion, albumes, artistas)
@@ -317,10 +363,12 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField barraBusquedaTextField;
     private javax.swing.JButton busquedaFiltradaBtn;
+    private javax.swing.JScrollPane cancionesScrollPane;
     private javax.swing.JScrollPane favoritosScrollPane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel misFavoritosPanel;
@@ -328,6 +376,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane resultadosAlbumsScrollPane;
     private javax.swing.JPanel resultadosArtistasPanel;
     private javax.swing.JScrollPane resultadosArtistasScrollPane;
+    private javax.swing.JPanel resultadosCancionesPanel;
     private javax.swing.JButton verPerfilBtn;
     // End of variables declaration//GEN-END:variables
 }
