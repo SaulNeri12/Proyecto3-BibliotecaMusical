@@ -64,8 +64,6 @@ public class AlbumPanel extends javax.swing.JPanel {
         
         // Agrega el panel personalizado a este contenedor
         this.imagenContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
-        
-        
     }
 
     private void actualizaMiniaturaPortada() {

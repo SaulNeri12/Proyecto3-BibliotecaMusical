@@ -4,7 +4,7 @@
  */
 package com.equipo7.presentacion.gui;
 
-import static Recursos.imageUploader.loadImageWithFileChooser;
+import static com.equipo7.presentacion.gui.imageloader.ImageUploader.loadImageWithFileChooser;
 import com.equipo7.negocio.bo.UsuariosBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.equipo7.negocio.dtos.UsuarioDTO;

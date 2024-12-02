@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Recursos;
+package com.equipo7.presentacion.gui.imageloader;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import javax.swing.JFileChooser;
  *
  * @author gaspa
  */
-public class imageUploader {
+public class ImageUploader {
     // Método para cargar la imagen usando JFileChooser y devolverla como arreglo de bytes
     public static byte[] loadImageWithFileChooser() {
         JFileChooser fileChooser = new JFileChooser();
