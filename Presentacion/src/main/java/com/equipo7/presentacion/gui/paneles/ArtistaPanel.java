@@ -98,7 +98,6 @@ public class ArtistaPanel extends javax.swing.JPanel {
         nombreArtistaLbl = new javax.swing.JLabel();
         generoLbl = new javax.swing.JLabel();
 
-        setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         setMaximumSize(new java.awt.Dimension(150, 220));
         setMinimumSize(new java.awt.Dimension(150, 220));
         setName(""); // NOI18N
@@ -120,6 +119,7 @@ public class ArtistaPanel extends javax.swing.JPanel {
         );
 
         nombreArtistaLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nombreArtistaLbl.setForeground(new java.awt.Color(255, 255, 255));
         nombreArtistaLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         nombreArtistaLbl.setText("Nombre del Album");
         nombreArtistaLbl.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -135,8 +135,8 @@ public class ArtistaPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                    .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, Short.MAX_VALUE)
+                    .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                     .addComponent(generoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -146,7 +146,7 @@ public class ArtistaPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(generoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())

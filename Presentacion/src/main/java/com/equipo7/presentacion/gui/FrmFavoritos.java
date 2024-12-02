@@ -31,7 +31,7 @@ public class FrmFavoritos extends javax.swing.JFrame {
         this.resultadosArtistasPanel.setLayout(new BoxLayout(this.resultadosArtistasPanel, BoxLayout.X_AXIS));
         this.resultadosArtistasScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.resultadosArtistasScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        this.resultadosAlbumsScrollPane.setPreferredSize(new Dimension(1100, 250));
+        this.resultadosArtistasScrollPane.setPreferredSize(new Dimension(1100, 250));
         
         this.resultadosAlbumsPanel.setLayout(new BoxLayout(this.resultadosAlbumsPanel, BoxLayout.X_AXIS));
         this.resultadosAlbumsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
