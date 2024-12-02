@@ -5,6 +5,7 @@
 
 package com.equipo7.persistencia.entidades;
 
+import java.time.Instant;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Album {
     @BsonProperty(value = "nombre")
     private String nombre;
     @BsonProperty(value = "fechaLanzamiento")
-    private Date fechaLanzamiento;
+    private Instant fechaLanzamiento;
     @BsonProperty(value="referenciaArtista")
     private ObjectId referenciaArtista;
     @BsonProperty(value = "generoMusical")
@@ -61,7 +62,7 @@ public class Album {
      * @param imagenPortadaUrl La URL de la imagen de portada.
      * @param canciones La lista de canciones del álbum.
      */
-    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+    public Album(ObjectId _id, String nombre, Instant fechaLanzamiento, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this._id = _id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -70,14 +71,14 @@ public class Album {
         this.canciones = canciones;
     }
 
-    public Album(String nombre, Date fechaLanzamiento, String generoMusical, List<String> canciones) {
+    public Album(String nombre, Instant fechaLanzamiento, String generoMusical, List<String> canciones) {
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
         this.generoMusical = generoMusical;
         this.canciones = canciones;
     }
 
-    public Album(String nombre, Date fechaLanzamiento, String generoMusical) {
+    public Album(String nombre, Instant fechaLanzamiento, String generoMusical) {
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
         this.generoMusical = generoMusical;
@@ -131,7 +132,7 @@ public class Album {
      *
      * @return La fecha de lanzamiento del álbum.
      */
-    public Date getFechaLanzamiento() {
+    public Instant getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
@@ -140,7 +141,7 @@ public class Album {
      *
      * @param fechaLanzamiento La nueva fecha de lanzamiento del álbum.
      */
-    public void setFechaLanzamiento(Date fechaLanzamiento) {
+    public void setFechaLanzamiento(Instant fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 

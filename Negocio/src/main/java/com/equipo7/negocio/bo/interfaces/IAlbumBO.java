@@ -11,6 +11,7 @@ import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
 
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  * Interface para la lógica de negocio relacionada con álbumes.
@@ -20,6 +21,11 @@ import java.util.List;
  */
 public interface IAlbumBO {
     
+    AlbumDTO obtenerPorId(ObjectId id) throws BOException;
+    
+    public List<AlbumDTO> obtenerTodosPorArtista(ObjectId idArtista) throws BOException; 
+    
+    public List<String> obtenerGenerosMusicales() throws BOException;
     
     /**
      * Obtiene una lista de todos los álbumes en la base de datos.

@@ -8,6 +8,7 @@ import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  * Interfaz para definir los métodos del DAO de álbumes.
@@ -16,6 +17,12 @@ import java.util.List;
  */
 public interface IAlbumesDAO {
 
+    Album obtenerPorId(ObjectId id) throws DAOException;
+    
+    List<Album> obtenerPorArtista(ObjectId id) throws DAOException;
+    
+    public List<String> obtenerGenerosMusicales() throws DAOException;
+    
     /**
      * Obtiene una lista de todos los álbumes en la base de datos.
      *

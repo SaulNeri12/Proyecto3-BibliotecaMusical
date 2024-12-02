@@ -17,6 +17,8 @@ import excepciones.DAOException;
 import org.bson.types.ObjectId;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class AlbumBO implements IAlbumBO {
@@ -107,4 +109,33 @@ public class AlbumBO implements IAlbumBO {
         }
     }
 
+    @Override
+    public AlbumDTO obtenerPorId(ObjectId id) throws BOException {
+        try {
+            return AlbumConvertidor.entidadADto(this.albumesDAO.obtenerPorId(id));
+        } catch (DAOException ex) {
+            throw new BOException("Error al obtener la informacion del album");
+        }
+    }
+
+    @Override
+    public List<AlbumDTO> obtenerTodosPorArtista(ObjectId idArtista) throws BOException {
+        try {
+            return this.albumesDAO.obtenerPorArtista(idArtista)
+                    .stream()
+                    .map(AlbumConvertidor::entidadADto)
+                    .collect(Collectors.toList());
+        } catch (DAOException ex) {
+            throw new BOException("Error al obtener los albumes del artista");
+        }
+    }
+
+    @Override
+    public List<String> obtenerGenerosMusicales() throws BOException {
+        try {
+            return this.albumesDAO.obtenerGenerosMusicales();
+        } catch (DAOException ex) {
+            throw new BOException("Error al obtener los generos musicales en el sistema");
+        }
+    }
 }
