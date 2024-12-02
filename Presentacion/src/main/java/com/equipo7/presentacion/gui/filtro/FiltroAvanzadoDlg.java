@@ -22,6 +22,8 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
+        this.setLocationRelativeTo(null);
+        
         this.prepararEstilo();
         this.cargarGenerosMusicales();
         this.cargarConfiguracionFiltro();
@@ -123,9 +125,11 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tituloFiltroLbl.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        tituloFiltroLbl.setForeground(new java.awt.Color(255, 255, 255));
         tituloFiltroLbl.setText("Filtro Avanzado");
 
         nombreBusquedaLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nombreBusquedaLbl.setForeground(new java.awt.Color(255, 255, 255));
         nombreBusquedaLbl.setText("Nombre de la canción, album o artista");
 
         busquedaTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -135,8 +139,12 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
         });
 
         generoTituloLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        generoTituloLbl.setForeground(new java.awt.Color(255, 255, 255));
         generoTituloLbl.setText("Género");
 
+        listaGeneros.setBorder(null);
+        listaGeneros.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        listaGeneros.setForeground(new java.awt.Color(255, 255, 255));
         listaGeneros.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -145,8 +153,10 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
         jScrollPane1.setViewportView(listaGeneros);
 
         visualizacionTituloLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        visualizacionTituloLbl.setForeground(new java.awt.Color(255, 255, 255));
         visualizacionTituloLbl.setText("Visualización de elementos");
 
+        mostrarAlbumesChkBox.setForeground(new java.awt.Color(255, 255, 255));
         mostrarAlbumesChkBox.setText("Mostrar Albumes");
         mostrarAlbumesChkBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +164,7 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
             }
         });
 
+        mostrarArtistasChkBox.setForeground(new java.awt.Color(255, 255, 255));
         mostrarArtistasChkBox.setText("Mostrar Artistas");
         mostrarArtistasChkBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,6 +172,7 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
             }
         });
 
+        mostrarCancionesChkBox.setForeground(new java.awt.Color(255, 255, 255));
         mostrarCancionesChkBox.setText("Mostrar Canciones");
         mostrarCancionesChkBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +180,8 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
             }
         });
 
+        aceptarBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        aceptarBtn.setForeground(new java.awt.Color(255, 255, 255));
         aceptarBtn.setText("Aceptar");
         aceptarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +189,8 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
             }
         });
 
+        cancelarBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cancelarBtn.setForeground(new java.awt.Color(255, 255, 255));
         cancelarBtn.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -211,11 +227,11 @@ public class FiltroAvanzadoDlg extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(cancelarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aceptarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(aceptarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(tituloFiltroLbl)
-                        .addGap(111, 111, 111))))
+                        .addGap(103, 103, 103))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
