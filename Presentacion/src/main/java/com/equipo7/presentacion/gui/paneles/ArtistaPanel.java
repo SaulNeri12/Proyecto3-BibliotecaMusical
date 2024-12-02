@@ -1,6 +1,7 @@
 package com.equipo7.presentacion.gui.paneles;
 
 //import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.presentacion.gui.FrmArtista;
 import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
 import com.equipo7.presentacion.gui.imageloader.ImageResizer;
 import java.awt.BorderLayout;
@@ -102,6 +103,11 @@ public class ArtistaPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(150, 220));
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(150, 220));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         imagenContainerPanel.setMaximumSize(new java.awt.Dimension(186, 145));
         imagenContainerPanel.setMinimumSize(new java.awt.Dimension(186, 145));
@@ -152,6 +158,11 @@ public class ArtistaPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        FrmArtista frm = new FrmArtista(null);
+        frm.setVisible(true);
+    }//GEN-LAST:event_formMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
