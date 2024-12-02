@@ -32,8 +32,8 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="imagenContainerPanel" pref="138" max="32767" attributes="0"/>
-                  <Component id="nombreArtistaLbl" alignment="0" pref="138" max="32767" attributes="0"/>
-                  <Component id="generoLbl" alignment="0" max="32767" attributes="0"/>
+                  <Component id="nombreAlbumLbl" alignment="0" pref="138" max="32767" attributes="0"/>
+                  <Component id="anioPublicacionLbl" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -45,9 +45,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="imagenContainerPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="nombreArtistaLbl" min="-2" pref="26" max="-2" attributes="0"/>
+              <Component id="nombreAlbumLbl" min="-2" pref="26" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="generoLbl" min="-2" pref="24" max="-2" attributes="0"/>
+              <Component id="anioPublicacionLbl" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -80,7 +80,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Component class="javax.swing.JLabel" name="nombreArtistaLbl">
+    <Component class="javax.swing.JLabel" name="nombreAlbumLbl">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
@@ -93,7 +93,7 @@
         <Property name="verticalAlignment" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="generoLbl">
+    <Component class="javax.swing.JLabel" name="anioPublicacionLbl">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="12" style="1"/>

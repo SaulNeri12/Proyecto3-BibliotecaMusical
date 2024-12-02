@@ -44,25 +44,26 @@ public class FrmFavoritos extends javax.swing.JFrame {
     }
 
     private void cargarResultados() {
+        /*
         for (int i = 0; i < 20; i++) {
             ArtistaPanel pnl = new ArtistaPanel();
             this.resultadosArtistasPanel.add(pnl);
             this.resultadosArtistasPanel.add(Box.createRigidArea(new Dimension(10, 0))); // espacio
         }
 
-        /*
+        
         this.resultadosArtistasPanel.revalidate();
         this.resultadosArtistasPanel.repaint();
         this.resultadosArtistasScrollPane.revalidate();
         this.resultadosArtistasScrollPane.repaint();
-*/
+
         
         for (int i = 0; i < 20; i++) {
             AlbumPanel pnl = new AlbumPanel();
             this.resultadosAlbumsPanel.add(pnl);
         }
         
-        /*
+        
         this.resultadosAlbumsPanel.revalidate();
         this.resultadosAlbumsPanel.repaint();
         this.resultadosAlbumsScrollPane.revalidate();

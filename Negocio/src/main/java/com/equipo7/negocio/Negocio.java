@@ -48,11 +48,7 @@ public class Negocio {
             } catch (BOException e) {
             throw new RuntimeException(e);
             }*/
-        try {
             albumesBO = AlbumBO.getInstance();
-        } catch (DAOException ex) {
-            Logger.getLogger(Negocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         try {
             System.out.println(albumesBO.obtenerTodosPorArtista(new ObjectId("674e04da8e53417fe824d093")));

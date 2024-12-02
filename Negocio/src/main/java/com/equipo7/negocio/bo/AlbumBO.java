@@ -27,12 +27,12 @@ public class AlbumBO implements IAlbumBO {
     private final AlbumesDAO albumesDAO;
 
     // Constructor privado para evitar instanciación directa
-    private AlbumBO() throws DAOException {
+    private AlbumBO() {
         this.albumesDAO = AlbumesDAO.getInstance();
     }
 
     // Método estático para obtener la instancia única
-    public static synchronized AlbumBO getInstance() throws DAOException {
+    public static synchronized AlbumBO getInstance() {
         if (instancia == null) {
             instancia = new AlbumBO();
         }

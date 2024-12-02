@@ -37,13 +37,13 @@ public class Persistencia {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
-        /*
+        
         Artista artista = new Artista();
         artista.setNombreArtista("Kendrick Lamar ");
         artista.setTipo("Solista");
         artista.setDescripcion("Kendrick Lamar es un rapero, compositor y productor estadounidense, considerado uno de los artistas más influyentes y talentosos de su generación. Nació el 17 de junio de 1987 en Compton, California, un área conocida por su conexión con la cultura del hip-hop y su historia de tensiones sociales.");
         artista.setGeneroMusical("Hip-Hop");
-        artista.setImagenURL("https://acortar.link/yimUoJ");
+        artista.setImagenURL("https://acortar.link/6YxRuK");
         
         try {
             artistasDAO.registrar(artista);
@@ -100,7 +100,7 @@ public class Persistencia {
             System.out.println(albumesDAO.obtenerPorArtista(artista.getId()));
         } catch (DAOException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         
         // obtener artistas por nombre
         try {

@@ -40,11 +40,11 @@ public class FrmArtista extends javax.swing.JFrame {
     }
     
     private void cargarResultados() {
-        
+        /*
         for (int i = 0; i < 20; i++) {
             AlbumPanel pnl = new AlbumPanel();
             this.resultadosAlbumsPanel.add(pnl);
-        }
+        }*/
         
         this.revalidate();
         this.repaint();

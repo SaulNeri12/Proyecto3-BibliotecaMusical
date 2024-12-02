@@ -1,6 +1,7 @@
 package com.equipo7.presentacion.gui.paneles;
 
 //import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.presentacion.gui.FrmArtista;
 import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
 import com.equipo7.presentacion.gui.imageloader.ImageResizer;
@@ -22,16 +23,18 @@ public class ArtistaPanel extends javax.swing.JPanel {
     private ImageIcon imagen; // Atributo para almacenar la imagen
     private JPanel imagenPanel;
     
-    //private ArtistaDTO artistaDTO;
+    private ArtistaDTO artistaDTO;
     
     private static final int MINIATURA_WIDTH = 150;
     private static final int MINIATURA_HEIGHT = 150;
     
-    public ArtistaPanel() {
+    public ArtistaPanel(ArtistaDTO artista) {
         initComponents();
 
+        this.artistaDTO = artista;
+        
         // se cargara con la imagen del objeto interno de artista.
-        AsyncImageLoader.loadImageAsync("https://acortar.link/yimUoJ", (ImageIcon image) -> {
+        AsyncImageLoader.loadImageAsync(artista.getImagenURL(), (ImageIcon image) -> {
             SwingUtilities.invokeLater(() -> {
                 imagen = image;
                 imagen = ImageResizer.resizeImageIcon(imagen, MINIATURA_WIDTH, MINIATURA_HEIGHT);
@@ -67,6 +70,8 @@ public class ArtistaPanel extends javax.swing.JPanel {
         // Agrega el panel personalizado a este contenedor
         this.imagenContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
         
+        this.nombreArtistaLbl.setText(artista.getNombreArtista());
+        this.generoLbl.setText(artista.getGeneroMusical());
         
     }
 

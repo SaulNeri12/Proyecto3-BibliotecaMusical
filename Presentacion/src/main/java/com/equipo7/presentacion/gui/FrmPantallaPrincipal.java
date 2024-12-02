@@ -4,7 +4,14 @@
  */
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.bo.AlbumBO;
+import com.equipo7.negocio.bo.ArtistaBO;
+import com.equipo7.negocio.bo.interfaces.IAlbumBO;
+import com.equipo7.negocio.bo.interfaces.IArtistaBO;
+import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.negocio.excepciones.BOException;
 import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.filtro.FiltroAvanzadoDlg;
 import com.equipo7.presentacion.gui.paneles.AlbumPanel;
@@ -16,6 +23,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -31,6 +40,9 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
 
     private UsuarioDTO usuario;
     private JFrame _this;
+    
+    private IAlbumBO albumBO = AlbumBO.getInstance();
+    private IArtistaBO artistaBO = ArtistaBO.getInstance();
     
     /**
      * Creates new form FrmPantallaPrincipal
@@ -87,11 +99,35 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     }
     
     private void cargarResultados() {
+        
+        try {
+            // cargar artistas:
+            for (ArtistaDTO artista: this.artistaBO.obtenerTodos()) {
+                ArtistaPanel panel = new ArtistaPanel(artista);
+                this.resultadosArtistasPanel.add(panel);
+            }
+            
+        } catch (BOException ex) {
+            Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         try {
+            // cargar artistas:
+            for (AlbumDTO album: this.albumBO.obtenerTodos()) {
+                AlbumPanel panel = new AlbumPanel(album);
+                this.resultadosAlbumsPanel.add(panel);
+            }
+            
+        } catch (BOException ex) {
+            Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
         for (int i = 0; i < 20; i++) {
             ArtistaPanel pnl = new ArtistaPanel();
             this.resultadosArtistasPanel.add(pnl);
             this.resultadosArtistasPanel.add(Box.createRigidArea(new Dimension(10, 0))); // espacio
-        }
+        }*/
 
         /*
         this.resultadosArtistasPanel.revalidate();
@@ -99,7 +135,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.resultadosArtistasScrollPane.revalidate();
         this.resultadosArtistasScrollPane.repaint();
 
-        */
+        
         for (int i = 0; i < 20; i++) {
             AlbumPanel pnl = new AlbumPanel();
             this.resultadosAlbumsPanel.add(pnl);
@@ -111,7 +147,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         }
         
         
-        /*
+        
         this.resultadosAlbumsPanel.revalidate();
         this.resultadosAlbumsPanel.repaint();
         this.resultadosAlbumsScrollPane.revalidate();
