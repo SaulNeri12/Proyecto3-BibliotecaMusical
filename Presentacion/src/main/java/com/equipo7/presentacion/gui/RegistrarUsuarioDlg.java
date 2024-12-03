@@ -33,15 +33,18 @@ public class RegistrarUsuarioDlg extends JFrame {
      * Creates new form RegistrarUsuarioDlg
      */
     public RegistrarUsuarioDlg() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.getContentPane().setBackground(new Color(0x10, 0x10, 0x10));
+    this.setUndecorated(true); // Quita los bordes y la barra de título antes de inicializar los componentes
+    initComponents();
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza el frame para ocupar toda la pantalla
+    this.setLocationRelativeTo(null);
+    this.setResizable(false);
+    this.getContentPane().setBackground(new Color(0x10, 0x10, 0x10));
 
-        this.prepararEstilo();
-        this.prepararFuentes();
-        this.prepararHelpers();
-    }
+    this.prepararEstilo();
+    this.prepararFuentes();
+    this.prepararHelpers();
+}
+
 
     /**
      * Asigna las fuentes de letra correspondientes a los distintos componentes
@@ -204,10 +207,10 @@ public class RegistrarUsuarioDlg extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

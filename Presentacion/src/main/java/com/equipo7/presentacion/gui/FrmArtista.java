@@ -41,15 +41,15 @@ public class FrmArtista extends javax.swing.JFrame {
         initComponents();
         
         this.artista = artista;
-        
-         // se cargara con la url de la imagen de portada del album...
-        AsyncImageLoader.loadImageAsync(this.artista.getImagenURL(), (ImageIcon image) -> {
-            SwingUtilities.invokeLater(() -> {
-                imagenArtista = image;
-                imagenArtista = ImageResizer.resizeImageIcon(imagenArtista, MINIATURA_WIDTH, MINIATURA_HEIGHT);
-                actualizaMiniaturaPortada();
-            });
-        });
+//        
+//         // se cargara con la url de la imagen de portada del album...
+//        AsyncImageLoader.loadImageAsync(this.artista.getImagenURL(), (ImageIcon image) -> {
+//            SwingUtilities.invokeLater(() -> {
+//                imagenArtista = image;
+//                imagenArtista = ImageResizer.resizeImageIcon(imagenArtista, MINIATURA_WIDTH, MINIATURA_HEIGHT);
+////                actualizaMiniaturaPortada();
+//            });
+//        });
         
         // Define el panel personalizado
         imagenPanel = new JPanel() {
