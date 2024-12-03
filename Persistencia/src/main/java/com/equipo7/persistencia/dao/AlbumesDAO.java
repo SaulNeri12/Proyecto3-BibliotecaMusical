@@ -20,6 +20,7 @@ import org.bson.types.ObjectId;
  * Implementación del DAO para manejar la entidad Album en MongoDB.
  */
 public class AlbumesDAO implements IAlbumesDAO {
+
     private static AlbumesDAO instance;
     private MongoCollection<Album> coleccionAlbumes;
 
@@ -32,7 +33,7 @@ public class AlbumesDAO implements IAlbumesDAO {
             System.out.println("### no se pudo conectar a la base de datos de mongo [albumDAO]");
         }
     }
-  
+
     /**
      *
      * @return
@@ -124,15 +125,15 @@ public class AlbumesDAO implements IAlbumesDAO {
             throw new DAOException("Error al buscar álbumes por artista");
         }
     }
-    
+
     @Override
     public List<String> obtenerGenerosMusicales() throws DAOException {
-    try {
-        // Ejecutar la consulta 'distinct' para obtener géneros únicos
-        return coleccionAlbumes.distinct("generoMusical", String.class).into(new ArrayList<>());
-    } catch (Exception e) {
-        // Manejar posibles errores de la base de datos
-        throw new DAOException("Error al obtener los géneros musicales");
+        try {
+            // Ejecutar la consulta 'distinct' para obtener géneros únicos
+            return coleccionAlbumes.distinct("generoMusical", String.class).into(new ArrayList<>());
+        } catch (Exception e) {
+            // Manejar posibles errores de la base de datos
+            throw new DAOException("Error al obtener los géneros musicales");
+        }
     }
 }
-

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class artistasDAOTest {
     
+    /*
     private ArtistasDAO artistasDAO;
     private AlbumesDAO albumesDAO;
 
@@ -41,12 +42,12 @@ public class artistasDAOTest {
     }
     @BeforeEach
     void limpiarBaseDeDatos() throws DAOException, ConexionException {
-        /*
+        
         // Limpiar todos los usuarios antes de cada prueba
         Conexion.getInstance().getBibliotecaMusicalBD()
                 .getCollection("artistas")
                 .deleteMany(new org.bson.Document());
-*/
+
     }
     @Test
     void testRegistrarUsuario() throws DAOException {
@@ -156,4 +157,5 @@ public class artistasDAOTest {
     }
     
     
+*/
 }

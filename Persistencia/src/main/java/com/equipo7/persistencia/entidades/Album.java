@@ -96,7 +96,7 @@ public class Album {
     
     
 
-    public Album(ObjectId _id, String nombre, Date fechaLanzamiento, ObjectId referenciaArtista, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
+    public Album(ObjectId _id, String nombre, Instant fechaLanzamiento, ObjectId referenciaArtista, String generoMusical, String imagenPortadaUrl, List<String> canciones) {
         this._id = _id;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;

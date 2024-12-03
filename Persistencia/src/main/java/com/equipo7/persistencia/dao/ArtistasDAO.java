@@ -111,7 +111,6 @@ public class ArtistasDAO implements IArtistasDAO {
         } catch (MongoException e) {
             throw new DAOException("No se pudo crear el artista debido a un error, porfavor, intente mas tarde...");
         }
-        return artista.getId();
     }
 
     /**
