@@ -18,7 +18,7 @@ public class MainCambiarNombreUsuario {
 
     public static void main(String[] args) {
         // Configuración inicial: simular un usuario en PerfilUsuario
-        UsuarioDTO usuarioActual = new UsuarioDTO("UsuarioActual", "usuario@correo.com", "Contrasena123");
+        UsuarioDTO usuarioActual = new UsuarioDTO("juan.perez", "juan.perez@example.com", "Contrasena123");
         PerfilUsuario.setUsuario(usuarioActual);
 
         // Mostrar el nombre de usuario actual

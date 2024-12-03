@@ -19,7 +19,7 @@ public class MainCambiarContrasena {
 
     public static void main(String[] args) {
         // Configuración inicial: simular un usuario en PerfilUsuario
-        UsuarioDTO usuarioActual = new UsuarioDTO("UsuarioActual", "usuario@correo.com", "Contrasena123");
+        UsuarioDTO usuarioActual = new UsuarioDTO("UsuarioActual", "juan.perez@example.com", "Contrasena123");
         PerfilUsuario.setUsuario(usuarioActual);
 
         // Nueva contraseña
