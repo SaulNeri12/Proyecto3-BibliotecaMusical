@@ -37,7 +37,6 @@ public interface IArtistasDAO {
      * @return El Artista registrado con su ID generado por la base de datos.
      */
     void registrar(Artista artista) throws DAOException;
-
     /**
      * Obtiene todos los artistas que coinciden con los criterios de búsqueda
      * especificados en el filtro proporcionado.

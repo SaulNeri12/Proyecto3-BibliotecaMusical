@@ -111,6 +111,7 @@ public class ArtistasDAO implements IArtistasDAO {
         } catch (MongoException e) {
             throw new DAOException("No se pudo crear el artista debido a un error, porfavor, intente mas tarde...");
         }
+        return artista.getId();
     }
 
     /**
@@ -178,7 +179,14 @@ public class ArtistasDAO implements IArtistasDAO {
 
         return artistas;
     }
-
+      
+    public ObjectId agregarArtistaConAlbum(ObjectId idAlbumInicial, Artista artista) {
+        // Agregar el ObjectId del álbum inicial al artista
+        artista.getAlbumes().add(idAlbumInicial);
+        artistas.insertOne(artista);
+        return artista.getId(); // Devolver el ID del artista
+    }
+      
     /**
      * Convierte un documento de base de datos (MongoDB) en un objeto Artista.
      *
