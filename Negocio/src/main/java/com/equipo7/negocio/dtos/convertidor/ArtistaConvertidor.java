@@ -29,6 +29,10 @@ public class ArtistaConvertidor {
         a.setImagenURL(artista.getImagenURL());
         a.setReferenciasAlbumes(artista.getAlbumes());
         a.setTipo(artista.getTipo());
+        
+        if (artista.getIntegrantes() != null) {
+            a.setIntegrantes(artista.getIntegrantes().stream().map(IntegranteConvertidor::entidadADto).collect(Collectors.toList()));
+        }
 
         return a;
     }
@@ -48,6 +52,11 @@ public class ArtistaConvertidor {
         artista.setAlbumes(dto.getReferenciasAlbumes());
         artista.setTipo(dto.getTipo());
 
+        if (dto.getIntegrantes() != null) {
+            artista.setIntegrantes(dto.getIntegrantes().stream().map(IntegranteConvertidor::dtoAEntidad).collect(Collectors.toList()));
+        }
+        
+        
         return artista;
     }
 }

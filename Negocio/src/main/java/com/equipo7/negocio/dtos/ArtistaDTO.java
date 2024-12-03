@@ -23,9 +23,11 @@ public class ArtistaDTO {
     private String generoMusical;
     private List<ObjectId> referenciasAlbumes;
     private String imagenURL;
+    private List<IntegranteDTO> integrantes;
 
     // Constructor vacío
-    public ArtistaDTO() {}
+    public ArtistaDTO() {
+    }
 
     // Constructor completo
     public ArtistaDTO(ObjectId _id, String nombreArtista, String descripcion, String tipo, String generoMusical, List<ObjectId> referenciasAlbumes) {
@@ -98,7 +100,33 @@ public class ArtistaDTO {
     public void setImagenURL(String imagenURL) {
         this.imagenURL = imagenURL;
     }
-    
-    
-    
+
+    /**
+     * @return the integrantes
+     */
+    public List<IntegranteDTO> getIntegrantes() {
+        return integrantes;
+    }
+
+    /**
+     * @param integrantes the integrantes to set
+     */
+    public void setIntegrantes(List<IntegranteDTO> integrantes) {
+        this.integrantes = integrantes;
+    }
+
+    @Override
+    public String toString() {
+        return "ArtistaDTO{"
+                + "_id=" + _id
+                + ", nombreArtista='" + nombreArtista + '\''
+                + ", descripcion='" + descripcion + '\''
+                + ", tipo='" + tipo + '\''
+                + ", generoMusical='" + generoMusical + '\''
+                + ", referenciasAlbumes=" + (referenciasAlbumes != null ? referenciasAlbumes.toString() : "[]")
+                + ", imagenURL='" + imagenURL + '\''
+                + ", integrantes=" + (integrantes != null ? integrantes.toString() : "[]")
+                + '}';
+    }
+
 }

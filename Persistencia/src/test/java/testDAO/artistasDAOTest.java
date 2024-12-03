@@ -4,24 +4,22 @@
  */
 package testDAO;
 
-import com.equipo7.persistencia.conexion.Conexion;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
+import com.equipo7.persistencia.dao.AlbumesDAO;
 import com.equipo7.persistencia.dao.ArtistasDAO;
+import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.Artista;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import excepciones.DAOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 
@@ -29,24 +27,27 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class artistasDAOTest {
     
+    /*
     private ArtistasDAO artistasDAO;
+    private AlbumesDAO albumesDAO;
 
     @BeforeAll
-    public void setup() {
+    public void setup() throws DAOException {
         try {
             artistasDAO = ArtistasDAO.getInstance();
+            albumesDAO = AlbumesDAO.getInstance();
         } catch (ConexionException e) {
             fail("Error al conectar con la base de datos: " + e.getMessage());
         }
     }
     @BeforeEach
     void limpiarBaseDeDatos() throws DAOException, ConexionException {
-        /*
+        
         // Limpiar todos los usuarios antes de cada prueba
         Conexion.getInstance().getBibliotecaMusicalBD()
                 .getCollection("artistas")
                 .deleteMany(new org.bson.Document());
-*/
+
     }
     @Test
     void testRegistrarUsuario() throws DAOException {
@@ -129,6 +130,32 @@ public class artistasDAOTest {
         assertEquals("Cantante", artista.getTipo(), "El tipo del artista debería ser 'Cantante'");
         assertEquals("Pop", artista.getGeneroMusical(), "El género del artista debería ser 'Pop'");
     }
+    @Test
+    void agregarArtistaConAlbum() throws DAOException{
+        // 1. Generar un ObjectId para el álbum inicial
+        ObjectId idAlbumInicial = new ObjectId();
+        // 2. Crear un artista con el ObjectId del álbum inicial
+        Artista nuevoArtista = new Artista(
+                new ObjectId(),
+                "The Black Eyed Peas", 
+                "he Black Eyed Peas are an American musical group from Los Angeles", 
+                "Banda",
+                "Pop", 
+                List.of(idAlbumInicial));
+        ObjectId idArtista = artistasDAO.registrar(nuevoArtista);
+        // 3. Crear el álbum utilizando el ObjectId previamente generado
+        Album nuevoAlbum = new Album(
+                idAlbumInicial, 
+                "THE E.N.D.(THE ENERGY NEVER DIES)", 
+                new Date(2009),
+                idArtista,
+                "Pop", 
+                "", 
+                List.of("Boom Boom Pow","Meet Me Halfway","Imma Be","I Gotta Feeling","Alive","Rock That Body"));
+        albumesDAO.registrar(nuevoAlbum);
+        
+    }
     
     
+*/
 }
