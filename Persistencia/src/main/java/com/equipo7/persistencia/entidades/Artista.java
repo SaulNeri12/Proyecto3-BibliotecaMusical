@@ -34,6 +34,8 @@ public class Artista implements IDocumentable{
     private String tipo;
     @BsonProperty(value = "genero")
     private String generoMusical;
+    @BsonProperty(value = "imagenURL")
+    private String imagenURL;
     @BsonProperty(value = "referenciasAlbumes")
     private List<ObjectId> referenciasAlbumes;
 
@@ -93,11 +95,6 @@ public class Artista implements IDocumentable{
         this.tipo = tipo;
         this.generoMusical = generoMusical;
     }
-    
-    
-    
-    
-    
 
     /**
      * Obtiene el nombre del artista.
@@ -159,7 +156,7 @@ public class Artista implements IDocumentable{
      * @return La lista de álbumes del artista.
      */
     public List<ObjectId> getAlbumes() {
-        return referenciasAlbumes;
+        return this.referenciasAlbumes;
     }
 
     /**
@@ -181,7 +178,7 @@ public class Artista implements IDocumentable{
         sb.append("nombreArtista='").append(nombreArtista != null ? nombreArtista : "No especificado").append("', ");
         sb.append("descripcion='").append(descripcion != null ? descripcion : "No especificada").append("', ");
         sb.append("generoMusical='").append(generoMusical != null ? generoMusical : "No especificado").append("', ");
-        sb.append("referenciasAlbumes=").append(referenciasAlbumes != null && !referenciasAlbumes.isEmpty() ? referenciasAlbumes : "No especificados");
+        sb.append("referenciasAlbumes=").append(this.referenciasAlbumes);
 
         sb.append(" }");
         return sb.toString();
@@ -199,20 +196,6 @@ public class Artista implements IDocumentable{
      */
     public void setId(ObjectId _id) {
         this._id = _id;
-    }
-
-    /**
-     * @return the referenciasAlbumes
-     */
-    public List<ObjectId> getReferenciasAlbumes() {
-        return referenciasAlbumes;
-    }
-
-    /**
-     * @param referenciasAlbumes the referenciasAlbumes to set
-     */
-    public void setReferenciasAlbumes(List<ObjectId> referenciasAlbumes) {
-        this.referenciasAlbumes = referenciasAlbumes;
     }
 
     /**
@@ -244,9 +227,23 @@ public class Artista implements IDocumentable{
         doc.append("nombre", this.nombreArtista);
         doc.append("descripcion", this.descripcion);
         doc.append("generoMusical", this.generoMusical);
-        doc.append("referenciasAlbumes", this.referenciasAlbumes);
+        doc.append("referenciasAlbumes", this.getAlbumes());
         doc.append("tipo", this.tipo);
         return doc;
+    }
+
+    /**
+     * @return the imagenURL
+     */
+    public String getImagenURL() {
+        return imagenURL;
+    }
+
+    /**
+     * @param imagenURL the imagenURL to set
+     */
+    public void setImagenURL(String imagenURL) {
+        this.imagenURL = imagenURL;
     }
     
 }

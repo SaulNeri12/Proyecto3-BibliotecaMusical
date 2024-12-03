@@ -23,6 +23,7 @@ import com.equipo7.persistencia.entidades.Artista;
 import excepciones.DAOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.bson.types.ObjectId;
 
 /**
  * Implementación de la lógica de negocio para artistas.
@@ -81,5 +82,45 @@ public class ArtistaBO implements IArtistaBO {
     @Override
     public boolean existeArtista(String nombre) throws BOException {
         return artistasDAO.artistaExiste(nombre);
+    }
+
+    @Override
+    public List<ArtistaDTO> obtenerTodos() throws BOException {
+        try {
+            return this.artistasDAO.obtenerTodos().stream().map(ArtistaConvertidor::entidadADto).collect(Collectors.toList());
+        } catch (DAOException ex) {
+            throw new BOException("Error al obtener los artistas");
+        }
+    }
+
+    @Override
+    public ArtistaDTO obtenerPorId(ObjectId id) throws BOException {
+        try {
+            return ArtistaConvertidor.entidadADto(this.artistasDAO.obtenerPorId(id));
+        } catch (DAOException ex) {
+            throw new BOException("Error al obtener al artista");
+        }
+    }
+
+    @Override
+    public List<ArtistaDTO> obtenerTodosPorNombre(String nombreArtista) throws BOException {
+        try {
+            return this.artistasDAO.obtenerTodosPorNombre(nombreArtista)
+                    .stream()
+                    .map(ArtistaConvertidor::entidadADto)
+                    .collect(Collectors.toList());
+        } catch (DAOException ex) {
+            throw new BOException("Error al obtener al artista");
+        }
+    }
+
+    @Override
+    public void insercionMasiva(List<ArtistaDTO> listaArtistas) throws BOException {
+        try {
+            List<Artista> artistasEntidad = listaArtistas.stream().map(ArtistaConvertidor::dtoAEntidad).collect(Collectors.toList());
+            this.artistasDAO.insercionMasiva(artistasEntidad);
+        } catch (DAOException ex) {
+           throw new BOException("Error al realizar la insercion masiva de artista");
+        }
     }
 }

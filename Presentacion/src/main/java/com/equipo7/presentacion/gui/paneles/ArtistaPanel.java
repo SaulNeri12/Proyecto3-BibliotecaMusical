@@ -1,21 +1,94 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.equipo7.presentacion.gui.paneles;
 
+//import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.negocio.dtos.ArtistaDTO;
+import com.equipo7.presentacion.gui.FrmArtista;
+import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
+import com.equipo7.presentacion.gui.imageloader.ImageResizer;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 /**
- * Muestra la informacion de un artista. Su miniatura portada, nombre y su 
- * genero musical.
+ * Muestra la miniatura del album, el nombre del album y el de su actor.
+ *
  * @author neri
  */
 public class ArtistaPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ArtistaPanel
-     */
-    public ArtistaPanel() {
+    private ImageIcon imagen; // Atributo para almacenar la imagen
+    private JPanel imagenPanel;
+    
+    private ArtistaDTO artistaDTO;
+    
+    private static final int MINIATURA_WIDTH = 150;
+    private static final int MINIATURA_HEIGHT = 150;
+    
+    public ArtistaPanel(ArtistaDTO artista) {
         initComponents();
+
+        this.artistaDTO = artista;
+        
+        // se cargara con la imagen del objeto interno de artista.
+        AsyncImageLoader.loadImageAsync(artista.getImagenURL(), (ImageIcon image) -> {
+            SwingUtilities.invokeLater(() -> {
+                imagen = image;
+                imagen = ImageResizer.resizeImageIcon(imagen, MINIATURA_WIDTH, MINIATURA_HEIGHT);
+                actualizaMiniaturaPortada();
+            });
+        });
+        
+        // Define el panel personalizado
+        imagenPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // Dibuja el fondo del panel
+                if (imagen != null) {
+                    // Dibuja la imagen en las dimensiones del panel
+                    g.drawImage(imagen.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+
+        
+        // Asegúrate de que imagenContainerPanel esté correctamente inicializado
+        this.imagenContainerPanel.setLayout(new BorderLayout());  // Configura un layout si no tiene uno
+        this.imagenContainerPanel.setPreferredSize(new Dimension(145,150));
+        this.imagenContainerPanel.setMaximumSize(new Dimension(145,150));
+        this.imagenContainerPanel.setMinimumSize(new Dimension(145,150));
+        
+        this.imagenPanel.setPreferredSize(new Dimension(145,150));
+        this.imagenPanel.setMaximumSize(new Dimension(145,150));
+        this.imagenPanel.setMinimumSize(new Dimension(145,150));
+        this.imagenContainerPanel.revalidate();
+        this.imagenContainerPanel.repaint();
+        
+        // Agrega el panel personalizado a este contenedor
+        this.imagenContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
+        
+        this.nombreArtistaLbl.setText(artista.getNombreArtista());
+        this.generoLbl.setText(artista.getGeneroMusical());
+        
+    }
+
+    private void actualizaMiniaturaPortada() {
+        if (imagen != null) {
+            imagenPanel.repaint(); // Fuerza el redibujo del panel
+        }
+    }
+    
+    /**
+     * Establece una nueva imagen para dibujar en el panel.
+     *
+     * @param nuevaImagen La imagen a mostrar.
+     */
+    public void setImagen(ImageIcon nuevaImagen) {
+        this.imagen = nuevaImagen;
+        imagenPanel.repaint(); // Redibuja el panel con la nueva imagen
     }
 
     /**
@@ -27,67 +100,79 @@ public class ArtistaPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagenPanel = new javax.swing.JPanel();
+        imagenContainerPanel = new javax.swing.JPanel();
         nombreArtistaLbl = new javax.swing.JLabel();
         generoLbl = new javax.swing.JLabel();
 
-        setMaximumSize(new java.awt.Dimension(220, 250));
-        setMinimumSize(new java.awt.Dimension(220, 250));
-        setPreferredSize(new java.awt.Dimension(220, 250));
+        setMaximumSize(new java.awt.Dimension(150, 220));
+        setMinimumSize(new java.awt.Dimension(150, 220));
+        setName(""); // NOI18N
+        setPreferredSize(new java.awt.Dimension(150, 220));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
-        imagenPanel.setMaximumSize(new java.awt.Dimension(208, 155));
-        imagenPanel.setMinimumSize(new java.awt.Dimension(208, 155));
-        imagenPanel.setPreferredSize(new java.awt.Dimension(208, 155));
+        imagenContainerPanel.setMaximumSize(new java.awt.Dimension(186, 145));
+        imagenContainerPanel.setMinimumSize(new java.awt.Dimension(186, 145));
+        imagenContainerPanel.setPreferredSize(new java.awt.Dimension(186, 145));
 
-        javax.swing.GroupLayout imagenPanelLayout = new javax.swing.GroupLayout(imagenPanel);
-        imagenPanel.setLayout(imagenPanelLayout);
-        imagenPanelLayout.setHorizontalGroup(
-            imagenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+        javax.swing.GroupLayout imagenContainerPanelLayout = new javax.swing.GroupLayout(imagenContainerPanel);
+        imagenContainerPanel.setLayout(imagenContainerPanelLayout);
+        imagenContainerPanelLayout.setHorizontalGroup(
+            imagenContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        imagenPanelLayout.setVerticalGroup(
-            imagenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 155, Short.MAX_VALUE)
+        imagenContainerPanelLayout.setVerticalGroup(
+            imagenContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 145, Short.MAX_VALUE)
         );
 
-        nombreArtistaLbl.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        nombreArtistaLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nombreArtistaLbl.setForeground(new java.awt.Color(255, 255, 255));
         nombreArtistaLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        nombreArtistaLbl.setText("Nombre Artista");
+        nombreArtistaLbl.setText("Nombre del Album");
         nombreArtistaLbl.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         generoLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         generoLbl.setForeground(new java.awt.Color(153, 153, 153));
-        generoLbl.setText("Genero");
+        generoLbl.setText("Anio de publicacion");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(generoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(imagenPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, Short.MAX_VALUE)
+                    .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                    .addComponent(generoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imagenPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(generoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                .addComponent(generoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        FrmArtista frm = new FrmArtista(null);
+        frm.setVisible(true);
+    }//GEN-LAST:event_formMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel generoLbl;
-    private javax.swing.JPanel imagenPanel;
+    private javax.swing.JPanel imagenContainerPanel;
     private javax.swing.JLabel nombreArtistaLbl;
     // End of variables declaration//GEN-END:variables
 }

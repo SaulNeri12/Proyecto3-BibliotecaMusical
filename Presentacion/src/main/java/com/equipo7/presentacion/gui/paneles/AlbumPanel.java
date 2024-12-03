@@ -1,21 +1,92 @@
-
 package com.equipo7.presentacion.gui.paneles;
 
 //import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
+import com.equipo7.presentacion.gui.imageloader.ImageResizer;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.time.ZoneId;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * Muestra la miniatura del album, el nombre del album y el de su actor.
+ *
  * @author neri
  */
 public class AlbumPanel extends javax.swing.JPanel {
 
-    //private AlbumDTO album;
+    private ImageIcon imagen; // Atributo para almacenar la imagen
+    private JPanel imagenPanel;
+    
+    private AlbumDTO albumDTO;
+    
+    private static final int MINIATURA_WIDTH = 150;
+    private static final int MINIATURA_HEIGHT = 150;
+    
+    public AlbumPanel(AlbumDTO albumDTO) {
+        initComponents();
+
+        this.albumDTO = albumDTO;
+        
+        // se cargara con la url de la imagen de portada del album...
+        AsyncImageLoader.loadImageAsync(this.albumDTO.getImagenPortadaUrl(), (ImageIcon image) -> {
+            SwingUtilities.invokeLater(() -> {
+                imagen = image;
+                imagen = ImageResizer.resizeImageIcon(imagen, MINIATURA_WIDTH, MINIATURA_HEIGHT);
+                actualizaMiniaturaPortada();
+            });
+        });
+        
+        // Define el panel personalizado
+        imagenPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // Dibuja el fondo del panel
+                if (imagen != null) {
+                    // Dibuja la imagen en las dimensiones del panel
+                    g.drawImage(imagen.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        
+        // Asegúrate de que imagenContainerPanel esté correctamente inicializado
+        this.imagenContainerPanel.setLayout(new BorderLayout());  // Configura un layout si no tiene uno
+        this.imagenContainerPanel.setPreferredSize(new Dimension(150,150));
+        this.imagenContainerPanel.setMaximumSize(new Dimension(150,150));
+        this.imagenContainerPanel.setMinimumSize(new Dimension(150,150));
+        
+        this.imagenPanel.setPreferredSize(new Dimension(150,150));
+        this.imagenPanel.setMaximumSize(new Dimension(150,150));
+        this.imagenPanel.setMinimumSize(new Dimension(150,150));
+        this.imagenContainerPanel.revalidate();
+        this.imagenContainerPanel.repaint();
+        
+        // Agrega el panel personalizado a este contenedor
+        this.imagenContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
+        
+        this.nombreAlbumLbl.setText(this.albumDTO.getNombre());
+        this.anioPublicacionLbl.setText(Integer.toString(this.albumDTO.getFechaLanzamiento().atZone(ZoneId.of("UTC")).getYear()));
+    }
+
+    private void actualizaMiniaturaPortada() {
+        if (imagen != null) {
+            imagenPanel.repaint(); // Fuerza el redibujo del panel
+        }
+    }
     
     /**
-     * Creates new form ArtistaPanel
+     * Establece una nueva imagen para dibujar en el panel.
+     *
+     * @param nuevaImagen La imagen a mostrar.
      */
-    public AlbumPanel() {
-        initComponents();
+    public void setImagen(ImageIcon nuevaImagen) {
+        this.imagen = nuevaImagen;
+        imagenPanel.repaint(); // Redibuja el panel con la nueva imagen
     }
 
     /**
@@ -27,39 +98,39 @@ public class AlbumPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagenPanel = new javax.swing.JPanel();
-        nombreArtistaLbl = new javax.swing.JLabel();
-        generoLbl = new javax.swing.JLabel();
+        imagenContainerPanel = new javax.swing.JPanel();
+        nombreAlbumLbl = new javax.swing.JLabel();
+        anioPublicacionLbl = new javax.swing.JLabel();
 
-        setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         setMaximumSize(new java.awt.Dimension(150, 220));
         setMinimumSize(new java.awt.Dimension(150, 220));
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(150, 220));
 
-        imagenPanel.setMaximumSize(new java.awt.Dimension(186, 145));
-        imagenPanel.setMinimumSize(new java.awt.Dimension(186, 145));
-        imagenPanel.setPreferredSize(new java.awt.Dimension(186, 145));
+        imagenContainerPanel.setMaximumSize(new java.awt.Dimension(186, 145));
+        imagenContainerPanel.setMinimumSize(new java.awt.Dimension(186, 145));
+        imagenContainerPanel.setPreferredSize(new java.awt.Dimension(186, 145));
 
-        javax.swing.GroupLayout imagenPanelLayout = new javax.swing.GroupLayout(imagenPanel);
-        imagenPanel.setLayout(imagenPanelLayout);
-        imagenPanelLayout.setHorizontalGroup(
-            imagenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout imagenContainerPanelLayout = new javax.swing.GroupLayout(imagenContainerPanel);
+        imagenContainerPanel.setLayout(imagenContainerPanelLayout);
+        imagenContainerPanelLayout.setHorizontalGroup(
+            imagenContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        imagenPanelLayout.setVerticalGroup(
-            imagenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        imagenContainerPanelLayout.setVerticalGroup(
+            imagenContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 145, Short.MAX_VALUE)
         );
 
-        nombreArtistaLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        nombreArtistaLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        nombreArtistaLbl.setText("Nombre del Album");
-        nombreArtistaLbl.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        nombreAlbumLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nombreAlbumLbl.setForeground(new java.awt.Color(255, 255, 255));
+        nombreAlbumLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        nombreAlbumLbl.setText("Nombre del Album");
+        nombreAlbumLbl.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        generoLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        generoLbl.setForeground(new java.awt.Color(153, 153, 153));
-        generoLbl.setText("Anio de publicacion");
+        anioPublicacionLbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        anioPublicacionLbl.setForeground(new java.awt.Color(153, 153, 153));
+        anioPublicacionLbl.setText("Anio de publicacion");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -68,28 +139,28 @@ public class AlbumPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imagenPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                    .addComponent(generoLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, Short.MAX_VALUE)
+                    .addComponent(nombreAlbumLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                    .addComponent(anioPublicacionLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imagenPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imagenContainerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(nombreArtistaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nombreAlbumLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(generoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(anioPublicacionLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel generoLbl;
-    private javax.swing.JPanel imagenPanel;
-    private javax.swing.JLabel nombreArtistaLbl;
+    private javax.swing.JLabel anioPublicacionLbl;
+    private javax.swing.JPanel imagenContainerPanel;
+    private javax.swing.JLabel nombreAlbumLbl;
     // End of variables declaration//GEN-END:variables
 }
