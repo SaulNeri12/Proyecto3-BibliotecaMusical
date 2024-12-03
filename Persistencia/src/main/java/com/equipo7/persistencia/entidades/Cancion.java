@@ -23,6 +23,7 @@ public class Cancion {
     @BsonProperty(value = "idAlbum")
     private ObjectId idAlbum;
     
+    
 
     /**
      * Constructor vacio por defecto.
@@ -102,6 +103,9 @@ public class Cancion {
         sb.append(" }");
         return sb.toString();
     }
+    
+    
+    
     
 
 }
