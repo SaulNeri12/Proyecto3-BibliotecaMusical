@@ -228,6 +228,8 @@ public class IniciarSesionDlg extends javax.swing.JFrame {
             
             this.usuarioLogeado = this.usuariosBO.iniciarSesion(correoElectronico, contrasenha);
             
+            PerfilUsuario.setUsuario(usuarioLogeado);
+            
             this.abrirPantallaInicio();
             
         } catch (BOException ex) {
@@ -247,7 +249,7 @@ public class IniciarSesionDlg extends javax.swing.JFrame {
     }//GEN-LAST:event_crearCuentaBtnMouseClicked
 
     private void abrirPantallaInicio() {
-        FrmPantallaPrincipal frm = new FrmPantallaPrincipal(this.usuarioLogeado);
+        FrmPantallaPrincipal frm = new FrmPantallaPrincipal();
         this.dispose();
         frm.setVisible(true);
     }

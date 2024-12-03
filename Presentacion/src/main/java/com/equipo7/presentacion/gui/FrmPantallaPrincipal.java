@@ -47,12 +47,10 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form FrmPantallaPrincipal
      */
-    public FrmPantallaPrincipal(UsuarioDTO usuario)  {
+    public FrmPantallaPrincipal()  {
         initComponents();
         
         _this = this; // ????
-        
-        this.usuario = usuario;
         
         this.setLocationRelativeTo(null);
         this.setTitle("Biblioteca Musical");
@@ -390,7 +388,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_busquedaFiltradaBtnActionPerformed
 
     private void verPerfilBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPerfilBtnActionPerformed
-        FrmPerfilUsuario perfilUsuario = new FrmPerfilUsuario(this.usuario);
+        FrmPerfilUsuario perfilUsuario = new FrmPerfilUsuario();
         this.dispose();
         perfilUsuario.setVisible(true);
     }//GEN-LAST:event_verPerfilBtnActionPerformed

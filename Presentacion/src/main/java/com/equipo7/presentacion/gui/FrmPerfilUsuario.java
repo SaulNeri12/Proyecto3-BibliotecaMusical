@@ -14,23 +14,23 @@ import javax.swing.UIManager;
  */
 public class FrmPerfilUsuario extends javax.swing.JFrame {
 
-    private UsuarioDTO usuario;
+    private UsuarioDTO usuario = PerfilUsuario.getUsuario();
     
     /**
      * Creates new form FrmPerfilUsuario
      * @param usuario
      */
-    public FrmPerfilUsuario(UsuarioDTO usuario) {
+    public FrmPerfilUsuario(){
         initComponents();
         
-        this.usuario = usuario;
         
         this.fondoColorPanel.setBackground(new Color(153, 0, 204));
         this.setLocationRelativeTo(null);
         this.prepararEstilo();
         this.cargarInformacionUsuario();
+        
     }
-
+    
     /**
      * 
      */
@@ -179,7 +179,7 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void volverMenuPrincipalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverMenuPrincipalBtnActionPerformed
-        FrmPantallaPrincipal frm = new FrmPantallaPrincipal(this.usuario);
+        FrmPantallaPrincipal frm = new FrmPantallaPrincipal();
         this.dispose();
         frm.setVisible(true);
     }//GEN-LAST:event_volverMenuPrincipalBtnActionPerformed

@@ -21,9 +21,8 @@ import org.bson.types.ObjectId;
  */
 public class AlbumesDAO implements IAlbumesDAO {
 
-    private MongoCollection<Album> coleccionAlbumes;
-
     private static AlbumesDAO instance;
+    private MongoCollection<Album> coleccionAlbumes;
 
     private AlbumesDAO() {
         try {
@@ -126,15 +125,15 @@ public class AlbumesDAO implements IAlbumesDAO {
             throw new DAOException("Error al buscar álbumes por artista");
         }
     }
-    
+
     @Override
     public List<String> obtenerGenerosMusicales() throws DAOException {
-    try {
-        // Ejecutar la consulta 'distinct' para obtener géneros únicos
-        return coleccionAlbumes.distinct("generoMusical", String.class).into(new ArrayList<>());
-    } catch (Exception e) {
-        // Manejar posibles errores de la base de datos
-        throw new DAOException("Error al obtener los géneros musicales");
+        try {
+            // Ejecutar la consulta 'distinct' para obtener géneros únicos
+            return coleccionAlbumes.distinct("generoMusical", String.class).into(new ArrayList<>());
+        } catch (Exception e) {
+            // Manejar posibles errores de la base de datos
+            throw new DAOException("Error al obtener los géneros musicales");
+        }
     }
-}
 }

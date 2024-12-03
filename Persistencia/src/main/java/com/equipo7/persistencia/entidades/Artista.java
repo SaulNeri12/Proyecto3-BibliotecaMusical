@@ -38,6 +38,8 @@ public class Artista implements IDocumentable{
     private String imagenURL;
     @BsonProperty(value = "referenciasAlbumes")
     private List<ObjectId> referenciasAlbumes;
+    @BsonProperty(value="integrantes")
+    private List<Integrante> integrantes;
 
     /**
      * Constructor vacio por defecto.
@@ -244,6 +246,20 @@ public class Artista implements IDocumentable{
      */
     public void setImagenURL(String imagenURL) {
         this.imagenURL = imagenURL;
+    }
+
+    /**
+     * @return the integrantes
+     */
+    public List<Integrante> getIntegrantes() {
+        return integrantes;
+    }
+
+    /**
+     * @param integrantes the integrantes to set
+     */
+    public void setIntegrantes(List<Integrante> integrantes) {
+        this.integrantes = integrantes;
     }
     
 }
