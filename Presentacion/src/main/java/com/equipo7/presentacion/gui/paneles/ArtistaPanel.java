@@ -165,7 +165,7 @@ public class ArtistaPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        FrmArtista frm = new FrmArtista(null);
+        FrmArtista frm = new FrmArtista(this.artistaDTO);
         frm.setVisible(true);
     }//GEN-LAST:event_formMouseClicked
 

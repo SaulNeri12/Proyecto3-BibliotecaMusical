@@ -22,6 +22,8 @@ public class Cancion {
     private String nombre;
     @BsonProperty(value = "idAlbum")
     private ObjectId idAlbum;
+    @BsonProperty(value = "imagen_portada_album_url")
+    private String imagenPortadaURL;
     
     
 
@@ -102,6 +104,20 @@ public class Cancion {
 
         sb.append(" }");
         return sb.toString();
+    }
+
+    /**
+     * @return the imagenPortadaURL
+     */
+    public String getImagenPortadaURL() {
+        return imagenPortadaURL;
+    }
+
+    /**
+     * @param imagenPortadaURL the imagenPortadaURL to set
+     */
+    public void setImagenPortadaURL(String imagenPortadaURL) {
+        this.imagenPortadaURL = imagenPortadaURL;
     }
     
     

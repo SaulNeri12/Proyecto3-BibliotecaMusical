@@ -22,6 +22,7 @@ public class AlbumDTO {
     private String imagenPortadaUrl;
     private List<String> canciones;
     private ObjectId referenciaArtista;
+    private List<IntegranteDTO> integrantes;
 
     // Constructores
     public AlbumDTO() {
@@ -104,6 +105,20 @@ public class AlbumDTO {
                 + ", canciones=" + canciones
                 + ", referenciaArtista=" + referenciaArtista
                 + '}';
+    }
+
+    /**
+     * @return the integrantes
+     */
+    public List<IntegranteDTO> getIntegrantes() {
+        return integrantes;
+    }
+
+    /**
+     * @param integrantes the integrantes to set
+     */
+    public void setIntegrantes(List<IntegranteDTO> integrantes) {
+        this.integrantes = integrantes;
     }
 
 }
