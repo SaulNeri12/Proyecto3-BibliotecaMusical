@@ -34,13 +34,13 @@ public class ArtistaPanel extends javax.swing.JPanel {
         this.artistaDTO = artista;
         
         // se cargara con la imagen del objeto interno de artista.
-        AsyncImageLoader.loadImageAsync(artista.getImagenURL(), (ImageIcon image) -> {
-            SwingUtilities.invokeLater(() -> {
-                imagen = image;
-                imagen = ImageResizer.resizeImageIcon(imagen, MINIATURA_WIDTH, MINIATURA_HEIGHT);
-                actualizaMiniaturaPortada();
-            });
-        });
+//        AsyncImageLoader.loadImageAsync(artista.getImagenURL(), (ImageIcon image) -> {
+//            SwingUtilities.invokeLater(() -> {
+//                imagen = image;
+//                imagen = ImageResizer.resizeImageIcon(imagen, MINIATURA_WIDTH, MINIATURA_HEIGHT);
+//                actualizaMiniaturaPortada();
+//            });
+//        });
         
         // Define el panel personalizado
         imagenPanel = new JPanel() {

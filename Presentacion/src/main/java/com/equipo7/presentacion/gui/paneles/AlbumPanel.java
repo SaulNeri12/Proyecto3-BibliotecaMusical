@@ -70,7 +70,7 @@ public class AlbumPanel extends javax.swing.JPanel {
         this.imagenContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
         
         this.nombreAlbumLbl.setText(this.albumDTO.getNombre());
-        this.anioPublicacionLbl.setText(Integer.toString(this.albumDTO.getFechaLanzamiento().atZone(ZoneId.of("UTC")).getYear()));
+//        this.anioPublicacionLbl.setText(Integer.toString(this.albumDTO.getFechaLanzamiento().atZone(ZoneId.of("UTC")).getYear()));
     }
 
     private void actualizaMiniaturaPortada() {
