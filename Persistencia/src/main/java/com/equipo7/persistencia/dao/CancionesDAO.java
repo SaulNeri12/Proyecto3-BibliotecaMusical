@@ -2,37 +2,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.equipo7.persistencia.dao;
 
 import com.equipo7.persistencia.conexion.Conexion;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.interfaces.ICancionesDAO;
 import com.equipo7.persistencia.entidades.Album;
+import com.equipo7.persistencia.entidades.Cancion;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import excepciones.DAOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.bson.types.ObjectId;
 
 /**
-     * Constructor privado para generación de instancia única
-     * Inicializa las colecciones de canciones y álbumes, y establece la conexión con la base de datos.
-     * 
-     * @throws ConexionException Si ocurre un error al obtener la colección de usuarios.
-     */ 
+ * Constructor privado para generación de instancia única Inicializa las
+ * colecciones de canciones y álbumes, y establece la conexión con la base de
+ * datos.
+ *
+ * @throws ConexionException Si ocurre un error al obtener la colección de
+ * usuarios.
+ */
 public class CancionesDAO implements ICancionesDAO {
-    
+
     private static CancionesDAO instance;
     private MongoDatabase bibliotecaMusicalBD;
     private MongoCollection<Album> albumes;
 
     /**
-     * Constructor privado para generación de instancia única
-     * Inicializa las colecciones de canciones y álbumes, y establece la conexión con la base de datos.
-     * 
-     * @throws ConexionException Si ocurre un error al obtener la colección de usuarios.
+     * Constructor privado para generación de instancia única Inicializa las
+     * colecciones de canciones y álbumes, y establece la conexión con la base
+     * de datos.
+     *
+     * @throws ConexionException Si ocurre un error al obtener la colección de
+     * usuarios.
      */
     private CancionesDAO() throws ConexionException {
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
@@ -41,9 +47,9 @@ public class CancionesDAO implements ICancionesDAO {
     }
 
     /**
-     * Obtiene la instancia única del DAO de canciones.
-     * Si no existe una instancia, se crea una nueva.
-     * 
+     * Obtiene la instancia única del DAO de canciones. Si no existe una
+     * instancia, se crea una nueva.
+     *
      * @return Instancia única de CancionesDAO.
      * @throws ConexionException Si ocurre un error al obtener la instancia.
      */
@@ -54,32 +60,77 @@ public class CancionesDAO implements ICancionesDAO {
 
         return instance;
     }
+
     @Override
-    public List<String> obtenerCancionesPorGenero(String generoMusical) {
-        List<String> canciones = new ArrayList<>();
+    public List<Cancion> obtenerCancionesPorGenero(String generoMusical) throws DAOException {
+        List<Cancion> canciones = new ArrayList<>();
 
-        albumes.find(Filters.eq("generoMusical", generoMusical))
-                .forEach(album -> canciones.addAll(album.getCanciones()));
+        try {
+            albumes.find(Filters.eq("generoMusical", generoMusical)).forEach(album -> {
+                album.getCanciones().forEach(nombreCancion -> {
+                    Cancion cancion = new Cancion();
+                    cancion.setIdAlbum(album.getId());
+                    cancion.setImagenPortadaURL(album.getImagenPortadaUrl());
+                    cancion.setNombre(nombreCancion);
+                    // se agrega la cancion a la lista
+                    canciones.add(cancion);
+                });
+            });
 
-        return canciones;
+            return canciones;
+        } catch (Exception e) {
+            throw new DAOException("No se pudo obtener las canciones por genero");
+        }
     }
+
     @Override
-    public List<String> obtenerCancionesPorNombre(String nombreParcial) {
-        List<String> canciones = new ArrayList<>();
+    public List<Cancion> obtenerCancionesPorNombre(String nombreParcial) throws DAOException {
+        List<Cancion> canciones = new ArrayList<>();
 
         Pattern regex = Pattern.compile(nombreParcial, Pattern.CASE_INSENSITIVE);
 
-        albumes.find(Filters.regex("canciones", regex))
-                .forEach(album -> {
-                    for (String cancion : album.getCanciones()) {
-                        if (regex.matcher(cancion).find()) {
-                            canciones.add(cancion);
-                        }
+        try {
+
+            albumes.find(Filters.regex("canciones", regex)).forEach(album -> {
+                album.getCanciones().forEach(nombreCancion -> {
+                    if (regex.matcher(nombreCancion).find()) {
+                        Cancion cancion = new Cancion();
+                        cancion.setIdAlbum(album.getId());
+                        cancion.setImagenPortadaURL(album.getImagenPortadaUrl());
+                        cancion.setNombre(nombreCancion);
+                        // se agrega la cancion a la lista
+                        canciones.add(cancion);
                     }
                 });
+            });
 
-        return canciones;
+            return canciones;
+
+        } catch (Exception e) {
+            throw new DAOException("No se pudo obtener las canciones por nombre de busqueda");
+        }
     }
 
+    @Override
+    public List<Cancion> obtenerCancionesPorArtista(ObjectId idArtista) throws DAOException {
+        List<Cancion> canciones = new ArrayList<>();
+        
+        try {
+            albumes.find(Filters.eq("referenciaArtista", idArtista)).forEach(album -> {
+                album.getCanciones().forEach(nombreCancion -> {
+                    Cancion cancion = new Cancion();
+                    cancion.setIdAlbum(album.getId());
+                    cancion.setImagenPortadaURL(album.getImagenPortadaUrl());
+                    cancion.setNombre(nombreCancion);
+                    // se agrega la cancion a la lista
+                    canciones.add(cancion);
+                });
+            });
 
+            return canciones;
+
+        } catch (Exception e) {
+            throw new DAOException("No se pudo obtener las canciones por genero");
+        }
+    }
 }

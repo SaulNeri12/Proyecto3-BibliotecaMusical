@@ -1,21 +1,58 @@
 
 package com.equipo7.presentacion.gui.paneles;
 
+import com.equipo7.negocio.dtos.CancionDTO;
+import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.presentacion.gui.PerfilUsuario;
+import com.equipo7.presentacion.gui.estilo.Estilo;
+
 /**
  *
  * @author neri
  */
 public class CancionAlbumPanel extends javax.swing.JPanel {
 
+    private UsuarioDTO usuarioDTO = PerfilUsuario.getUsuario();
+    private CancionDTO cancionDTO;
+    
     //private IUsuariosBO usuariosBO;
     
     //private CancionDTO cancionDTO;
     
     /**
      * Creates new form CancionAlbum
+     * @param cancion
      */
-    public CancionAlbumPanel() {
+    public CancionAlbumPanel(CancionDTO cancion) {
         initComponents();
+        
+        this.cancionDTO = cancion;
+        
+        this.mostrarInformacionCancion();
+    }
+    
+    
+    private void mostrarInformacionCancion() {
+        this.nombreCancionLbl.setText(this.cancionDTO.getNombre());
+        
+        if (this.usuarioDTO.getCancionesFavoritas().contains(this.cancionDTO)) {
+            this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
+        } else {
+            this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        }
+    }
+    
+    /**
+     * 
+     */
+    public void toggleMarcaComoFavorito() {
+        if (this.usuarioDTO.getCancionesFavoritas().contains(this.cancionDTO)) {
+            this.usuarioDTO.eliminarCancionDeFavoritos(cancionDTO);
+            this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        } else {
+            this.usuarioDTO.agregarCancionAFavoritos(cancionDTO);
+            this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
+        }
     }
 
     /**
@@ -27,58 +64,57 @@ public class CancionAlbumPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tituloCancionLbl = new javax.swing.JLabel();
-        agregarAFavoritosBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        nombreCancionLbl = new javax.swing.JLabel();
+        agregarFavoritosBtn = new javax.swing.JButton();
+        numeroCancionListaLbl = new javax.swing.JLabel();
 
-        tituloCancionLbl.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        tituloCancionLbl.setText("Nombre de la cancion");
+        nombreCancionLbl.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        nombreCancionLbl.setText("Nombre de la cancion");
 
-        agregarAFavoritosBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        agregarAFavoritosBtn.setText("+");
-        agregarAFavoritosBtn.addActionListener(new java.awt.event.ActionListener() {
+        agregarFavoritosBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        agregarFavoritosBtn.setText("+");
+        agregarFavoritosBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                agregarAFavoritosBtnActionPerformed(evt);
+                agregarFavoritosBtnActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("00:00");
+        numeroCancionListaLbl.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        numeroCancionListaLbl.setText("#");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(tituloCancionLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-                .addComponent(agregarAFavoritosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(numeroCancionListaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addComponent(nombreCancionLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(agregarFavoritosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tituloCancionLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(agregarAFavoritosBtn)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nombreCancionLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agregarFavoritosBtn)
+                    .addComponent(numeroCancionListaLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void agregarAFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAFavoritosBtnActionPerformed
+    private void agregarFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFavoritosBtnActionPerformed
         //usuariosBO.agregarCancionAFavoritos(this.cancion);
-    }//GEN-LAST:event_agregarAFavoritosBtnActionPerformed
+    }//GEN-LAST:event_agregarFavoritosBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton agregarAFavoritosBtn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel tituloCancionLbl;
+    private javax.swing.JButton agregarFavoritosBtn;
+    private javax.swing.JLabel nombreCancionLbl;
+    private javax.swing.JLabel numeroCancionListaLbl;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,18 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.equipo7.persistencia.entidades;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 /**
  * Representa la informacion de un usuario en el sistema
+ *
  * @author Saul Neri
  */
 public class Usuario implements IDocumentable {
@@ -33,24 +35,35 @@ public class Usuario implements IDocumentable {
     private Instant fechaRegistro;
     @BsonProperty(value = "generosRestringidos")
     private List<String> generosRestringidos;
+    @BsonProperty(value = "canciones_favoritas")
+    private List<Cancion> cancionesFavoritas;
+    @BsonProperty(value = "albumes_favoritos")
+    private List<ObjectId> albumesFavoritos;
+    @BsonProperty(value = "artistas_favoritos")
+    private List<ObjectId> artistasFavoritos;
 
     /**
      * Constructor por defecto.
      */
     public Usuario() {
-
+        this.artistasFavoritos = new ArrayList<>();
+        this.albumesFavoritos = new ArrayList<>();
+        this.cancionesFavoritas = new ArrayList<>();
     }
 
     /**
      * Constructor para crear un usuario con su ID de MongoDB
+     *
      * @param _id
      */
     public Usuario(ObjectId _id) {
+        super();
         this._id = _id;
     }
 
     /**
-     * Inicializa los atributos del usuario, incluyendo la encriptación de la contraseña.
+     * Inicializa los atributos del usuario, incluyendo la encriptación de la
+     * contraseña.
      *
      * @param _id ID del documento en MongoDB.
      * @param nombreUsuario Nombre del usuario.
@@ -59,6 +72,7 @@ public class Usuario implements IDocumentable {
      * @param imagenPerfil Imagen de perfil en formato Base64 (opcional).
      */
     public Usuario(ObjectId _id, String nombreUsuario, String correoElectronico, String contrasena, String imagenPerfil) {
+        super();
         this.nombreUsuario = nombreUsuario;
         this.correoElectronico = correoElectronico;
         this.contrasena = contrasena;
@@ -67,14 +81,16 @@ public class Usuario implements IDocumentable {
 
     /**
      * Obtiene el ID de MongoBD del objeto
+     *
      * @return ID de MongoDB
      */
     public ObjectId getId() {
-       return this._id;
+        return this._id;
     }
 
     /**
      * Asigna el ID de MongoDB al objeto
+     *
      * @param _id ID de MongoBD
      */
     public void setId(ObjectId _id) {
@@ -127,8 +143,8 @@ public class Usuario implements IDocumentable {
     }
 
     /**
-     * Establece la contraseña del usuario.
-     * La contraseña será encriptada utilizando Base64.
+     * Establece la contraseña del usuario. La contraseña será encriptada
+     * utilizando Base64.
      *
      * @param contrasena La contraseña del usuario.
      */
@@ -140,7 +156,8 @@ public class Usuario implements IDocumentable {
     /**
      * Obtiene la imagen de perfil del usuario.
      *
-     * @return La imagen de perfil en formato Base64, o null si no se proporcionó una imagen.
+     * @return La imagen de perfil en formato Base64, o null si no se
+     * proporcionó una imagen.
      */
     public String getImagenPerfil() {
         return imagenPerfil;
@@ -202,9 +219,13 @@ public class Usuario implements IDocumentable {
 
         // NOTE: DATOS OBLIGATORIOS, SIN ESTOS NO SE PUEDE DEVOLVER UN DOCUMENTO BSON EQUIVALENTE
         // PARA EVITAR PROBLEMAS DE INSERCION
-        if (this.correoElectronico == null)     return null;
-        else if (this.contrasena == null)       return null;
-        else if (this.nombreUsuario == null)    return  null;
+        if (this.correoElectronico == null) {
+            return null;
+        } else if (this.contrasena == null) {
+            return null;
+        } else if (this.nombreUsuario == null) {
+            return null;
+        }
 
         doc.append("nombre", this.nombreUsuario);
         doc.append("contrasena", this.contrasena);
@@ -230,6 +251,129 @@ public class Usuario implements IDocumentable {
 
         sb.append(" }");
         return sb.toString();
+    }
+
+    public boolean cancionEnFavoritos(Cancion cancion) {
+        if (this.getCancionesFavoritas() != null) {
+            boolean cancionRegistrada = this.getCancionesFavoritas()
+                    .stream()
+                    .filter(c -> c.getNombre().equals(cancion.getNombre()) && c.getIdAlbum().equals(cancion.getIdAlbum()))
+                    .findFirst()
+                    .orElse(null) != null;
+            
+            return cancionRegistrada;
+        }
+        
+        return false;
+    }
+    
+    public boolean artistaEnFavoritos(ObjectId idArtista) {
+        if (this.getArtistasFavoritos() != null) {
+            return this.getArtistasFavoritos().stream().allMatch(artista -> artista.equals(idArtista));
+        }
+        
+        return false;
+    } 
+    
+    public boolean albumEnFavoritos(ObjectId idAlbum) {
+        if (this.getAlbumesFavoritos() != null) {
+            return this.getAlbumesFavoritos().stream().allMatch(album -> album.equals(idAlbum));
+        }
+        
+        return false;
+    } 
+    
+    
+    public void agregarCancionAFavoritos(Cancion cancion) {
+        if (this.getCancionesFavoritas() != null) {
+            boolean cancionRegistrada = this.getCancionesFavoritas()
+                    .stream()
+                    .filter(c -> c.getNombre().equals(cancion.getNombre()) && c.getIdAlbum().equals(cancion.getIdAlbum()))
+                    .findFirst()
+                    .orElse(null) != null;
+            if (!cancionRegistrada) {
+                this.getCancionesFavoritas().add(cancion);
+            }
+        }
+    }
+
+    public void agregarAlbumAFavoritos(ObjectId idAlbum) {
+        if (this.getAlbumesFavoritos() != null) {
+            if (!this.albumesFavoritos.contains(idAlbum)) {
+                this.getAlbumesFavoritos().add(idAlbum);
+            }
+        }
+    }
+
+    public void agregarArtistaAFavoritos(ObjectId idArtista) {
+        if (this.getArtistasFavoritos() != null) {
+            if (!this.artistasFavoritos.contains(idArtista)) {
+                this.getArtistasFavoritos().add(idArtista);
+            }
+        }
+    }
+
+    public void eliminarCancionDeFavoritos(Cancion cancion) {
+        if (this.getCancionesFavoritas() != null) {
+            this.getCancionesFavoritas().removeIf(c
+                    -> c.getNombre().equals(cancion.getNombre())
+                    && c.getIdAlbum().equals(cancion.getIdAlbum())
+            );
+        }
+    }
+
+    public void eliminarAlbumDeFavoritos(ObjectId idAlbum) {
+        if (this.getAlbumesFavoritos() != null) {
+            this.getAlbumesFavoritos().remove(idAlbum);
+        }
+    }
+
+    public void eliminarArtistaDeFavoritos(ObjectId idArtista) {
+        if (this.getArtistasFavoritos() != null) {
+            this.getArtistasFavoritos().remove(idArtista);
+        }
+    }
+
+    /**
+     * @return the cancionesFavoritas
+     */
+    public List<Cancion> getCancionesFavoritas() {
+        return cancionesFavoritas;
+    }
+
+    /**
+     * @param cancionesFavoritas the cancionesFavoritas to set
+     */
+    public void setCancionesFavoritas(List<Cancion> cancionesFavoritas) {
+        this.cancionesFavoritas = cancionesFavoritas;
+    }
+
+    /**
+     * @return the albumesFavoritos
+     */
+    public List<ObjectId> getAlbumesFavoritos() {
+        return albumesFavoritos;
+    }
+
+    /**
+     * @param albumesFavoritos the albumesFavoritos to set
+     */
+    public void setAlbumesFavoritos(List<ObjectId> albumesFavoritos) {
+        this.albumesFavoritos = albumesFavoritos;
+    }
+
+    /**
+     * @return the artistasFavoritos
+     */
+    public List<ObjectId> getArtistasFavoritos() {
+        return artistasFavoritos;
+    }
+
+    /**
+     * @param artistasFavoritos the artistasFavoritos to set
+     */
+    public void setArtistasFavoritos(List<ObjectId> artistasFavoritos) {
+        this.artistasFavoritos = artistasFavoritos;
     }
 
 }

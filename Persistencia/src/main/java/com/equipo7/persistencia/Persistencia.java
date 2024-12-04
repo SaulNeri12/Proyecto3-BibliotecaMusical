@@ -6,9 +6,12 @@ package com.equipo7.persistencia;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.AlbumesDAO;
 import com.equipo7.persistencia.dao.ArtistasDAO;
+import com.equipo7.persistencia.dao.CancionesDAO;
 import com.equipo7.persistencia.dao.UsuariosDAO;
+import com.equipo7.persistencia.dao.interfaces.ICancionesDAO;
 import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.Artista;
+import com.equipo7.persistencia.entidades.Cancion;
 import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import com.equipo7.persistencia.entidades.Integrante;
 import com.equipo7.persistencia.entidades.Usuario;
@@ -21,13 +24,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bson.types.ObjectId;
 
 /**
  *
  * @author neri
  */
 public class Persistencia {
-
+    
     public static void main(String[] args) {
         ArtistasDAO artistasDAO = null;
         AlbumesDAO albumesDAO = null;
@@ -39,6 +43,7 @@ public class Persistencia {
             return;
         }
 
+        /*
         // KENDRICK LAMAR
         Artista artista = new Artista();
         artista.setNombreArtista("Kendrick Lamar");
@@ -250,6 +255,29 @@ public class Persistencia {
             System.out.println(albumesDAO.obtenerGenerosMusicales());
         } catch (DAOException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        ICancionesDAO cancionesDAO = null;
+        try {
+            cancionesDAO = CancionesDAO.getInstance();
+        } catch (ConexionException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
+        /*
+        try {
+            for (Cancion cancion: cancionesDAO.obtenerCancionesPorArtista(new ObjectId("674f5f12f766715b4f3d9aef"))) {
+                System.out.println(cancion);
+            }
+        } catch (DAOException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
+        try {
+            for (Cancion cancion : cancionesDAO.obtenerCancionesPorGenero("Pop")) {
+                System.out.println(cancion);
+            }
+        } catch (DAOException ex) {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

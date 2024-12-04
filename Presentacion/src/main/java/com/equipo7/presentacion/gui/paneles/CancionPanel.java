@@ -4,6 +4,10 @@
  */
 package com.equipo7.presentacion.gui.paneles;
 
+import com.equipo7.negocio.dtos.CancionDTO;
+import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.presentacion.gui.PerfilUsuario;
+import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
 import com.equipo7.presentacion.gui.imageloader.ImageResizer;
 import java.awt.BorderLayout;
@@ -23,19 +27,23 @@ public class CancionPanel extends javax.swing.JPanel {
     private ImageIcon imagenMiniatura;
     private JPanel imagenPanel;
     
-    //private AlbumDTO albumDTO;
+    private UsuarioDTO usuarioDTO = PerfilUsuario.getUsuario();
+    private CancionDTO cancionDTO;
     
     private static final int MINIATURA_WIDTH = 64;
     private static final int MINIATURA_HEIGHT = 64;
     
     /**
      * Creates new form CancionPanel
+     * @param cancion
      */
-    public CancionPanel() {
+    public CancionPanel(CancionDTO cancion) {
         initComponents();
         
+        this.cancionDTO = cancion;
+        
         // se cargara con la url de la imagen de portada del album...
-        AsyncImageLoader.loadImageAsync("https://acortar.link/hzQDrq", (ImageIcon image) -> {
+        AsyncImageLoader.loadImageAsync(this.cancionDTO.getImagenPortadaURL(), (ImageIcon image) -> {
             SwingUtilities.invokeLater(() -> {
                 imagenMiniatura = image;
                 imagenMiniatura = ImageResizer.resizeImageIcon(imagenMiniatura, MINIATURA_WIDTH, MINIATURA_HEIGHT);
@@ -72,8 +80,33 @@ public class CancionPanel extends javax.swing.JPanel {
         
         // Agrega el panel personalizado a este contenedor
         this.miniaturaContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
+        this.mostrarInformacionCancion();
     }
 
+    private void mostrarInformacionCancion() {
+        this.nombreCancionLbl.setText(this.cancionDTO.getNombre());
+        // TODO: MOSTRAR DESPUES
+        this.autorCancionLbl.setVisible(false);
+        
+        if (this.usuarioDTO.cancionEnFavoritos(cancionDTO)) {
+            this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
+        } else {
+            this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        }
+    }
+    
+    /**
+     * 
+     */
+    public void toggleMarcaComoFavorito() {
+        if (this.usuarioDTO.cancionEnFavoritos(cancionDTO)) {
+            this.usuarioDTO.eliminarCancionDeFavoritos(cancionDTO);
+            this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        } else {
+            this.usuarioDTO.agregarCancionAFavoritos(cancionDTO);
+            this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
+        }
+    }
     
     private void actualizaMiniaturaPortada() {
         if (imagenMiniatura != null) {
@@ -137,6 +170,11 @@ public class CancionPanel extends javax.swing.JPanel {
         agregarFavoritosBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         agregarFavoritosBtn.setForeground(new java.awt.Color(255, 255, 255));
         agregarFavoritosBtn.setText("+");
+        agregarFavoritosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarFavoritosBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -178,6 +216,10 @@ public class CancionPanel extends javax.swing.JPanel {
     private void autorCancionLblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_autorCancionLblMouseClicked
        // TODO: QUE ABRA EL FRAME DE INFORMACION DE ALBUM
     }//GEN-LAST:event_autorCancionLblMouseClicked
+
+    private void agregarFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFavoritosBtnActionPerformed
+        this.toggleMarcaComoFavorito();
+    }//GEN-LAST:event_agregarFavoritosBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
