@@ -6,12 +6,15 @@ package com.equipo7.presentacion.gui;
 
 import com.equipo7.negocio.bo.AlbumBO;
 import com.equipo7.negocio.bo.ArtistaBO;
+import com.equipo7.negocio.bo.CancionesBO;
 import com.equipo7.negocio.bo.UsuariosBO;
 import com.equipo7.negocio.bo.interfaces.IAlbumBO;
 import com.equipo7.negocio.bo.interfaces.IArtistaBO;
+import com.equipo7.negocio.bo.interfaces.ICancionesBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.equipo7.negocio.dtos.AlbumDTO;
 import com.equipo7.negocio.dtos.ArtistaDTO;
+import com.equipo7.negocio.dtos.CancionDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
 import com.equipo7.presentacion.gui.estilo.Estilo;
@@ -21,10 +24,13 @@ import com.equipo7.presentacion.gui.paneles.ArtistaPanel;
 import com.equipo7.presentacion.gui.paneles.CancionPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -32,7 +38,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -46,6 +56,10 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     private IAlbumBO albumBO = AlbumBO.getInstance();
     private IArtistaBO artistaBO = ArtistaBO.getInstance();
     private IUsuariosBO usuarioBO = UsuariosBO.getInstance();
+    private ICancionesBO cancionesBO = CancionesBO.getInstance();
+    
+    private Timer busquedaTimer;
+    
 
     /**
      * Creates new form FrmPantallaPrincipal
@@ -100,11 +114,18 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.cancionesScrollPane.setPreferredSize(new Dimension(1100, 64));
 
-        this.cargarResultados();
+               
+        this.cargarResultados(); // Cargar inicialmente
+
 
     }
 
     private void cargarResultados() {
+        // Limpia los paneles antes de cargar nuevos resultados
+        
+        this.resultadosArtistasPanel.removeAll();
+        this.resultadosAlbumsPanel.removeAll();
+        this.resultadosCancionesPanel.removeAll();
 
         // cargar artistas:
         if (this.usuario.getArtistasFavoritos() != null) {
@@ -146,6 +167,42 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.revalidate();
         this.repaint();
     }
+    private void cargarResultados(String textoBusqueda) {
+    // Limpia los paneles antes de cargar nuevos resultados
+    this.resultadosArtistasPanel.removeAll();
+    this.resultadosAlbumsPanel.removeAll();
+    this.resultadosCancionesPanel.removeAll();
+        try {
+            // Buscar artistas por nombre
+            List<ArtistaDTO> artistasEncontrados = this.artistaBO.obtenerTodosPorNombre(textoBusqueda);
+            artistasEncontrados.forEach(artista -> {
+                ArtistaPanel panel = new ArtistaPanel(artista);
+                this.resultadosArtistasPanel.add(panel);
+            });
+
+            // Buscar álbumes por nombre
+            List<AlbumDTO> albumesEncontrados = this.albumBO.obtenerTodosPorNombre(textoBusqueda);
+            albumesEncontrados.forEach(album -> {
+                AlbumPanel panel = new AlbumPanel(album);
+                this.resultadosAlbumsPanel.add(panel);
+            });
+
+            // Buscar canciones por nombre
+            List<CancionDTO> cancionesEncontradas = this.cancionesBO.obtenerCancionesPorNombre(textoBusqueda);
+            cancionesEncontradas.forEach(cancion -> {
+                CancionPanel pnl = new CancionPanel(cancion);
+                this.resultadosCancionesPanel.add(pnl);
+            });
+            this.revalidate();
+            this.repaint();
+        } catch (BOException e) {
+            // Manejar errores de búsqueda
+            JOptionPane.showMessageDialog(this, "Error al buscar resultados: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -162,6 +219,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         barraBusquedaTextField = new javax.swing.JTextField();
         busquedaFiltradaBtn = new javax.swing.JButton();
         verPerfilBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         resultadosArtistasScrollPane = new javax.swing.JScrollPane();
@@ -193,6 +251,19 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
 
         barraBusquedaTextField.setText("¿Que quieres buscar?");
         barraBusquedaTextField.setSelectionColor(new java.awt.Color(202, 91, 255));
+        barraBusquedaTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barraBusquedaTextFieldActionPerformed(evt);
+            }
+        });
+        barraBusquedaTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                barraBusquedaTextFieldKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                barraBusquedaTextFieldKeyTyped(evt);
+            }
+        });
 
         busquedaFiltradaBtn.setText("Busqueda Avanzada");
         busquedaFiltradaBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -208,12 +279,21 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Favs");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(493, Short.MAX_VALUE)
+                .addContainerGap(296, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(125, 125, 125)
                 .addComponent(barraBusquedaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(busquedaFiltradaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,7 +306,9 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(barraBusquedaTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(barraBusquedaTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                        .addComponent(jButton1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(verPerfilBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -385,12 +467,48 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         perfilUsuario.setVisible(true);
     }//GEN-LAST:event_verPerfilBtnActionPerformed
 
+    private void barraBusquedaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldActionPerformed
+        
+
+    }//GEN-LAST:event_barraBusquedaTextFieldActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        usuario.agregarAlbumAFavoritos(new ObjectId("674fea0968313211c6ba65db"));
+        usuario.agregarArtistaAFavoritos(new ObjectId("674fea0968313211c6ba65e2"));
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void barraBusquedaTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldKeyPressed
+        // Reiniciar el temporizador cada vez que se escribe una letra
+        if (busquedaTimer != null && busquedaTimer.isRunning()) {
+            busquedaTimer.restart();
+        } else {
+            busquedaTimer = new Timer(2000, e -> {
+                if(barraBusquedaTextField.getText().isEmpty()){
+                    System.out.println("Vacio");
+                    cargarResultados();
+                }else{
+                    System.out.println("Texto encontrado: "+barraBusquedaTextField.getText());
+                    cargarResultados(barraBusquedaTextField.getText());
+                }
+                
+            });
+            busquedaTimer.setRepeats(false); // Solo se ejecuta una vez por escritura
+            busquedaTimer.start();
+        }
+    }//GEN-LAST:event_barraBusquedaTextFieldKeyPressed
+
+    private void barraBusquedaTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_barraBusquedaTextFieldKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField barraBusquedaTextField;
     private javax.swing.JButton busquedaFiltradaBtn;
     private javax.swing.JScrollPane cancionesScrollPane;
     private javax.swing.JScrollPane favoritosScrollPane;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
