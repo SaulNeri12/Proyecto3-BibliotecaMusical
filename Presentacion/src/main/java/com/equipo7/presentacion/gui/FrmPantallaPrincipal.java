@@ -6,12 +6,15 @@ package com.equipo7.presentacion.gui;
 
 import com.equipo7.negocio.bo.AlbumBO;
 import com.equipo7.negocio.bo.ArtistaBO;
+import com.equipo7.negocio.bo.CancionesBO;
 import com.equipo7.negocio.bo.UsuariosBO;
 import com.equipo7.negocio.bo.interfaces.IAlbumBO;
 import com.equipo7.negocio.bo.interfaces.IArtistaBO;
+import com.equipo7.negocio.bo.interfaces.ICancionesBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.equipo7.negocio.dtos.AlbumDTO;
 import com.equipo7.negocio.dtos.ArtistaDTO;
+import com.equipo7.negocio.dtos.CancionDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
 import com.equipo7.presentacion.gui.estilo.Estilo;
@@ -25,6 +28,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -32,7 +36,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -46,6 +52,9 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     private IAlbumBO albumBO = AlbumBO.getInstance();
     private IArtistaBO artistaBO = ArtistaBO.getInstance();
     private IUsuariosBO usuarioBO = UsuariosBO.getInstance();
+    private ICancionesBO cancionesBO = CancionesBO.getInstance();
+
+    private Timer busquedaTimer;
 
     /**
      * Creates new form FrmPantallaPrincipal
@@ -100,11 +109,21 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.cancionesScrollPane.setPreferredSize(new Dimension(1100, 64));
 
-        this.cargarResultados();
+        this.cargarResultados(); // Cargar inicialmente
 
     }
 
     private void cargarResultados() {
+        // Limpia los paneles antes de cargar nuevos resultados
+
+        this.resultadosArtistasPanel.removeAll();
+        this.resultadosAlbumsPanel.removeAll();
+        this.resultadosCancionesPanel.removeAll();
+        
+        
+        this.resultadosArtistasPanel.repaint();
+        this.resultadosAlbumsPanel.repaint();
+        this.resultadosCancionesPanel.repaint();
 
         // cargar artistas:
         if (this.usuario.getArtistasFavoritos() != null) {
@@ -134,17 +153,54 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                 }
             });
         }
-        
+
         if (this.usuario.getCancionesFavoritas() != null) {
             this.usuario.getCancionesFavoritas().forEach(cancion -> {
                 CancionPanel pnl = new CancionPanel(cancion);
                 this.resultadosCancionesPanel.add(pnl);
             });
         }
-        
-        
+
         this.revalidate();
         this.repaint();
+    }
+
+    private void cargarResultados(String textoBusqueda) {
+        // Limpia los paneles antes de cargar nuevos resultados
+        this.resultadosArtistasPanel.removeAll();
+        this.resultadosAlbumsPanel.removeAll();
+        this.resultadosCancionesPanel.removeAll();
+        
+        
+        try {
+            // Buscar artistas por nombre
+            List<ArtistaDTO> artistasEncontrados = this.artistaBO.obtenerTodosPorNombre(textoBusqueda);
+            artistasEncontrados.forEach(artista -> {
+                ArtistaPanel panel = new ArtistaPanel(artista);
+                this.resultadosArtistasPanel.add(panel);
+            });
+
+            // Buscar álbumes por nombre
+            List<AlbumDTO> albumesEncontrados = this.albumBO.obtenerTodosPorNombre(textoBusqueda);
+            albumesEncontrados.forEach(album -> {
+                AlbumPanel panel = new AlbumPanel(album);
+                this.resultadosAlbumsPanel.add(panel);
+            });
+
+            // Buscar canciones por nombre
+            List<CancionDTO> cancionesEncontradas = this.cancionesBO.obtenerCancionesPorNombre(textoBusqueda);
+            cancionesEncontradas.forEach(cancion -> {
+                CancionPanel pnl = new CancionPanel(cancion);
+                this.resultadosCancionesPanel.add(pnl);
+            });
+            this.revalidate();
+            this.repaint();
+        } catch (BOException e) {
+            // Manejar errores de búsqueda
+            JOptionPane.showMessageDialog(this, "Error al buscar resultados: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     /**
@@ -384,6 +440,41 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.dispose();
         perfilUsuario.setVisible(true);
     }//GEN-LAST:event_verPerfilBtnActionPerformed
+
+    private void barraBusquedaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldActionPerformed
+
+
+    }//GEN-LAST:event_barraBusquedaTextFieldActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        usuario.agregarAlbumAFavoritos(new ObjectId("674fea0968313211c6ba65db"));
+        usuario.agregarArtistaAFavoritos(new ObjectId("674fea0968313211c6ba65e2"));
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void barraBusquedaTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldKeyPressed
+        // Reiniciar el temporizador cada vez que se escribe una letra
+        if (busquedaTimer != null && busquedaTimer.isRunning()) {
+            busquedaTimer.restart();
+        } else {
+            busquedaTimer = new Timer(1000, e -> {
+                if (barraBusquedaTextField.getText().isEmpty()) {
+                    System.out.println("Vacio");
+                    cargarResultados();
+                } else {
+                    System.out.println("Texto encontrado: " + barraBusquedaTextField.getText());
+                    cargarResultados(barraBusquedaTextField.getText());
+                }
+
+            });
+            busquedaTimer.setRepeats(false); // Solo se ejecuta una vez por escritura
+            busquedaTimer.start();
+        }
+    }//GEN-LAST:event_barraBusquedaTextFieldKeyPressed
+
+    private void barraBusquedaTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_barraBusquedaTextFieldKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
