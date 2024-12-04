@@ -253,9 +253,36 @@ public class Usuario implements IDocumentable {
         return sb.toString();
     }
 
-    public boolean cancionEnFavoritos() {
+    public boolean cancionEnFavoritos(Cancion cancion) {
+        if (this.getCancionesFavoritas() != null) {
+            boolean cancionRegistrada = this.getCancionesFavoritas()
+                    .stream()
+                    .filter(c -> c.getNombre().equals(cancion.getNombre()) && c.getIdAlbum().equals(cancion.getIdAlbum()))
+                    .findFirst()
+                    .orElse(null) != null;
+            
+            return cancionRegistrada;
+        }
         
+        return false;
     }
+    
+    public boolean artistaEnFavoritos(ObjectId idArtista) {
+        if (this.getArtistasFavoritos() != null) {
+            return this.getArtistasFavoritos().stream().allMatch(artista -> artista.equals(idArtista));
+        }
+        
+        return false;
+    } 
+    
+    public boolean albumEnFavoritos(ObjectId idAlbum) {
+        if (this.getAlbumesFavoritos() != null) {
+            return this.getAlbumesFavoritos().stream().allMatch(album -> album.equals(idAlbum));
+        }
+        
+        return false;
+    } 
+    
     
     public void agregarCancionAFavoritos(Cancion cancion) {
         if (this.getCancionesFavoritas() != null) {

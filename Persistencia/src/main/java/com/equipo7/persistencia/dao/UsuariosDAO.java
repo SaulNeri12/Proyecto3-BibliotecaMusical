@@ -311,14 +311,6 @@ public class UsuariosDAO implements IUsuariosDAO {
         try {
             // Realizar la actualización en la base de datos
             UpdateResult resultado = this.usuarios.updateOne(filtro, actualizacion);
-
-            if (resultado.getMatchedCount() == 0) {
-                throw new DAOException("No se encontró un usuario con el ID proporcionado.");
-            }
-
-            if (resultado.getModifiedCount() == 0) {
-                throw new DAOException("No se pudo actualizar los favoritos. Intente más tarde.");
-            }
         } catch (MongoException e) {
             throw new DAOException("No se pudieron guardar los cambios en la seccion de favoritos");
         }
