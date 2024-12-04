@@ -62,7 +62,7 @@ public class AlbumBO implements IAlbumBO {
     @Override
     public List<AlbumDTO> obtenerTodosPorNombre(String nombreAlbum) throws BOException {
         try {
-            List<Album> albumes = albumesDAO.obtenerTodos();
+            List<Album> albumes = albumesDAO.obtenerTodosPorNombre(nombreAlbum);
             return albumes.stream()
                     .map(AlbumConvertidor::entidadADto)
                     .collect(Collectors.toList());
