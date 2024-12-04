@@ -87,9 +87,12 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                     try {
                         usuarioBO.actualizarFavoritos(usuario);
                     } catch (BOException ex) {
+                        System.out.println("### Error al cierre: " + ex.getMessage());
                         Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    _this.dispose(); // Cierra el frame si se confirma
+                    
+                    System.exit(0);
+                    //_this.dispose(); // Cierra el frame si se confirma
                 }
             }
         });

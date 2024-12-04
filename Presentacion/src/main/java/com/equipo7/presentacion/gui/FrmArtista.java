@@ -4,14 +4,21 @@
  */
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.bo.AlbumBO;
+import com.equipo7.negocio.bo.interfaces.IAlbumBO;
+import com.equipo7.negocio.dtos.AlbumDTO;
 import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
+import com.equipo7.negocio.excepciones.BOException;
+import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
 import com.equipo7.presentacion.gui.imageloader.ImageResizer;
 import com.equipo7.presentacion.gui.paneles.AlbumPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -26,6 +33,7 @@ public class FrmArtista extends javax.swing.JFrame {
 
     private UsuarioDTO usuario = PerfilUsuario.getUsuario();
     private ArtistaDTO artista;
+    private IAlbumBO albumBO = AlbumBO.getInstance();
     
     private ImageIcon imagenArtista;
     private JPanel imagenPanel;
@@ -93,6 +101,7 @@ public class FrmArtista extends javax.swing.JFrame {
         this.prepararEstilo();
         this.cargarResultados();
         this.cargarInfoArtista();
+        this.actualizarBotonFavoritos();
     }
     
     private void cargarInfoArtista() {
@@ -102,14 +111,43 @@ public class FrmArtista extends javax.swing.JFrame {
         this.descripcionArtistaLbl.setText(artista.getDescripcion());
     }
     
+    public void actualizarBotonFavoritos() {
+        if (this.usuario.artistaEnFavoritos(this.artista.getId())) {
+            this.agregarAFavoritosBtn.setText("En Tus Favoritos");
+            this.agregarAFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        } else {
+            this.agregarAFavoritosBtn.setText("Agregar a Favoritos");
+            this.agregarAFavoritosBtn.setBackground(Estilo.colorPrimario);
+        }
+        
+        this.agregarAFavoritosBtn.revalidate();
+        this.agregarAFavoritosBtn.repaint();
+        this.infoArtistaPanel.revalidate();
+        this.infoArtistaPanel.repaint();
+        
+    }
+    
     private void cargarResultados() {
-        /*
-        TODO: CARGAR ALBUMES DESDE REFERENCIAS DE LOS ALBUMES DEL ARTISTA
-        for (int i = 0; i < 20; i++) {
+        this.resultadosAlbumsPanel.removeAll();
+        this.resultadosAlbumsPanel.repaint();
+        
+        try {
+            for (AlbumDTO album: this.albumBO.obtenerTodosPorArtista(this.artista.getId())) {
+                System.out.println(album);
+                AlbumPanel pnl = new AlbumPanel(album);
+                this.resultadosAlbumsPanel.add(pnl);
+            }
+            
+            /*
+            TODO: CARGAR ALBUMES DESDE REFERENCIAS DE LOS ALBUMES DEL ARTISTA
+            for (int i = 0; i < 20; i++) {
             AlbumPanel pnl = new AlbumPanel();
             this.resultadosAlbumsPanel.add(pnl);
-        }*/
-        
+            }*/
+        } catch (BOException ex) {
+            // TODO: Mostrar JOptionPane
+            Logger.getLogger(FrmArtista.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         this.revalidate();
         this.repaint();
@@ -140,7 +178,7 @@ public class FrmArtista extends javax.swing.JFrame {
         infoArtistaScrollPanel = new javax.swing.JScrollPane();
         infoArtistaPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        agregarAFavoritosBtn = new javax.swing.JButton();
         resultadosAlbumsScrollPane = new javax.swing.JScrollPane();
         resultadosAlbumsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -204,9 +242,14 @@ public class FrmArtista extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Descripción");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Agregar a Favoritos");
+        agregarAFavoritosBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        agregarAFavoritosBtn.setForeground(new java.awt.Color(255, 255, 255));
+        agregarAFavoritosBtn.setText("Agregar a Favoritos");
+        agregarAFavoritosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarAFavoritosBtnActionPerformed(evt);
+            }
+        });
 
         resultadosAlbumsScrollPane.setBorder(null);
 
@@ -229,7 +272,6 @@ public class FrmArtista extends javax.swing.JFrame {
 
         descripcionArtistaLbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         descripcionArtistaLbl.setForeground(new java.awt.Color(255, 255, 255));
-        descripcionArtistaLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         descripcionArtistaLbl.setText("jLabel4");
         descripcionArtistaLbl.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
@@ -266,7 +308,7 @@ public class FrmArtista extends javax.swing.JFrame {
                     .addGroup(infoArtistaPanelLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(agregarAFavoritosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))))
         );
         infoArtistaPanelLayout.setVerticalGroup(
@@ -275,7 +317,7 @@ public class FrmArtista extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(infoArtistaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(agregarAFavoritosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(resultadosAlbumsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -330,7 +372,18 @@ public class FrmArtista extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_volverMenuPrincipalBtnActionPerformed
 
+    private void agregarAFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAFavoritosBtnActionPerformed
+        if (this.usuario.artistaEnFavoritos(this.artista.getId())) {
+            this.usuario.eliminarArtistaDeFavoritos(this.artista.getId());
+        } else {
+            this.usuario.agregarArtistaAFavoritos(this.artista.getId());
+        }
+        
+        this.actualizarBotonFavoritos();
+    }//GEN-LAST:event_agregarAFavoritosBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarAFavoritosBtn;
     private javax.swing.JLabel descripcionArtistaLbl;
     private javax.swing.JScrollPane descripcionScrollPane;
     private javax.swing.JPanel fondoColorPanel;
@@ -338,7 +391,6 @@ public class FrmArtista extends javax.swing.JFrame {
     private javax.swing.JPanel imagenContainerPanel;
     private javax.swing.JPanel infoArtistaPanel;
     private javax.swing.JScrollPane infoArtistaScrollPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
