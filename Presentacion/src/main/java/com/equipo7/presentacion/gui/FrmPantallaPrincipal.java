@@ -6,8 +6,10 @@ package com.equipo7.presentacion.gui;
 
 import com.equipo7.negocio.bo.AlbumBO;
 import com.equipo7.negocio.bo.ArtistaBO;
+import com.equipo7.negocio.bo.UsuariosBO;
 import com.equipo7.negocio.bo.interfaces.IAlbumBO;
 import com.equipo7.negocio.bo.interfaces.IArtistaBO;
+import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.equipo7.negocio.dtos.AlbumDTO;
 import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
@@ -38,23 +40,24 @@ import javax.swing.border.LineBorder;
  */
 public class FrmPantallaPrincipal extends javax.swing.JFrame {
 
-    private UsuarioDTO usuario;
+    private UsuarioDTO usuario = PerfilUsuario.getUsuario();
     private JFrame _this;
-    
+
     private IAlbumBO albumBO = AlbumBO.getInstance();
     private IArtistaBO artistaBO = ArtistaBO.getInstance();
-    
+    private IUsuariosBO usuarioBO = UsuariosBO.getInstance();
+
     /**
      * Creates new form FrmPantallaPrincipal
      */
-    public FrmPantallaPrincipal()  {
+    public FrmPantallaPrincipal() {
         initComponents();
-        
+
         _this = this; // ????
-        
+
         this.setLocationRelativeTo(null);
         this.setTitle("Biblioteca Musical");
-        
+
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Deshabilitar el cierre predeterminado
 
         // Añadir un WindowListener para gestionar el cierre
@@ -70,86 +73,75 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                 );
 
                 if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        usuarioBO.actualizarFavoritos(usuario);
+                    } catch (BOException ex) {
+                        Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     _this.dispose(); // Cierra el frame si se confirma
                 }
             }
         });
-        
+
         // NOTE: NO MODIFICAR
         this.resultadosArtistasPanel.setLayout(new BoxLayout(this.resultadosArtistasPanel, BoxLayout.X_AXIS));
         this.resultadosArtistasScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.resultadosArtistasScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         this.resultadosArtistasScrollPane.setPreferredSize(new Dimension(1100, 250));
-        
+
         // NOTE: NO MODIFICAR
         this.resultadosAlbumsPanel.setLayout(new BoxLayout(this.resultadosAlbumsPanel, BoxLayout.X_AXIS));
         this.resultadosAlbumsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.resultadosAlbumsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         this.resultadosAlbumsScrollPane.setPreferredSize(new Dimension(1100, 250));
-        
+
         this.resultadosCancionesPanel.setLayout(new BoxLayout(this.resultadosCancionesPanel, BoxLayout.Y_AXIS));
         this.cancionesScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.cancionesScrollPane.setPreferredSize(new Dimension(1100, 64));
-        
+
         this.cargarResultados();
-        
+
     }
-    
+
     private void cargarResultados() {
-        
-        try {
-            // cargar artistas:
-            for (ArtistaDTO artista: this.artistaBO.obtenerTodos()) {
-                ArtistaPanel panel = new ArtistaPanel(artista);
-                this.resultadosArtistasPanel.add(panel);
-            }
-            
-        } catch (BOException ex) {
-            Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-         try {
-            // cargar artistas:
-            for (AlbumDTO album: this.albumBO.obtenerTodos()) {
-                AlbumPanel panel = new AlbumPanel(album);
-                this.resultadosAlbumsPanel.add(panel);
-            }
-            
-        } catch (BOException ex) {
-            Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        /*
-        for (int i = 0; i < 20; i++) {
-            ArtistaPanel pnl = new ArtistaPanel();
-            this.resultadosArtistasPanel.add(pnl);
-            this.resultadosArtistasPanel.add(Box.createRigidArea(new Dimension(10, 0))); // espacio
-        }*/
 
-        /*
-        this.resultadosArtistasPanel.revalidate();
-        this.resultadosArtistasPanel.repaint();
-        this.resultadosArtistasScrollPane.revalidate();
-        this.resultadosArtistasScrollPane.repaint();
+        // cargar artistas:
+        if (this.usuario.getArtistasFavoritos() != null) {
+            this.usuario.getArtistasFavoritos().forEach(idArtista -> {
+                try {
+                    ArtistaDTO artista = this.artistaBO.obtenerPorId(idArtista);
+                    if (artista != null) {
+                        ArtistaPanel panel = new ArtistaPanel(artista);
+                        this.resultadosArtistasPanel.add(panel);
+                    }
+                } catch (BOException ex) {
+                    // no hagas nada...
+                }
+            });
+        }
 
-        
-        for (int i = 0; i < 20; i++) {
-            AlbumPanel pnl = new AlbumPanel();
-            this.resultadosAlbumsPanel.add(pnl);
+        if (this.usuario.getAlbumesFavoritos() != null) {
+            this.usuario.getAlbumesFavoritos().forEach(idAlbum -> {
+                try {
+                    AlbumDTO album = this.albumBO.obtenerPorId(idAlbum);
+                    if (album != null) {
+                        AlbumPanel panel = new AlbumPanel(album);
+                        this.resultadosAlbumsPanel.add(panel);
+                    }
+                } catch (BOException ex) {
+                    // no hagas nada...
+                }
+            });
         }
         
-        for (int i = 0; i < 20; i++) {
-            CancionPanel pnl = new CancionPanel();
-            this.resultadosCancionesPanel.add(pnl);
+        if (this.usuario.getCancionesFavoritas() != null) {
+            this.usuario.getCancionesFavoritas().forEach(cancion -> {
+                CancionPanel pnl = new CancionPanel(cancion);
+                this.resultadosCancionesPanel.add(pnl);
+            });
         }
         
-        
-        
-        this.resultadosAlbumsPanel.revalidate();
-        this.resultadosAlbumsPanel.repaint();
-        this.resultadosAlbumsScrollPane.revalidate();
-        this.resultadosAlbumsScrollPane.repaint();*/
         
         this.revalidate();
         this.repaint();

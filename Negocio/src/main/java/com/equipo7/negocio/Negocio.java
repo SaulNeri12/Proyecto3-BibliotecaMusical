@@ -77,7 +77,6 @@ public class Negocio {
         
         
         // cancines
-        
         try {
             for (CancionDTO cancion: cancionesBO.obtenerCancionesPorGenero("Hip-Hop")) {
                 System.out.println(cancion);

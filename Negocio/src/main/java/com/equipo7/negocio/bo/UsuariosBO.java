@@ -8,6 +8,8 @@ import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.UsuariosDAO;
 import com.equipo7.persistencia.entidades.Usuario;
 import excepciones.DAOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementa los metodos de la interfaz IUsuariosBO
@@ -78,6 +80,15 @@ public class UsuariosBO implements IUsuariosBO {
             this.usuarios.actualizarContrasenhaUsuario(correoElectronico, nuevaContrasena);
         } catch (DAOException e) {
             throw new BOException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizarFavoritos(UsuarioDTO usuario) throws BOException {
+        try {
+            this.usuarios.actualizarFavoritos(convertidor.convertFromDTO(usuario));
+        } catch (DAOException ex) {
+            throw new BOException(ex.getMessage());
         }
     }
 }

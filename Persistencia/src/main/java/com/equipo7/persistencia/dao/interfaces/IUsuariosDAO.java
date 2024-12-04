@@ -65,4 +65,11 @@ public interface IUsuariosDAO {
      * o si no se encuentra la cuenta asociada al correo electrónico.
      */
     public void actualizarContrasenhaUsuario(String correoElectronico, String nuevaContrasena) throws DAOException;
+    
+    /**
+     * Actualiza los datos guardados en la seccion de favoritos del usuario.
+     * @param usuario Usuario a actualizar.
+     * @throws DAOException 
+     */
+    public void actualizarFavoritos(Usuario usuario) throws DAOException;
 }

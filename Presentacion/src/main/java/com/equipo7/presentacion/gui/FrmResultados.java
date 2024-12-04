@@ -20,12 +20,12 @@ import javax.swing.SwingUtilities;
  *
  * @author neri
  */
-public class FrmFavoritos extends javax.swing.JFrame {
+public class FrmResultados extends javax.swing.JFrame {
 
     /**
      * Creates new form FrmFavoritos
      */
-    public FrmFavoritos() {
+    public FrmResultados() {
         initComponents();
 
         this.resultadosArtistasPanel.setLayout(new BoxLayout(this.resultadosArtistasPanel, BoxLayout.X_AXIS));
@@ -44,30 +44,8 @@ public class FrmFavoritos extends javax.swing.JFrame {
     }
 
     private void cargarResultados() {
-        /*
-        for (int i = 0; i < 20; i++) {
-            ArtistaPanel pnl = new ArtistaPanel();
-            this.resultadosArtistasPanel.add(pnl);
-            this.resultadosArtistasPanel.add(Box.createRigidArea(new Dimension(10, 0))); // espacio
-        }
-
-        
-        this.resultadosArtistasPanel.revalidate();
-        this.resultadosArtistasPanel.repaint();
-        this.resultadosArtistasScrollPane.revalidate();
-        this.resultadosArtistasScrollPane.repaint();
-
-        
-        for (int i = 0; i < 20; i++) {
-            AlbumPanel pnl = new AlbumPanel();
-            this.resultadosAlbumsPanel.add(pnl);
-        }
         
         
-        this.resultadosAlbumsPanel.revalidate();
-        this.resultadosAlbumsPanel.repaint();
-        this.resultadosAlbumsScrollPane.revalidate();
-        this.resultadosAlbumsScrollPane.repaint();*/
         
         this.revalidate();
         this.repaint();
@@ -101,7 +79,6 @@ public class FrmFavoritos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(20, 20, 20));
-        setMaximumSize(new java.awt.Dimension(1200, 999));
         setMinimumSize(new java.awt.Dimension(1200, 999));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -211,20 +188,21 @@ public class FrmFavoritos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmFavoritos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmResultados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmFavoritos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmResultados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmFavoritos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmResultados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmFavoritos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmResultados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmFavoritos().setVisible(true);
+                new FrmResultados().setVisible(true);
             }
         });
     }

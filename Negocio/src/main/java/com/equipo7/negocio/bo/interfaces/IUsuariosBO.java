@@ -45,4 +45,11 @@ public interface IUsuariosBO {
      */
     public void actualizarContrasenhaUsuario(String correoElectronico, String nuevaContrasena) throws BOException;
     
+    /**
+     * Actualiza los datos guardados en la seccion de favoritos del usuario.
+     * @param usuario Usuario a actualizar.
+     * @throws BOException 
+     */
+    public void actualizarFavoritos(UsuarioDTO usuario) throws BOException;
+    
 }

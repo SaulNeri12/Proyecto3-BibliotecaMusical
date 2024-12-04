@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 /**
  * Implementa las operaciones de la interfaz IUsuariosDAO
+ *
  * @author Saul Neri
  */
 public class UsuariosDAO implements IUsuariosDAO {
@@ -38,7 +39,9 @@ public class UsuariosDAO implements IUsuariosDAO {
 
     /**
      * Constructor privado para generación de instancia única
-     * @throws ConexionException Si ocurre un error al obtener la colección de usuarios
+     *
+     * @throws ConexionException Si ocurre un error al obtener la colección de
+     * usuarios
      */
     private UsuariosDAO() throws ConexionException {
         this.bibliotecaMusicalBD = Conexion.getInstance().getBibliotecaMusicalBD();
@@ -47,8 +50,10 @@ public class UsuariosDAO implements IUsuariosDAO {
 
     /**
      * Obtiene la instancia única del DAO de usuarios
+     *
      * @return Instancia única del DAO
-     * @throws ConexionException Si ocurre un error al tratar de obtener la instancia
+     * @throws ConexionException Si ocurre un error al tratar de obtener la
+     * instancia
      */
     public static UsuariosDAO getInstance() throws ConexionException {
         if (instance == null) {
@@ -60,6 +65,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 
     /**
      * Convierte un Document a objeto Usuario
+     *
      * @param document Documento de la DB
      * @return Usuario mapeado
      */
@@ -175,7 +181,7 @@ public class UsuariosDAO implements IUsuariosDAO {
         if (usuario == null || usuario.getId() == null) {
             throw new DAOException("Informacion incompleta, porfavor, llene los todos los campos");
         }
-        
+
         // Crear el filtro por ID
         Bson filtro = Filters.empty();
 
@@ -260,7 +266,7 @@ public class UsuariosDAO implements IUsuariosDAO {
             throw new DAOException("Ocurrió un error al actualizar la contraseña.");
         }
     }
-    
+
     /*
     private static void seleccionarImagen(JLabel imageLabel) {
         // Crear un JFileChooser para seleccionar el archivo
@@ -286,6 +292,36 @@ public class UsuariosDAO implements IUsuariosDAO {
             }
         }
     }*/
+    @Override
+    public void actualizarFavoritos(Usuario usuario) throws DAOException {
+        
+        if (usuario == null || usuario.getCorreoElectronico() == null) {
+            throw new DAOException("El usuario o su correo no pueden ser nulos.");
+        }
 
+        // Crear el filtro para identificar el documento correspondiente al usuario
+        Bson filtro = Filters.eq("email", usuario.getCorreoElectronico());
+
+        // Crear el documento de actualización
+        Document actualizacion = new Document("$set", new Document()
+                .append("canciones_favoritas", usuario.getCancionesFavoritas())
+                .append("albumes_favoritos", usuario.getAlbumesFavoritos())
+                .append("artistas_favoritos", usuario.getArtistasFavoritos()));
+
+        try {
+            // Realizar la actualización en la base de datos
+            UpdateResult resultado = this.usuarios.updateOne(filtro, actualizacion);
+
+            if (resultado.getMatchedCount() == 0) {
+                throw new DAOException("No se encontró un usuario con el ID proporcionado.");
+            }
+
+            if (resultado.getModifiedCount() == 0) {
+                throw new DAOException("No se pudo actualizar los favoritos. Intente más tarde.");
+            }
+        } catch (MongoException e) {
+            throw new DAOException("No se pudieron guardar los cambios en la seccion de favoritos");
+        }
+    }
 
 }

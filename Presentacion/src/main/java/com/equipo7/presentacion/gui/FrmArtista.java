@@ -41,15 +41,15 @@ public class FrmArtista extends javax.swing.JFrame {
         initComponents();
         
         this.artista = artista;
-//        
-//         // se cargara con la url de la imagen de portada del album...
-//        AsyncImageLoader.loadImageAsync(this.artista.getImagenURL(), (ImageIcon image) -> {
-//            SwingUtilities.invokeLater(() -> {
-//                imagenArtista = image;
-//                imagenArtista = ImageResizer.resizeImageIcon(imagenArtista, MINIATURA_WIDTH, MINIATURA_HEIGHT);
-////                actualizaMiniaturaPortada();
-//            });
-//        });
+        
+         // se cargara con la url de la imagen de portada del album...
+        AsyncImageLoader.loadImageAsync(this.artista.getImagenURL(), (ImageIcon image) -> {
+            SwingUtilities.invokeLater(() -> {
+                imagenArtista = image;
+                imagenArtista = ImageResizer.resizeImageIcon(imagenArtista, MINIATURA_WIDTH, MINIATURA_HEIGHT);
+//                actualizaMiniaturaPortada();
+            });
+        });
         
         // Define el panel personalizado
         imagenPanel = new JPanel() {
@@ -64,6 +64,7 @@ public class FrmArtista extends javax.swing.JFrame {
         };
         
         this.infoArtistaScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.descripcionScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         //this.descripcionArtistaLbl.setSize(this.getSize());
         
         this.resultadosAlbumsPanel.setLayout(new BoxLayout(this.resultadosAlbumsPanel, BoxLayout.X_AXIS));
@@ -86,6 +87,7 @@ public class FrmArtista extends javax.swing.JFrame {
         // Agrega el panel personalizado a este contenedor
         this.imagenContainerPanel.add(this.imagenPanel, BorderLayout.CENTER);
         
+        
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.prepararEstilo();
@@ -97,7 +99,7 @@ public class FrmArtista extends javax.swing.JFrame {
         this.nombreArtista.setText(artista.getNombreArtista());
         this.generoMusicalLbl.setText(artista.getGeneroMusical());
         // TODO: ARREGLAR ESTO, EL TEXTO SE SALE DE LA PANTALLA
-        //this.descripcionArtistaLbl.setText(artista.getDescripcion());
+        this.descripcionArtistaLbl.setText(artista.getDescripcion());
     }
     
     private void cargarResultados() {
@@ -130,6 +132,7 @@ public class FrmArtista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         fondoColorPanel = new javax.swing.JPanel();
         imagenContainerPanel = new javax.swing.JPanel();
         nombreArtista = new javax.swing.JLabel();
@@ -141,8 +144,12 @@ public class FrmArtista extends javax.swing.JFrame {
         resultadosAlbumsScrollPane = new javax.swing.JScrollPane();
         resultadosAlbumsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        descripcionScrollPane = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
+        descripcionArtistaLbl = new javax.swing.JLabel();
         volverMenuPrincipalBtn = new javax.swing.JButton();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -220,27 +227,37 @@ public class FrmArtista extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Discografía");
 
+        descripcionArtistaLbl.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        descripcionArtistaLbl.setForeground(new java.awt.Color(255, 255, 255));
+        descripcionArtistaLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        descripcionArtistaLbl.setText("jLabel4");
+        descripcionArtistaLbl.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1008, Short.MAX_VALUE)
+            .addComponent(descripcionArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 214, Short.MAX_VALUE)
+            .addComponent(descripcionArtistaLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
         );
+
+        descripcionScrollPane.setViewportView(jPanel1);
 
         javax.swing.GroupLayout infoArtistaPanelLayout = new javax.swing.GroupLayout(infoArtistaPanel);
         infoArtistaPanel.setLayout(infoArtistaPanelLayout);
         infoArtistaPanelLayout.setHorizontalGroup(
             infoArtistaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoArtistaPanelLayout.createSequentialGroup()
+            .addGroup(infoArtistaPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(infoArtistaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(infoArtistaPanelLayout.createSequentialGroup()
+                        .addComponent(descripcionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(infoArtistaPanelLayout.createSequentialGroup()
                         .addGroup(infoArtistaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(resultadosAlbumsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, infoArtistaPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -264,8 +281,8 @@ public class FrmArtista extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(descripcionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         infoArtistaScrollPanel.setViewportView(infoArtistaPanel);
@@ -314,12 +331,15 @@ public class FrmArtista extends javax.swing.JFrame {
     }//GEN-LAST:event_volverMenuPrincipalBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel descripcionArtistaLbl;
+    private javax.swing.JScrollPane descripcionScrollPane;
     private javax.swing.JPanel fondoColorPanel;
     private javax.swing.JLabel generoMusicalLbl;
     private javax.swing.JPanel imagenContainerPanel;
     private javax.swing.JPanel infoArtistaPanel;
     private javax.swing.JScrollPane infoArtistaScrollPanel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
