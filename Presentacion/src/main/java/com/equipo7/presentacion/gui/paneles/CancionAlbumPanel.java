@@ -19,16 +19,20 @@ public class CancionAlbumPanel extends javax.swing.JPanel {
     
     //private CancionDTO cancionDTO;
     
+    private Integer posicionLista;
+    
     /**
      * Creates new form CancionAlbum
      * @param cancion
      */
-    public CancionAlbumPanel(CancionDTO cancion) {
+    public CancionAlbumPanel(Integer posicion, CancionDTO cancion) {
         initComponents();
         
         this.cancionDTO = cancion;
+        this.posicionLista = posicion;
         
         this.mostrarInformacionCancion();
+        this.actualizarBotonAnadirAFavoritos();
     }
     
     
@@ -36,6 +40,18 @@ public class CancionAlbumPanel extends javax.swing.JPanel {
         this.nombreCancionLbl.setText(this.cancionDTO.getNombre());
         
         if (this.usuarioDTO.getCancionesFavoritas().contains(this.cancionDTO)) {
+            this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
+        } else {
+            this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        }
+        
+        this.numeroCancionListaLbl.setText(String.format("%d.", this.posicionLista));
+        this.nombreCancionLbl.setText(this.cancionDTO.getNombre());
+        this.actualizarBotonAnadirAFavoritos();
+    }
+    
+    public void actualizarBotonAnadirAFavoritos() {
+        if (this.usuarioDTO.cancionEnFavoritos(cancionDTO)) {
             this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
         } else {
             this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);

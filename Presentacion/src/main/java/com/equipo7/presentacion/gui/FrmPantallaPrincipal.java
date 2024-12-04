@@ -40,8 +40,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import org.bson.types.ObjectId;
 
 /**
@@ -57,9 +55,8 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     private IArtistaBO artistaBO = ArtistaBO.getInstance();
     private IUsuariosBO usuarioBO = UsuariosBO.getInstance();
     private ICancionesBO cancionesBO = CancionesBO.getInstance();
-    
+
     private Timer busquedaTimer;
-    
 
     /**
      * Creates new form FrmPantallaPrincipal
@@ -90,9 +87,12 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                     try {
                         usuarioBO.actualizarFavoritos(usuario);
                     } catch (BOException ex) {
+                        System.out.println("### Error al cierre: " + ex.getMessage());
                         Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    _this.dispose(); // Cierra el frame si se confirma
+                    
+                    System.exit(0);
+                    //_this.dispose(); // Cierra el frame si se confirma
                 }
             }
         });
@@ -114,18 +114,20 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.cancionesScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.cancionesScrollPane.setPreferredSize(new Dimension(1100, 64));
 
-               
         this.cargarResultados(); // Cargar inicialmente
-
 
     }
 
     private void cargarResultados() {
         // Limpia los paneles antes de cargar nuevos resultados
-        
+
         this.resultadosArtistasPanel.removeAll();
         this.resultadosAlbumsPanel.removeAll();
         this.resultadosCancionesPanel.removeAll();
+
+        this.resultadosArtistasPanel.repaint();
+        this.resultadosAlbumsPanel.repaint();
+        this.resultadosCancionesPanel.repaint();
 
         // cargar artistas:
         if (this.usuario.getArtistasFavoritos() != null) {
@@ -155,23 +157,23 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                 }
             });
         }
-        
+
         if (this.usuario.getCancionesFavoritas() != null) {
             this.usuario.getCancionesFavoritas().forEach(cancion -> {
                 CancionPanel pnl = new CancionPanel(cancion);
                 this.resultadosCancionesPanel.add(pnl);
             });
         }
-        
-        
+
         this.revalidate();
         this.repaint();
     }
+
     private void cargarResultados(String textoBusqueda) {
-    // Limpia los paneles antes de cargar nuevos resultados
-    this.resultadosArtistasPanel.removeAll();
-    this.resultadosAlbumsPanel.removeAll();
-    this.resultadosCancionesPanel.removeAll();
+        // Limpia los paneles antes de cargar nuevos resultados
+        this.resultadosArtistasPanel.removeAll();
+        this.resultadosAlbumsPanel.removeAll();
+        this.resultadosCancionesPanel.removeAll();
         try {
             // Buscar artistas por nombre
             List<ArtistaDTO> artistasEncontrados = this.artistaBO.obtenerTodosPorNombre(textoBusqueda);
@@ -200,9 +202,8 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al buscar resultados: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-    
+
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -468,14 +469,12 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_verPerfilBtnActionPerformed
 
     private void barraBusquedaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldActionPerformed
-        
 
     }//GEN-LAST:event_barraBusquedaTextFieldActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         usuario.agregarAlbumAFavoritos(new ObjectId("674fea0968313211c6ba65db"));
         usuario.agregarArtistaAFavoritos(new ObjectId("674fea0968313211c6ba65e2"));
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void barraBusquedaTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldKeyPressed
@@ -483,15 +482,15 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         if (busquedaTimer != null && busquedaTimer.isRunning()) {
             busquedaTimer.restart();
         } else {
-            busquedaTimer = new Timer(2000, e -> {
-                if(barraBusquedaTextField.getText().isEmpty()){
+            busquedaTimer = new Timer(1000, e -> {
+                if (barraBusquedaTextField.getText().isEmpty()) {
                     System.out.println("Vacio");
                     cargarResultados();
-                }else{
-                    System.out.println("Texto encontrado: "+barraBusquedaTextField.getText());
+                } else {
+                    System.out.println("Texto encontrado: " + barraBusquedaTextField.getText());
                     cargarResultados(barraBusquedaTextField.getText());
                 }
-                
+
             });
             busquedaTimer.setRepeats(false); // Solo se ejecuta una vez por escritura
             busquedaTimer.start();
