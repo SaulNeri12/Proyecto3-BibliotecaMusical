@@ -26,7 +26,7 @@ public class MainAgregarUsuario {
             // Crear un nuevo usuario
             Usuario nuevoUsuario = new Usuario();
             nuevoUsuario.setNombreUsuario("juan.perez");
-            nuevoUsuario.setCorreoElectronico("juan.perez@example.com");
+            nuevoUsuario.setCorreoElectronico("juan.carlos@example.com");
             nuevoUsuario.setContrasena("12345678");
             nuevoUsuario.setFechaRegistro(Instant.now());
 
