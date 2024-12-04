@@ -129,7 +129,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="nombreAlbumLbl" min="-2" pref="576" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" pref="130" max="-2" attributes="0"/>
-                      <Component id="infoGeneralLbl" alignment="0" min="-2" pref="769" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="infoGeneralLbl" min="-2" pref="769" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="agregarFavoritosBtn" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -143,7 +147,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="nombreAlbumLbl" min="-2" pref="85" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="infoGeneralLbl" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="infoGeneralLbl" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="agregarFavoritosBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -183,6 +190,14 @@
             <Property name="text" type="java.lang.String" value="Album"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="agregarFavoritosBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Agregar a Favoritos"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarFavoritosBtnActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="resultadosCancionesScrollPane">
@@ -194,7 +209,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="787" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="905" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
