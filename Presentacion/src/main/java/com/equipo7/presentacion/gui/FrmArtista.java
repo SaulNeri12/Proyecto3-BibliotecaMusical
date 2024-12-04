@@ -47,7 +47,7 @@ public class FrmArtista extends javax.swing.JFrame {
             SwingUtilities.invokeLater(() -> {
                 imagenArtista = image;
                 imagenArtista = ImageResizer.resizeImageIcon(imagenArtista, MINIATURA_WIDTH, MINIATURA_HEIGHT);
-//                actualizaMiniaturaPortada();
+                actualizaMiniaturaPortada();
             });
         });
         
