@@ -18,14 +18,17 @@ public class Cancion {
     public static final String NOMBRE_COLLECTION = "canciones";
     
     //private ObjectId _id;
-    @BsonProperty(value = "nombre")
+    //@BsonProperty(value = "nombre")
     private String nombre;
-    @BsonProperty(value = "idAlbum")
+    //@BsonProperty(value = "idAlbum")
     private ObjectId idAlbum;
-    @BsonProperty(value = "imagen_portada_album_url")
+    //@BsonProperty(value = "imagen_portada_album_url")
     private String imagenPortadaURL;
     
-    
+
+    public Cancion() {
+        
+    }
 
     /**
      * Constructor vacio por defecto.
@@ -101,6 +104,7 @@ public class Cancion {
         //sb.append("_id=").append(_id != null ? _id.toHexString() : "No especificado").append(", ");
         sb.append("nombre='").append(nombre != null ? nombre : "No especificado").append("', ");
         sb.append("idAlbum='").append(idAlbum != null ? idAlbum : "No especificada").append("', ");
+        sb.append("urlImage=").append(this.imagenPortadaURL);
 
         sb.append(" }");
         return sb.toString();

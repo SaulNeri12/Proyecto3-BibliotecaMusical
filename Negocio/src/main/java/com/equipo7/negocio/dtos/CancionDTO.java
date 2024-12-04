@@ -4,32 +4,21 @@
  */
 package com.equipo7.negocio.dtos;
 
+import org.bson.types.ObjectId;
+
 /**
  *
  * @author caarl
  */
 public class CancionDTO {
-    private String id;
-    private String nombre;
-    private String idAlbum;
 
-    // Constructor vacío
-    public CancionDTO() {}
+    private String imagenPortadaURL;
+    private String nombre;
+    private ObjectId idAlbum;
 
     // Constructor completo
-    public CancionDTO(String id, String nombre, String idAlbum) {
-        this.id = id;
-        this.nombre = nombre;
-        this.idAlbum = idAlbum;
-    }
+    public CancionDTO() {
 
-    // Getters y setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -40,11 +29,34 @@ public class CancionDTO {
         this.nombre = nombre;
     }
 
-    public String getIdAlbum() {
+    public ObjectId getIdAlbum() {
         return idAlbum;
     }
 
-    public void setIdAlbum(String idAlbum) {
+    public void setIdAlbum(ObjectId idAlbum) {
         this.idAlbum = idAlbum;
+    }
+
+    /**
+     * @return the imagenPortadaURL
+     */
+    public String getImagenPortadaURL() {
+        return imagenPortadaURL;
+    }
+
+    /**
+     * @param imagenPortadaURL the imagenPortadaURL to set
+     */
+    public void setImagenPortadaURL(String imagenPortadaURL) {
+        this.imagenPortadaURL = imagenPortadaURL;
+    }
+
+    @Override
+    public String toString() {
+        return "CancionDTO {"
+                + "nombre='" + nombre + '\''
+                + ", idAlbum=" + (idAlbum != null ? idAlbum.toString() : "null")
+                + ", imagenPortadaURL='" + imagenPortadaURL + '\''
+                + '}';
     }
 }

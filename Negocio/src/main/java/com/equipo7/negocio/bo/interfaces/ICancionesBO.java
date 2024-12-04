@@ -5,18 +5,17 @@
 package com.equipo7.negocio.bo.interfaces;
 
 import com.equipo7.negocio.dtos.CancionDTO;
+import com.equipo7.negocio.excepciones.BOException;
 import excepciones.DAOException;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
  * @author caarl
  */
 public interface ICancionesBO {
-    List<CancionDTO> obtenerTodas() throws DAOException;
-    List<CancionDTO> obtenerPorNombre(String nombre) throws DAOException;
-    CancionDTO obtenerPorId(String id) throws DAOException;
-    void agregarCancion(CancionDTO cancionDTO) throws DAOException;
-    List<CancionDTO> obtenerPorGenero(String genero) throws DAOException;
-    List<CancionDTO> obtenerPorAlbum(String idAlbum) throws DAOException;
+    List<CancionDTO> obtenerCancionesPorArtista(ObjectId idArtista) throws BOException;
+    List<CancionDTO> obtenerCancionesPorGenero(String generoMusical) throws BOException;
+    List<CancionDTO> obtenerCancionesPorNombre(String nombreParcial) throws BOException;
 }

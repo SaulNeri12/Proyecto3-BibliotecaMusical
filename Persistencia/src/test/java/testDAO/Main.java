@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        /*
         try {
             // Obtener la instancia del DAO
             CancionesDAO cancionesDAO = CancionesDAO.getInstance();
@@ -38,5 +39,6 @@ public class Main {
         } catch (Exception e) {
             System.err.println("Error inesperado: " + e.getMessage());
         }
+*/
     }
 }
