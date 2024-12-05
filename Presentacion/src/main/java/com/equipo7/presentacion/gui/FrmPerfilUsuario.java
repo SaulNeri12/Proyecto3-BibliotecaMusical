@@ -1,13 +1,22 @@
 
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.bo.CancionesBO;
 import com.equipo7.negocio.bo.UsuariosBO;
+import com.equipo7.negocio.bo.interfaces.ICancionesBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
+import com.equipo7.presentacion.AppState;
 import com.equipo7.presentacion.gui.estilo.Estilo;
-import static com.equipo7.presentacion.gui.estilo.Estilo.colorPrimario;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -67,6 +76,7 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         correoUsuarioLbl = new javax.swing.JLabel();
         btnEditarUsu = new javax.swing.JButton();
+        btnGenerosMusicales = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         informacionUsuarioPanel = new javax.swing.JPanel();
         volverMenuPrincipalBtn = new javax.swing.JButton();
@@ -104,14 +114,24 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
             }
         });
 
+        btnGenerosMusicales.setText("G");
+        btnGenerosMusicales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerosMusicalesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout fondoColorPanelLayout = new javax.swing.GroupLayout(fondoColorPanel);
         fondoColorPanel.setLayout(fondoColorPanelLayout);
         fondoColorPanelLayout.setHorizontalGroup(
             fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondoColorPanelLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEditarUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(fondoColorPanelLayout.createSequentialGroup()
+                        .addComponent(btnGenerosMusicales, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEditarUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(imagenPerfilUsuarioContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +146,9 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
             fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondoColorPanelLayout.createSequentialGroup()
                 .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(btnEditarUsu)
+                .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditarUsu)
+                    .addComponent(btnGenerosMusicales))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondoColorPanelLayout.createSequentialGroup()
@@ -145,11 +167,11 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
         informacionUsuarioPanel.setLayout(informacionUsuarioPanelLayout);
         informacionUsuarioPanelLayout.setHorizontalGroup(
             informacionUsuarioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 957, Short.MAX_VALUE)
+            .addGap(0, 969, Short.MAX_VALUE)
         );
         informacionUsuarioPanelLayout.setVerticalGroup(
             informacionUsuarioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 363, Short.MAX_VALUE)
+            .addGap(0, 367, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(informacionUsuarioPanel);
@@ -171,12 +193,12 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fondoColorPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(volverMenuPrincipalBtn)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,9 +207,8 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
                 .addComponent(volverMenuPrincipalBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fondoColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -275,8 +296,71 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnEditarUsuActionPerformed
 
+    private void btnGenerosMusicalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerosMusicalesActionPerformed
+      try {
+        // Obtener los géneros musicales desde la capa de negocio
+        ICancionesBO cancionesBO = CancionesBO.getInstance();
+        List<String> generosMusicales = cancionesBO.obtenerGenerosMusicales();
+
+        if (generosMusicales == null || generosMusicales.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron géneros musicales.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Crear el panel dinámico para mostrar los géneros como botones
+        JPanel panelGeneros = new JPanel();
+        panelGeneros.setLayout(new BoxLayout(panelGeneros, BoxLayout.Y_AXIS));
+        List<JRadioButton> botonesGeneros = new ArrayList<>();
+        for (String genero : generosMusicales) {
+            JRadioButton radioButton = new JRadioButton(genero);
+            radioButton.setSelected(true); // Por defecto seleccionados
+            botonesGeneros.add(radioButton);
+            panelGeneros.add(radioButton);
+        }
+
+        // Mostrar el panel en un JOptionPane
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                panelGeneros,
+                "Seleccione los géneros musicales que no desee escuchar",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (opcion == JOptionPane.OK_OPTION) {
+            // Confirmación de los géneros seleccionados
+            int confirmar = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro de aplicar estos cambios?",
+                    "Confirmación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmar == JOptionPane.YES_OPTION) {
+                // Obtener géneros no deseados
+                List<String> generosNoDeseados = new ArrayList<>();
+                for (JRadioButton boton : botonesGeneros) {
+                    if (!boton.isSelected()) {
+                        generosNoDeseados.add(boton.getText());
+                    }
+                }
+
+                // Actualizar el estado global
+                AppState.setGenerosNoDeseados(new HashSet<>(generosNoDeseados));
+
+                // Mensaje de éxito
+                JOptionPane.showMessageDialog(this, "Cambios aplicados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    } catch (BOException ex) {
+        JOptionPane.showMessageDialog(this, "Error al obtener géneros musicales: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_btnGenerosMusicalesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditarUsu;
+    private javax.swing.JButton btnGenerosMusicales;
     private javax.swing.JLabel correoUsuarioLbl;
     private javax.swing.JPanel fondoColorPanel;
     private javax.swing.JPanel imagenPerfilUsuarioContainer;

@@ -17,30 +17,21 @@ import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.dtos.CancionDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
-import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.filtro.FiltroAvanzadoDlg;
 import com.equipo7.presentacion.gui.paneles.AlbumPanel;
 import com.equipo7.presentacion.gui.paneles.ArtistaPanel;
 import com.equipo7.presentacion.gui.paneles.CancionPanel;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
-import javax.swing.border.LineBorder;
-import org.bson.types.ObjectId;
 
 /**
  *
@@ -451,13 +442,9 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_busquedaFiltradaBtnActionPerformed
 
     private void verPerfilBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPerfilBtnActionPerformed
-        try {
-            FrmPerfilUsuario perfilUsuario = new FrmPerfilUsuario();
-            this.dispose();
-            perfilUsuario.setVisible(true);
-        } catch (BOException ex) {
-            Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FrmPerfilUsuario perfilUsuario = new FrmPerfilUsuario();
+        this.dispose();
+        perfilUsuario.setVisible(true);
     }//GEN-LAST:event_verPerfilBtnActionPerformed
 
     private void barraBusquedaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barraBusquedaTextFieldActionPerformed

@@ -13,59 +13,50 @@ import org.bson.types.ObjectId;
  * Representa la informacion de una cancion de un Album en el sistema
  * @author Saul Neri
  */
+import org.bson.types.ObjectId;
+
 public class Cancion {
-    
+
     public static final String NOMBRE_COLLECTION = "canciones";
-    
-    //private ObjectId _id;
-    //@BsonProperty(value = "nombre")
+
     private String nombre;
-    //@BsonProperty(value = "idAlbum")
     private ObjectId idAlbum;
-    //@BsonProperty(value = "imagen_portada_album_url")
     private String imagenPortadaURL;
-    
+    private String generoMusical; // Nuevo atributo: Género Musical
 
-    public Cancion() {
-        
-    }
-
-    /**
-     * Constructor vacio por defecto.
-     
+    // Constructor vacío
     public Cancion() {
         this.nombre = "";
     }
 
-    public Cancion(ObjectId _id) {
-        this._id = _id;
-    }*/
-    
-
-    /**
-     * Constructor con parámetros para crear una canción con los valores proporcionados.
-     *
-     * @param nombre El nombre de la canción.
-     * @param minutos La duración de la canción en minutos.
-     * @param segundos La duración de la canción en segundos.
-     */
+    // Constructor con nombre
     public Cancion(String nombre) {
         this.nombre = nombre;
     }
 
+    // Constructor con nombre e ID del álbum
     public Cancion(String nombre, ObjectId idAlbum) {
         this.nombre = nombre;
         this.idAlbum = idAlbum;
     }
-/*
-    public ObjectId getId() {
-        return _id;
+
+    // Constructor con todos los atributos
+    public Cancion(String nombre, ObjectId idAlbum, String imagenPortadaURL, String generoMusical) {
+        this.nombre = nombre;
+        this.idAlbum = idAlbum;
+        this.imagenPortadaURL = imagenPortadaURL;
+        this.generoMusical = generoMusical;
     }
 
-    public void setId(ObjectId id) {
-        this._id = id;
+    // Getters y Setters
+    public String getNombre() {
+        return nombre;
     }
-*/
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public ObjectId getIdAlbum() {
         return idAlbum;
     }
@@ -73,59 +64,32 @@ public class Cancion {
     public void setIdAlbum(ObjectId idAlbum) {
         this.idAlbum = idAlbum;
     }
-    
-    
 
-    /**
-     * Obtiene el nombre de la canción.
-     *
-     * @return El nombre de la canción.
-     */
-    public String getNombre() {
-        return nombre;
+    public String getImagenPortadaURL() {
+        return imagenPortadaURL;
     }
 
-    /**
-     * Establece el nombre de la canción.
-     *
-     * @param nombre El nuevo nombre de la canción.
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setImagenPortadaURL(String imagenPortadaURL) {
+        this.imagenPortadaURL = imagenPortadaURL;
     }
 
+    public String getGeneroMusical() {
+        return generoMusical;
+    }
 
+    public void setGeneroMusical(String generoMusical) {
+        this.generoMusical = generoMusical;
+    }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Cancion { ");
-
-        //sb.append("_id=").append(_id != null ? _id.toHexString() : "No especificado").append(", ");
         sb.append("nombre='").append(nombre != null ? nombre : "No especificado").append("', ");
-        sb.append("idAlbum='").append(idAlbum != null ? idAlbum : "No especificada").append("', ");
-        sb.append("urlImage=").append(this.imagenPortadaURL);
-
+        sb.append("idAlbum='").append(idAlbum != null ? idAlbum : "No especificado").append("', ");
+        sb.append("urlImage=").append(imagenPortadaURL != null ? imagenPortadaURL : "No especificada").append(", ");
+        sb.append("generoMusical='").append(generoMusical != null ? generoMusical : "No especificado").append("'");
         sb.append(" }");
         return sb.toString();
     }
-
-    /**
-     * @return the imagenPortadaURL
-     */
-    public String getImagenPortadaURL() {
-        return imagenPortadaURL;
-    }
-
-    /**
-     * @param imagenPortadaURL the imagenPortadaURL to set
-     */
-    public void setImagenPortadaURL(String imagenPortadaURL) {
-        this.imagenPortadaURL = imagenPortadaURL;
-    }
-    
-    
-    
-    
-
 }

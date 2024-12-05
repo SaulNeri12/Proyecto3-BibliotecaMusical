@@ -71,5 +71,14 @@ public class CancionesBO implements ICancionesBO {
             throw new BOException(ex.getMessage());
         }
     }
+    @Override
+public List<String> obtenerGenerosMusicales() throws BOException {
+    try {
+        return this.cancionesDAO.obtenerGenerosMusicales();
+    } catch (DAOException ex) {
+        throw new BOException("Error al obtener géneros musicales");
+    }
+}
+    
 
 }
