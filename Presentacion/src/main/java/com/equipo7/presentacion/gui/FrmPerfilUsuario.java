@@ -42,8 +42,10 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
      * @param usuario
      */
     public FrmPerfilUsuario(){
+        
         initComponents();
         
+
         
         
         this.fondoColorPanel.setBackground(new Color(153, 0, 204));

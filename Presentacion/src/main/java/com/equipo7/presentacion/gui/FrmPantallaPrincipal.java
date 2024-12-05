@@ -57,7 +57,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         initComponents();
 
         _this = this; // ????
-
+        
         this.setLocationRelativeTo(null);
         this.setTitle("Biblioteca Musical");
 
@@ -122,7 +122,11 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.resultadosCancionesPanel.repaint();
 
         // Obtener los géneros restringidos del usuario
+        if(this.usuario.getGenerosRestringidos()==null){
+            this.usuario.setGenerosRestringidos(new ArrayList<>());
+        }
         List<String> generosRestringidos = this.usuario.getGenerosRestringidos();
+        
 
         // Cargar artistas favoritos
         if (this.usuario.getArtistasFavoritos() != null) {

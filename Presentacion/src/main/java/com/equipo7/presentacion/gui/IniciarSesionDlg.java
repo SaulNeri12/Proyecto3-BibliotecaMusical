@@ -218,20 +218,36 @@ public class IniciarSesionDlg extends javax.swing.JFrame {
     private void iniciarSesionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionBtnActionPerformed
         String correoElectronico = this.correoTextField.getText();
         String contrasenha = new String(this.contrasenaPasswordField.getPassword());
-        
+
         try {
-          
-            if (!this.correoValido(correoElectronico))
-                throw new BOException("El correo electrónico dado no cumple con el formato correcto, porfavor, ingrese una dirección de correo valida");
-            else if (!this.contrasenaValida(contrasenha))
-                throw new BOException("La contraseña no es valida. Ingrese una contraseña con el formato correcto");
-            
+            // Validación del correo y la contraseña
+            if (!this.correoValido(correoElectronico)) {
+                throw new BOException("El correo electrónico dado no cumple con el formato correcto, por favor, ingrese una dirección de correo válida.");
+            } else if (!this.contrasenaValida(contrasenha)) {
+                throw new BOException("La contraseña no es válida. Ingrese una contraseña con el formato correcto.");
+            }
+
+            // Verificar que las credenciales sean correctas
             this.usuarioLogeado = this.usuariosBO.iniciarSesion(correoElectronico, contrasenha);
-            
-            PerfilUsuario.setUsuario(usuarioLogeado);
-            
-            this.abrirPantallaInicio();
-            
+
+            if (this.usuarioLogeado != null) {
+                // Si se obtuvo un usuario válido, actualizar el usuario en PerfilUsuario
+                PerfilUsuario.setUsuario(usuarioLogeado);
+
+                // Verifica si el usuario ya tiene restricciones de géneros y muestra la pantalla correspondiente
+                if (usuarioLogeado.getGenerosRestringidos() != null && !usuarioLogeado.getGenerosRestringidos().isEmpty()) {
+                    // Mostrar mensaje de bienvenida con los géneros restringidos
+                    JOptionPane.showMessageDialog(this, "Bienvenido, " + usuarioLogeado.getNombreUsuario() + ". Tienes géneros musicales restringidos.",
+                            "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                // Abrir la pantalla de inicio
+                this.abrirPantallaInicio();
+            } else {
+                // Si el usuario no es válido, mostrar mensaje de error
+                throw new BOException("Credenciales incorrectas. Verifique su correo electrónico o contraseña.");
+            }
+
         } catch (BOException ex) {
             JOptionPane.showMessageDialog(
                     this,
