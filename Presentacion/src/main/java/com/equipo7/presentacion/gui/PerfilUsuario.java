@@ -15,12 +15,15 @@ public class PerfilUsuario {
     private static UsuarioDTO usuario;
     
     public static void setUsuario(UsuarioDTO usuarioNuevo) {
-        if (usuario == null) {
-            usuario = usuarioNuevo;
-        }
+        usuario = usuarioNuevo; // Actualiza el usuario siempre
     }
     
     public static UsuarioDTO getUsuario() {
         return usuario;
+    }
+    
+    // Método para cerrar sesión (limpiar el usuario)
+    public static void cerrarSesion() {
+        usuario = null; // Limpia el usuario actual
     }
 }

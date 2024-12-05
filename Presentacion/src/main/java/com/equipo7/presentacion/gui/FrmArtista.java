@@ -112,7 +112,7 @@ public class FrmArtista extends javax.swing.JFrame {
     }
     
     public void actualizarBotonFavoritos() {
-        if (this.usuario.artistaEnFavoritos(this.artista.getId())) {
+        if (usuario.getArtistasFavoritos().contains(this.artista.getId())) {
             this.agregarAFavoritosBtn.setText("En Tus Favoritos");
             this.agregarAFavoritosBtn.setBackground(Estilo.colorBaseFondo);
         } else {
@@ -373,7 +373,7 @@ public class FrmArtista extends javax.swing.JFrame {
     }//GEN-LAST:event_volverMenuPrincipalBtnActionPerformed
 
     private void agregarAFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAFavoritosBtnActionPerformed
-        if (this.usuario.artistaEnFavoritos(this.artista.getId())) {
+        if (usuario.getArtistasFavoritos().contains(this.artista.getId())) {
             this.usuario.eliminarArtistaDeFavoritos(this.artista.getId());
         } else {
             this.usuario.agregarArtistaAFavoritos(this.artista.getId());

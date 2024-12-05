@@ -11,6 +11,7 @@ import excepciones.DAOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
  * Implementa los metodos de la interfaz IUsuariosBO
  */
@@ -59,6 +60,7 @@ public class UsuariosBO implements IUsuariosBO {
     @Override
     public void registrarUsuario(UsuarioDTO usuario) throws BOException {
         try {
+            
             this.usuarios.registrarUsuario(convertidor.convertFromDTO(usuario));
         } catch (DAOException e) {
             throw new BOException(e.getMessage());
@@ -89,6 +91,14 @@ public class UsuariosBO implements IUsuariosBO {
             this.usuarios.actualizarFavoritos(convertidor.convertFromDTO(usuario));
         } catch (DAOException ex) {
             throw new BOException(ex.getMessage());
+        }
+    }
+    @Override
+    public void actualizarGenerosRestringidos(UsuarioDTO usuario) throws BOException{
+        try {
+            this.usuarios.actualizarGenerosRestringidos(convertidor.convertFromDTO(usuario));
+        } catch (DAOException e) {
+            throw new BOException(e.getMessage());
         }
     }
 }

@@ -15,7 +15,9 @@ import org.bson.types.ObjectId;
  * @author caarl
  */
 public interface ICancionesBO {
+    
     List<CancionDTO> obtenerCancionesPorArtista(ObjectId idArtista) throws BOException;
     List<CancionDTO> obtenerCancionesPorGenero(String generoMusical) throws BOException;
     List<CancionDTO> obtenerCancionesPorNombre(String nombreParcial) throws BOException;
+     List<String> obtenerGenerosMusicales() throws BOException;
 }

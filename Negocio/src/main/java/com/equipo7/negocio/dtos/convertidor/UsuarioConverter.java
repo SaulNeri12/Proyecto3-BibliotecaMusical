@@ -4,6 +4,7 @@ import com.equipo7.negocio.dtos.CancionDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.persistencia.entidades.Cancion;
 import com.equipo7.persistencia.entidades.Usuario;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,10 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
                 usuario.getImagenPerfil(),
                 usuario.getGenerosRestringidos()
         );
-
         
+        if(usuario.getGenerosRestringidos() != null){
+            dto.setGenerosRestringidos(usuario.getGenerosRestringidos());
+        }
         if (usuario.getAlbumesFavoritos() != null) {
             dto.setAlbumesFavoritos(usuario.getAlbumesFavoritos());
         }
@@ -63,7 +66,11 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
             u.setAlbumesFavoritos(dto.getAlbumesFavoritos());
         }
         
-        if (u.getCancionesFavoritas() != null) {
+        if(dto.getGenerosRestringidos() != null){
+            u.setGenerosRestringidos(dto.getGenerosRestringidos());
+        }
+        
+        if (dto.getCancionesFavoritas() != null) {
             List<Cancion> canciones = (List<Cancion>) dto.getCancionesFavoritas().stream().map(c -> {
                 Cancion c__ = new Cancion();
                 c__.setIdAlbum(c.getIdAlbum());

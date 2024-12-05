@@ -62,7 +62,7 @@ public class CancionAlbumPanel extends javax.swing.JPanel {
      * 
      */
     public void toggleMarcaComoFavorito() {
-        if (this.usuarioDTO.getCancionesFavoritas().contains(this.cancionDTO)) {
+        if (this.usuarioDTO.cancionEnFavoritos(cancionDTO)) {
             this.usuarioDTO.eliminarCancionDeFavoritos(cancionDTO);
             this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
         } else {
@@ -124,7 +124,7 @@ public class CancionAlbumPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void agregarFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFavoritosBtnActionPerformed
-        //usuariosBO.agregarCancionAFavoritos(this.cancion);
+        this.toggleMarcaComoFavorito();
     }//GEN-LAST:event_agregarFavoritosBtnActionPerformed
 
 

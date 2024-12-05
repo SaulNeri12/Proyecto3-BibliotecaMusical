@@ -1,13 +1,29 @@
 
 package com.equipo7.presentacion.gui;
 
+import com.equipo7.negocio.bo.AlbumBO;
+import com.equipo7.negocio.bo.ArtistaBO;
+import com.equipo7.negocio.bo.CancionesBO;
 import com.equipo7.negocio.bo.UsuariosBO;
+import com.equipo7.negocio.bo.interfaces.IAlbumBO;
+import com.equipo7.negocio.bo.interfaces.IArtistaBO;
+import com.equipo7.negocio.bo.interfaces.ICancionesBO;
 import com.equipo7.negocio.bo.interfaces.IUsuariosBO;
+import com.equipo7.negocio.dtos.AlbumDTO;
+import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
+import com.equipo7.presentacion.AppState;
 import com.equipo7.presentacion.gui.estilo.Estilo;
-import static com.equipo7.presentacion.gui.estilo.Estilo.colorPrimario;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -18,19 +34,25 @@ import javax.swing.UIManager;
 public class FrmPerfilUsuario extends javax.swing.JFrame {
 
     private UsuarioDTO usuario = PerfilUsuario.getUsuario();
+    private IAlbumBO albumBO = AlbumBO.getInstance();
+    private IArtistaBO artistaBO = ArtistaBO.getInstance();
     
     /**
      * Creates new form FrmPerfilUsuario
      * @param usuario
      */
     public FrmPerfilUsuario(){
+        
         initComponents();
+        
+
         
         
         this.fondoColorPanel.setBackground(new Color(153, 0, 204));
         this.setLocationRelativeTo(null);
         this.prepararEstilo();
         this.cargarInformacionUsuario();
+        this.cargarGenerosRestringidos();
         
     }
     
@@ -51,6 +73,19 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
         this.nombreUsuarioLbl.setText(usuario.getNombreUsuario());
         this.correoUsuarioLbl.setText(usuario.getCorreoElectronico());
     }
+    private void cargarGenerosRestringidos(){
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+        jlistGenerosBaneados.setModel(modelo);
+        modelo.clear();
+        if(usuario.getGenerosRestringidos()==(null)){
+            System.out.println("No hay generos restringidos");
+        }else{
+            for (int i = 0; i<usuario.getGenerosRestringidos().size(); i++) {
+                modelo.addElement(usuario.getGenerosRestringidos().get(i));
+            }
+        }
+    }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,8 +102,13 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         correoUsuarioLbl = new javax.swing.JLabel();
         btnEditarUsu = new javax.swing.JButton();
+        btnGenerosMusicales = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         informacionUsuarioPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jlistGenerosBaneados = new javax.swing.JList<>();
+        correoUsuarioLbl1 = new javax.swing.JLabel();
+        eliminarBtn = new javax.swing.JButton();
         volverMenuPrincipalBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -104,14 +144,24 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
             }
         });
 
+        btnGenerosMusicales.setText("G");
+        btnGenerosMusicales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerosMusicalesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout fondoColorPanelLayout = new javax.swing.GroupLayout(fondoColorPanel);
         fondoColorPanel.setLayout(fondoColorPanelLayout);
         fondoColorPanelLayout.setHorizontalGroup(
             fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondoColorPanelLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEditarUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(fondoColorPanelLayout.createSequentialGroup()
+                        .addComponent(btnGenerosMusicales, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEditarUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(imagenPerfilUsuarioContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +176,9 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
             fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondoColorPanelLayout.createSequentialGroup()
                 .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(btnEditarUsu)
+                .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditarUsu)
+                    .addComponent(btnGenerosMusicales))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondoColorPanelLayout.createSequentialGroup()
@@ -141,15 +193,42 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
                         .addGap(20, 20, 20))))
         );
 
+        jScrollPane2.setViewportView(jlistGenerosBaneados);
+
+        correoUsuarioLbl1.setForeground(new java.awt.Color(204, 204, 204));
+        correoUsuarioLbl1.setText("Generos Baneados");
+
+        eliminarBtn.setText("Eliminar");
+        eliminarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout informacionUsuarioPanelLayout = new javax.swing.GroupLayout(informacionUsuarioPanel);
         informacionUsuarioPanel.setLayout(informacionUsuarioPanelLayout);
         informacionUsuarioPanelLayout.setHorizontalGroup(
             informacionUsuarioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 957, Short.MAX_VALUE)
+            .addGroup(informacionUsuarioPanelLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(informacionUsuarioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(correoUsuarioLbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(informacionUsuarioPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(eliminarBtn)))
+                .addContainerGap(604, Short.MAX_VALUE))
         );
         informacionUsuarioPanelLayout.setVerticalGroup(
             informacionUsuarioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 363, Short.MAX_VALUE)
+            .addGroup(informacionUsuarioPanelLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(correoUsuarioLbl1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(informacionUsuarioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(eliminarBtn))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(informacionUsuarioPanel);
@@ -171,12 +250,12 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fondoColorPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(volverMenuPrincipalBtn)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,9 +264,8 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
                 .addComponent(volverMenuPrincipalBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fondoColorPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -275,14 +353,126 @@ public class FrmPerfilUsuario extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnEditarUsuActionPerformed
 
+    private void btnGenerosMusicalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerosMusicalesActionPerformed
+        try {
+          // Obtener los géneros musicales desde la capa de negocio
+          ICancionesBO cancionesBO = CancionesBO.getInstance();
+          List<String> generosMusicales = cancionesBO.obtenerGenerosMusicales();
+
+          if (generosMusicales == null || generosMusicales.isEmpty()) {
+              JOptionPane.showMessageDialog(this, "No se encontraron géneros musicales.", "Información", JOptionPane.INFORMATION_MESSAGE);
+              return;
+          }
+
+          // Crear el panel dinámico para mostrar los géneros como botones
+          JPanel panelGeneros = new JPanel();
+          panelGeneros.setLayout(new BoxLayout(panelGeneros, BoxLayout.Y_AXIS));
+          List<JRadioButton> botonesGeneros = new ArrayList<>();
+          for (String genero : generosMusicales) {
+              JRadioButton radioButton = new JRadioButton(genero);
+              radioButton.setSelected(!usuario.getGenerosRestringidos().contains(genero)); // Por defecto seleccionados si no están restringidos
+              botonesGeneros.add(radioButton);
+              panelGeneros.add(radioButton);
+          }
+
+          // Mostrar el panel en un JOptionPane
+          int opcion = JOptionPane.showConfirmDialog(
+                  this,
+                  panelGeneros,
+                  "Seleccione los géneros musicales que no desee escuchar",
+                  JOptionPane.OK_CANCEL_OPTION,
+                  JOptionPane.PLAIN_MESSAGE
+          );
+
+          if (opcion == JOptionPane.OK_OPTION) {
+              // Obtener géneros seleccionados como restringidos
+              List<String> nuevosGenerosRestringidos = new ArrayList<>();
+              for (JRadioButton boton : botonesGeneros) {
+                  if (!boton.isSelected()) {
+                      nuevosGenerosRestringidos.add(boton.getText());
+                  }
+              }
+              
+              // Verificar si los nuevos géneros restringidos afectan a los favoritos
+              List<String> generosAfectados = new ArrayList<>();
+              for (String genero : nuevosGenerosRestringidos) {
+                  boolean generoEnFavoritos = usuario.getArtistasFavoritos().stream().anyMatch(id -> {
+                      try {
+                          ArtistaDTO artista = this.artistaBO.obtenerPorId(id);
+                          return artista != null && genero.equals(artista.getGeneroMusical());
+                      } catch (BOException ex) {
+                          return false;
+                      }
+                  }) || usuario.getAlbumesFavoritos().stream().anyMatch(id -> {
+                      try {
+                          AlbumDTO album = this.albumBO.obtenerPorId(id);
+                          return album != null && genero.equals(album.getGeneroMusical());
+                      } catch (BOException ex) {
+                          return false;
+                      }
+                  }) || usuario.getCancionesFavoritas().stream().anyMatch(cancion -> 
+                      genero.equals(cancion.getGeneroMusical())
+                  );
+
+                  if (generoEnFavoritos) {
+                      generosAfectados.add(genero);
+                  }
+              }
+
+              if (!generosAfectados.isEmpty()) {
+                  // Mostrar mensaje de confirmación si hay géneros afectados
+                  int confirmar = JOptionPane.showConfirmDialog(
+                          this,
+                          "Los géneros " + generosAfectados + " están presentes en tus favoritos. ¿Deseas proceder?",
+                          "Confirmación",
+                          JOptionPane.YES_NO_OPTION,
+                          JOptionPane.WARNING_MESSAGE
+                  );
+
+                  if (confirmar != JOptionPane.YES_OPTION) {
+                      return; // Cancelar la operación
+                  }
+              }
+
+              // Aplicar los nuevos géneros restringidos
+              usuario.setGenerosRestringidos(nuevosGenerosRestringidos);
+              
+
+              // Mensaje de éxito
+              JOptionPane.showMessageDialog(this, "Cambios aplicados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+              this.cargarGenerosRestringidos();
+
+              // Notificar a FrmPantallaPrincipal para actualizar la vista
+              FrmPantallaPrincipal frm = new FrmPantallaPrincipal();
+              frm.actualizarVista(); // Método adicional en FrmPantallaPrincipal
+          }
+      } catch (BOException ex) {
+          JOptionPane.showMessageDialog(this, "Error al obtener géneros musicales: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    }//GEN-LAST:event_btnGenerosMusicalesActionPerformed
+
+    private void eliminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarBtnActionPerformed
+        if(jlistGenerosBaneados.getSelectedValue().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Selecciona un genero: ", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            usuario.eliminarGeneroRestringido(jlistGenerosBaneados.getSelectedValue());
+            this.cargarGenerosRestringidos();
+        }
+    }//GEN-LAST:event_eliminarBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditarUsu;
+    private javax.swing.JButton btnGenerosMusicales;
     private javax.swing.JLabel correoUsuarioLbl;
+    private javax.swing.JLabel correoUsuarioLbl1;
+    private javax.swing.JButton eliminarBtn;
     private javax.swing.JPanel fondoColorPanel;
     private javax.swing.JPanel imagenPerfilUsuarioContainer;
     private javax.swing.JPanel informacionUsuarioPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> jlistGenerosBaneados;
     private javax.swing.JLabel nombreUsuarioLbl;
     private javax.swing.JButton volverMenuPrincipalBtn;
     // End of variables declaration//GEN-END:variables
