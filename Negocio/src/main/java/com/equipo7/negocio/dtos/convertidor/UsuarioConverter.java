@@ -4,7 +4,6 @@ import com.equipo7.negocio.dtos.CancionDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.persistencia.entidades.Cancion;
 import com.equipo7.persistencia.entidades.Usuario;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

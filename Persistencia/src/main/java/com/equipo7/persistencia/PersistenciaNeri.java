@@ -517,45 +517,6 @@ try {
 }
 
 
-// Artista: Nas
-Artista nas = new Artista();
-nas.setNombreArtista("Nas");
-nas.setTipo("Rapper");
-nas.setDescripcion("Nas es un rapero estadounidense considerado uno de los más grandes letristas de la historia del rap.");
-nas.setGeneroMusical("Hip Hop");
-nas.setImagenURL("https://upload.wikimedia.org/wikipedia/commons/7/7d/Nas_at_2018_VA_Marathon.jpg");
-nas.setIntegrantes(Arrays.asList(
-        new Integrante("Nas", "Voz", new Date(1991), null, true)
-));
-
-// Crear álbumes
-Album illmatic = new Album(new ObjectId());
-Album stillmatic = new Album(new ObjectId());
-
-// Configurar datos de los álbumes
-illmatic.setNombre("Illmatic");
-illmatic.setFechaLanzamiento(LocalDateTime.of(1994, 4, 19, 0, 0).toInstant(ZoneOffset.UTC));
-illmatic.setGeneroMusical(nas.getGeneroMusical());
-illmatic.setImagenPortadaUrl("https://upload.wikimedia.org/wikipedia/en/2/2c/NasIllmatic.jpg");
-illmatic.setCanciones(Arrays.asList(
-        "N.Y. State of Mind", "Life's a Bitch", "The World Is Yours"
-));
-
-stillmatic.setNombre("Stillmatic");
-stillmatic.setFechaLanzamiento(LocalDateTime.of(2001, 12, 18, 0, 0).toInstant(ZoneOffset.UTC));
-stillmatic.setGeneroMusical(nas.getGeneroMusical());
-stillmatic.setImagenPortadaUrl("https://upload.wikimedia.org/wikipedia/en/1/16/Nas_Stillmatic_album.jpg");
-stillmatic.setCanciones(Arrays.asList(
-        "Ether", "Got Ur Self A...", "One Mic"
-));
-
-try {
-    nas.setAlbumes(Arrays.asList(illmatic.getId(), stillmatic.getId()));
-    artistasDAO.registrar(nas);
-    albumesDAO.insercionMasiva(Arrays.asList(illmatic, stillmatic));
-} catch (DAOException ex) {
-    Logger.getLogger(PersistenciaIlian.class.getName()).log(Level.SEVERE, null, ex);
-}
 
 
 // Artista: Travis Scott
@@ -639,20 +600,7 @@ try {
     Logger.getLogger(PersistenciaIlian.class.getName()).log(Level.SEVERE, null, ex);
 }
 
-// Artista: Jay-Z
-Artista jayZ = new Artista();
-jayZ.setNombreArtista("Jay-Z");
-jayZ.setTipo("Rapper / Empresario");
-jayZ.setDescripcion("Jay-Z es un rapero, productor y empresario estadounidense, conocido como uno de los artistas más influyentes en la historia del rap.");
-jayZ.setGeneroMusical("Hip Hop");
-jayZ.setImagenURL("https://upload.wikimedia.org/wikipedia/commons/3/3f/Jay-Z_2018_%28cropped%29.jpg");
-jayZ.setIntegrantes(Arrays.asList(
-        new Integrante("Jay-Z", "Voz", new Date(1996), null, true)
-));
 
-// Crear álbumes
-Album reasonableDoubt = new Album(new ObjectId());
-Album theBlueprint = new Album(new ObjectId());
 
 // Configurar datos de los álbumes
 reasonableDoubt.setNombre("Reasonable Doubt");
