@@ -261,6 +261,11 @@ public class UsuarioDTO {
             this.getAlbumesFavoritos().remove(idAlbum);
         }
     }
+    public void eliminarGeneroRestringido(String genero){
+        if (this.getGenerosRestringidos()!= null) {
+            this.getGenerosRestringidos().remove(genero);
+        }
+    }
 
     public void eliminarArtistaDeFavoritos(ObjectId idArtista) {
         if (this.getArtistasFavoritos() != null) {

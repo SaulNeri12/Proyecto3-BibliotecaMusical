@@ -24,6 +24,7 @@ import com.equipo7.presentacion.gui.paneles.CancionPanel;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +78,7 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
                         usuarioBO.actualizarFavoritos(usuario);
+                        usuarioBO.actualizarGenerosRestringidos(usuario);
                     } catch (BOException ex) {
                         System.out.println("### Error al cierre: " + ex.getMessage());
                         Logger.getLogger(FrmPantallaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,7 +113,6 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
 
     private void cargarResultados() {
         // Limpia los paneles antes de cargar nuevos resultados
-
         this.resultadosArtistasPanel.removeAll();
         this.resultadosAlbumsPanel.removeAll();
         this.resultadosCancionesPanel.removeAll();
@@ -120,81 +121,108 @@ public class FrmPantallaPrincipal extends javax.swing.JFrame {
         this.resultadosAlbumsPanel.repaint();
         this.resultadosCancionesPanel.repaint();
 
-        // cargar artistas:
+        // Obtener los géneros restringidos del usuario
+        List<String> generosRestringidos = this.usuario.getGenerosRestringidos();
+
+        // Cargar artistas favoritos
         if (this.usuario.getArtistasFavoritos() != null) {
             this.usuario.getArtistasFavoritos().forEach(idArtista -> {
                 try {
                     ArtistaDTO artista = this.artistaBO.obtenerPorId(idArtista);
-                    if (artista != null) {
+                    if (artista != null && (artista.getGeneroMusical()== null || !generosRestringidos.contains(artista.getGeneroMusical()))) {
                         ArtistaPanel panel = new ArtistaPanel(artista);
                         this.resultadosArtistasPanel.add(panel);
                     }
                 } catch (BOException ex) {
-                    // no hagas nada...
+                    // Manejo silencioso del error
                 }
             });
         }
 
+        // Cargar álbumes favoritos
         if (this.usuario.getAlbumesFavoritos() != null) {
             this.usuario.getAlbumesFavoritos().forEach(idAlbum -> {
                 try {
                     AlbumDTO album = this.albumBO.obtenerPorId(idAlbum);
-                    if (album != null) {
+                    if (album != null && (album.getGeneroMusical() == null || !generosRestringidos.contains(album.getGeneroMusical()))) {
                         AlbumPanel panel = new AlbumPanel(album);
                         this.resultadosAlbumsPanel.add(panel);
                     }
                 } catch (BOException ex) {
-                    // no hagas nada...
+                    // Manejo silencioso del error
                 }
             });
         }
 
+        // Cargar canciones favoritas
         if (this.usuario.getCancionesFavoritas() != null) {
             this.usuario.getCancionesFavoritas().forEach(cancion -> {
-                CancionPanel pnl = new CancionPanel(cancion);
-                this.resultadosCancionesPanel.add(pnl);
+                if (cancion.getGeneroMusical()== null || !generosRestringidos.contains(cancion.getGeneroMusical())) {
+                    CancionPanel pnl = new CancionPanel(cancion);
+                    this.resultadosCancionesPanel.add(pnl);
+                }
             });
         }
 
         this.revalidate();
         this.repaint();
     }
+    public void actualizarVista() {
+        cargarResultados();
+    }
+
 
     private void cargarResultados(String textoBusqueda) {
         // Limpia los paneles antes de cargar nuevos resultados
         this.resultadosArtistasPanel.removeAll();
         this.resultadosAlbumsPanel.removeAll();
         this.resultadosCancionesPanel.removeAll();
+
         try {
-            // Buscar artistas por nombre
+            // Obtener los géneros restringidos
+            List<String> generosRestringidos = usuario.getGenerosRestringidos();
+            if (generosRestringidos == null) {
+                generosRestringidos = new ArrayList<>();
+            }
+
+            // Buscar y filtrar artistas por género restringido
             List<ArtistaDTO> artistasEncontrados = this.artistaBO.obtenerTodosPorNombre(textoBusqueda);
-            artistasEncontrados.forEach(artista -> {
-                ArtistaPanel panel = new ArtistaPanel(artista);
-                this.resultadosArtistasPanel.add(panel);
-            });
+            for (ArtistaDTO artista : artistasEncontrados) {
+                if (!generosRestringidos.contains(artista.getGeneroMusical())) {
+                    ArtistaPanel panel = new ArtistaPanel(artista);
+                    this.resultadosArtistasPanel.add(panel);
+                }
+            }
 
-            // Buscar álbumes por nombre
+            // Buscar y filtrar álbumes por género restringido
             List<AlbumDTO> albumesEncontrados = this.albumBO.obtenerTodosPorNombre(textoBusqueda);
-            albumesEncontrados.forEach(album -> {
-                AlbumPanel panel = new AlbumPanel(album);
-                this.resultadosAlbumsPanel.add(panel);
-            });
+            for (AlbumDTO album : albumesEncontrados) {
+                if (!generosRestringidos.contains(album.getGeneroMusical())) {
+                    AlbumPanel panel = new AlbumPanel(album);
+                    this.resultadosAlbumsPanel.add(panel);
+                }
+            }
 
-            // Buscar canciones por nombre
+            // Buscar y filtrar canciones por género restringido
             List<CancionDTO> cancionesEncontradas = this.cancionesBO.obtenerCancionesPorNombre(textoBusqueda);
-            cancionesEncontradas.forEach(cancion -> {
-                CancionPanel pnl = new CancionPanel(cancion);
-                this.resultadosCancionesPanel.add(pnl);
-            });
+            for (CancionDTO cancion : cancionesEncontradas) {
+                if (!generosRestringidos.contains(cancion.getGeneroMusical())) {
+                    CancionPanel pnl = new CancionPanel(cancion);
+                    this.resultadosCancionesPanel.add(pnl);
+                }
+            }
+
+            // Actualizar la interfaz
             this.revalidate();
             this.repaint();
+
         } catch (BOException e) {
             // Manejar errores de búsqueda
             JOptionPane.showMessageDialog(this, "Error al buscar resultados: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -93,4 +93,12 @@ public class UsuariosBO implements IUsuariosBO {
             throw new BOException(ex.getMessage());
         }
     }
+    @Override
+    public void actualizarGenerosRestringidos(UsuarioDTO usuario) throws BOException{
+        try {
+            this.usuarios.actualizarGenerosRestringidos(convertidor.convertFromDTO(usuario));
+        } catch (DAOException e) {
+            throw new BOException(e.getMessage());
+        }
+    }
 }
