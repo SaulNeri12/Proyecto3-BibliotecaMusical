@@ -13,6 +13,7 @@ import com.equipo7.negocio.dtos.ArtistaDTO;
 import com.equipo7.negocio.dtos.CancionDTO;
 import com.equipo7.negocio.dtos.UsuarioDTO;
 import com.equipo7.negocio.excepciones.BOException;
+import com.equipo7.presentacion.gui.estilo.Estilo;
 import com.equipo7.presentacion.gui.imageloader.AsyncImageLoader;
 import com.equipo7.presentacion.gui.imageloader.ImageResizer;
 import com.equipo7.presentacion.gui.paneles.CancionAlbumPanel;
@@ -28,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -55,8 +57,8 @@ public class FrmAlbum extends javax.swing.JFrame {
      */
     public FrmAlbum(AlbumDTO album) {
         initComponents();
-        
         this.album = album;
+        
         
          // se cargara con la url de la imagen de portada del album...
         AsyncImageLoader.loadImageAsync(this.album.getImagenPortadaUrl(), (ImageIcon image) -> {
@@ -103,7 +105,8 @@ public class FrmAlbum extends javax.swing.JFrame {
         this.prepararEstilo();
         this.cargarInfoAlbum();
         //this.cargarResultados();
-        //this.actualizarBotonFavoritos();
+        this.actualizarBotonFavoritos();
+        
     }
     
     /**
@@ -158,7 +161,22 @@ public class FrmAlbum extends javax.swing.JFrame {
         //UIManager.put("Button.arc", 999);
         SwingUtilities.updateComponentTreeUI(this);
     }
-    
+    public void actualizarBotonFavoritos() {
+        
+        if (usuario.getAlbumesFavoritos().contains(this.album.getId())) {
+            this.agregarFavoritosBtn.setText("En Tus Favoritos");
+            this.agregarFavoritosBtn.setBackground(Estilo.colorBaseFondo);
+        } else {
+            this.agregarFavoritosBtn.setText("Agregar a Favoritos");
+            this.agregarFavoritosBtn.setBackground(Estilo.colorPrimario);
+        }
+        
+        this.agregarFavoritosBtn.revalidate();
+        this.agregarFavoritosBtn.repaint();
+        this.agregarFavoritosBtn.revalidate();
+        this.agregarFavoritosBtn.repaint();
+        
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -176,6 +194,7 @@ public class FrmAlbum extends javax.swing.JFrame {
         infoGeneralLbl = new javax.swing.JLabel();
         nombreAlbumLbl = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        agregarFavoritosBtn = new javax.swing.JButton();
         resultadosCancionesScrollPane = new javax.swing.JScrollPane();
         cancionesPanel = new javax.swing.JPanel();
 
@@ -231,6 +250,13 @@ public class FrmAlbum extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(204, 204, 204));
         jLabel5.setText("Album");
 
+        agregarFavoritosBtn.setText("Agregar a Favoritos");
+        agregarFavoritosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarFavoritosBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -239,7 +265,10 @@ public class FrmAlbum extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nombreAlbumLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(infoGeneralLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(infoGeneralLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(agregarFavoritosBtn)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -250,7 +279,9 @@ public class FrmAlbum extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nombreAlbumLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(infoGeneralLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(infoGeneralLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agregarFavoritosBtn))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -258,7 +289,7 @@ public class FrmAlbum extends javax.swing.JFrame {
         cancionesPanel.setLayout(cancionesPanelLayout);
         cancionesPanelLayout.setHorizontalGroup(
             cancionesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 787, Short.MAX_VALUE)
+            .addGap(0, 905, Short.MAX_VALUE)
         );
         cancionesPanelLayout.setVerticalGroup(
             cancionesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,7 +338,19 @@ public class FrmAlbum extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_volverMenuPrincipalBtnActionPerformed
 
+    private void agregarFavoritosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarFavoritosBtnActionPerformed
+        if(usuario.getAlbumesFavoritos().contains(this.album.getId())){
+            this.usuario.eliminarAlbumDeFavoritos(this.album.getId());
+        }else{
+            this.usuario.agregarAlbumAFavoritos(this.album.getId());
+        }
+        this.actualizarBotonFavoritos();
+        
+        
+    }//GEN-LAST:event_agregarFavoritosBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarFavoritosBtn;
     private javax.swing.JPanel cancionesPanel;
     private javax.swing.JPanel imagenAlbumContainerPanel;
     private javax.swing.JLabel infoGeneralLbl;

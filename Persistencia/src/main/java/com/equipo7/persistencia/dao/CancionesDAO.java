@@ -9,8 +9,10 @@ import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.interfaces.ICancionesDAO;
 import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.Cancion;
+import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import excepciones.DAOException;
 import java.util.ArrayList;
@@ -133,4 +135,17 @@ public class CancionesDAO implements ICancionesDAO {
             throw new DAOException("No se pudo obtener las canciones por genero");
         }
     }
+    @Override
+    public List<String> obtenerGenerosMusicales() throws DAOException {
+        try {
+            // Usar `distinct` para obtener valores únicos del campo `generoMusical`
+            DistinctIterable<String> generos = albumes.distinct("generoMusical", String.class);
+            List<String> generosList = new ArrayList<>();
+            generos.into(generosList); // Convertimos el iterable en una lista
+            return generosList;
+        } catch (Exception e) {
+            throw new DAOException("Error al obtener los géneros musicales únicos");
+        }
+    }
+    
 }

@@ -315,5 +315,30 @@ public class UsuariosDAO implements IUsuariosDAO {
             throw new DAOException("No se pudieron guardar los cambios en la seccion de favoritos");
         }
     }
+    
+    public void actualizarGenerosRestringidos(Usuario usuario) throws DAOException {
+        if (usuario.getCorreoElectronico() == null || usuario.getCorreoElectronico().isEmpty()) {
+            throw new DAOException("El correo electrónico no puede estar vacío.");
+        }
+
+        if (usuario.getGenerosRestringidos() == null) {
+            throw new DAOException("La lista de géneros restringidos no puede ser nula.");
+        }
+
+        // Crear el filtro para buscar al usuario por correo electrónico
+        Bson filtro = Filters.eq("email", usuario.getCorreoElectronico());
+
+        // Crear el documento de actualización
+        Document actualizacion = new Document("$set", new Document("generosRestringidos", usuario.getGenerosRestringidos()));
+
+        try {
+            // Realizar la actualización en la base de datos
+            UpdateResult resultado = this.usuarios.updateOne(filtro, actualizacion);
+
+        } catch (MongoException e) {
+            throw new DAOException("Ocurrió un error al actualizar los géneros restringidos: " + e.getMessage());
+        }
+    }
+    
 
 }

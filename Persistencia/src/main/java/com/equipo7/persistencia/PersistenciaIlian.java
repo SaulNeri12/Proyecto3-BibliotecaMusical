@@ -6,14 +6,10 @@ package com.equipo7.persistencia;
 import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.AlbumesDAO;
 import com.equipo7.persistencia.dao.ArtistasDAO;
-import com.equipo7.persistencia.dao.UsuariosDAO;
 import com.equipo7.persistencia.entidades.Album;
 import com.equipo7.persistencia.entidades.Artista;
-import com.equipo7.persistencia.entidades.FiltroBusqueda;
 import com.equipo7.persistencia.entidades.Integrante;
-import com.equipo7.persistencia.entidades.Usuario;
 import excepciones.DAOException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 

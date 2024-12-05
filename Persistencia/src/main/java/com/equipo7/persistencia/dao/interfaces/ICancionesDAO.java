@@ -19,7 +19,9 @@ import org.bson.types.ObjectId;
  * Contiene métodos para obtener, crear y filtrar canciones en la base de datos.
  */
 public interface ICancionesDAO {
+    
     List<Cancion> obtenerCancionesPorArtista(ObjectId idArtista) throws DAOException;
     List<Cancion> obtenerCancionesPorGenero(String generoMusical) throws DAOException;
     List<Cancion> obtenerCancionesPorNombre(String nombreParcial) throws DAOException;
+     List<String> obtenerGenerosMusicales() throws DAOException;
 }

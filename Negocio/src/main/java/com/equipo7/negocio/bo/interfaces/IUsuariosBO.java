@@ -52,4 +52,6 @@ public interface IUsuariosBO {
      */
     public void actualizarFavoritos(UsuarioDTO usuario) throws BOException;
     
+    public void actualizarGenerosRestringidos(UsuarioDTO usuario) throws BOException;
+    
 }

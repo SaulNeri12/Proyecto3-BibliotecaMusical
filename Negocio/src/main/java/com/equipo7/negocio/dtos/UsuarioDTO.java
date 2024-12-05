@@ -231,6 +231,13 @@ public class UsuarioDTO {
             }
         }
     }
+    public void agregaGeneroRestringido(String genero){
+        if(this.getGenerosRestringidos() != null){
+            if(!this.generosRestringidos.contains(genero)){
+                this.getGenerosRestringidos().add(genero);
+            }
+        }
+    }
 
     public void agregarArtistaAFavoritos(ObjectId idArtista) {
         if (this.getArtistasFavoritos() != null) {
@@ -252,6 +259,11 @@ public class UsuarioDTO {
     public void eliminarAlbumDeFavoritos(ObjectId idAlbum) {
         if (this.getAlbumesFavoritos() != null) {
             this.getAlbumesFavoritos().remove(idAlbum);
+        }
+    }
+    public void eliminarGeneroRestringido(String genero){
+        if (this.getGenerosRestringidos()!= null) {
+            this.getGenerosRestringidos().remove(genero);
         }
     }
 

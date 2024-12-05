@@ -15,7 +15,20 @@ public class CancionDTO {
     private String imagenPortadaURL;
     private String nombre;
     private ObjectId idAlbum;
+    private String generoMusical; // Nuevo atributo: Género Musical
 
+    public String getGeneroMusical() {
+        return generoMusical;
+    }
+
+    public void setGeneroMusical(String generoMusical) {
+        this.generoMusical = generoMusical;
+    }
+
+
+
+    
+    
     // Constructor completo
     public CancionDTO() {
 
