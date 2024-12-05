@@ -231,6 +231,13 @@ public class UsuarioDTO {
             }
         }
     }
+    public void agregaGeneroRestringido(String genero){
+        if(this.getGenerosRestringidos() != null){
+            if(!this.generosRestringidos.contains(genero)){
+                this.getGenerosRestringidos().add(genero);
+            }
+        }
+    }
 
     public void agregarArtistaAFavoritos(ObjectId idArtista) {
         if (this.getArtistasFavoritos() != null) {

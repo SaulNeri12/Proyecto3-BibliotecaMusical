@@ -59,6 +59,7 @@ public class UsuariosBO implements IUsuariosBO {
     @Override
     public void registrarUsuario(UsuarioDTO usuario) throws BOException {
         try {
+            
             this.usuarios.registrarUsuario(convertidor.convertFromDTO(usuario));
         } catch (DAOException e) {
             throw new BOException(e.getMessage());
