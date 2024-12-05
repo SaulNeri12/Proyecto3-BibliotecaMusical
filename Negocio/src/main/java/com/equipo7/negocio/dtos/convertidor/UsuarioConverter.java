@@ -26,26 +26,26 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
         if(usuario.getGenerosRestringidos() != null){
             dto.setGenerosRestringidos(usuario.getGenerosRestringidos());
         }
-//        if (usuario.getAlbumesFavoritos() != null) {
-//            dto.setAlbumesFavoritos(usuario.getAlbumesFavoritos());
-//        }
+        if (usuario.getAlbumesFavoritos() != null) {
+            dto.setAlbumesFavoritos(usuario.getAlbumesFavoritos());
+        }
 
-//        if (usuario.getArtistasFavoritos() != null) {
-//            dto.setArtistasFavoritos(usuario.getArtistasFavoritos());
-//        }
-//
-//        if (usuario.getCancionesFavoritas() != null) {
-//            List<CancionDTO> canciones = (List<CancionDTO>) usuario.getCancionesFavoritas().stream().map(c -> {
-//                CancionDTO dto__ = new CancionDTO();
-//                dto__.setIdAlbum(c.getIdAlbum());
-//                dto__.setImagenPortadaURL(c.getImagenPortadaURL());
-//                dto__.setNombre(c.getNombre());
-//
-//                return dto__;
-//            }).collect(Collectors.toList());
-//
-//            dto.setCancionesFavoritas(canciones);
-//        }
+        if (usuario.getArtistasFavoritos() != null) {
+            dto.setArtistasFavoritos(usuario.getArtistasFavoritos());
+        }
+
+        if (usuario.getCancionesFavoritas() != null) {
+            List<CancionDTO> canciones = (List<CancionDTO>) usuario.getCancionesFavoritas().stream().map(c -> {
+                CancionDTO dto__ = new CancionDTO();
+                dto__.setIdAlbum(c.getIdAlbum());
+                dto__.setImagenPortadaURL(c.getImagenPortadaURL());
+                dto__.setNombre(c.getNombre());
+
+                return dto__;
+            }).collect(Collectors.toList());
+
+            dto.setCancionesFavoritas(canciones);
+        }
         
         return dto;
     }
@@ -58,13 +58,13 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
         u.setGenerosRestringidos(dto.getGenerosRestringidos());
         u.setImagenPerfil(dto.getImagenPerfil());
         
-//        if (dto.getArtistasFavoritos() != null) {
-//            u.setArtistasFavoritos(dto.getArtistasFavoritos());
-//        }
+        if (dto.getArtistasFavoritos() != null) {
+            u.setArtistasFavoritos(dto.getArtistasFavoritos());
+        }
         
-//        if (dto.getAlbumesFavoritos() != null) {
-//            u.setAlbumesFavoritos(dto.getAlbumesFavoritos());
-//        }
+        if (dto.getAlbumesFavoritos() != null) {
+            u.setAlbumesFavoritos(dto.getAlbumesFavoritos());
+        }
         
         if(dto.getGenerosRestringidos() != null){
             u.setGenerosRestringidos(dto.getGenerosRestringidos());
@@ -80,7 +80,7 @@ public class UsuarioConverter extends Converter<UsuarioDTO, Usuario> {
                 return c__;
             }).collect(Collectors.toList());
 
-//            u.setCancionesFavoritas(canciones);
+            u.setCancionesFavoritas(canciones);
         }
         
         return u;

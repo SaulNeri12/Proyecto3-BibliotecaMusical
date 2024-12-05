@@ -8,6 +8,8 @@ import com.equipo7.persistencia.conexion.excepciones.ConexionException;
 import com.equipo7.persistencia.dao.UsuariosDAO;
 import com.equipo7.persistencia.entidades.Usuario;
 import excepciones.DAOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -85,6 +87,10 @@ public class UsuariosBO implements IUsuariosBO {
 
     @Override
     public void actualizarFavoritos(UsuarioDTO usuario) throws BOException {
-//        this.usuarios.actualizarFavoritos(convertidor.convertFromDTO(usuario));
+        try {
+            this.usuarios.actualizarFavoritos(convertidor.convertFromDTO(usuario));
+        } catch (DAOException ex) {
+            throw new BOException(ex.getMessage());
+        }
     }
 }
